@@ -1,0 +1,40 @@
+<h1>Pathway Advisor</h1>
+
+<form method="GET">
+    <label>Field:</label>
+    <select name="field">
+        <option value="">-- All --</option>
+        <option value="Engineering">Engineering</option>
+        <option value="Business">Business</option>
+        <option value="IT">IT</option>
+    </select>
+
+    <br><br>
+
+    <label>Program:</label>
+    <select name="program">
+        <option value="">-- All --</option>
+        <option value="Foundation">Foundation</option>
+        <option value="Diploma">Diploma</option>
+        <option value="Degree">Degree</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Search</button>
+</form>
+
+<hr>
+
+<h2>Results</h2>
+
+{% for c in courses %}
+    <p>
+        <b>{{ c.name }}</b><br>
+        Institution: {{ c.institution.name }}<br>
+        Field: {{ c.field }} | Program: {{ c.program_type }}
+    </p>
+    <hr>
+{% empty %}
+    <p>No courses found</p>
+{% endfor %}
