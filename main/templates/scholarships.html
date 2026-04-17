@@ -1,0 +1,21 @@
+<h1>🏅 Scholarships in Malaysia</h1>
+
+<div style="display:flex; flex-wrap:wrap; gap:20px;">
+
+{% for s in scholarships %}
+
+<div style="border:1px solid #ddd; padding:15px; width:250px; border-radius:10px;">
+
+    <h2>{{ s.name }}</h2>
+
+    <p><b>Provider:</b> {{ s.provider }}</p>
+
+    <p><b>Course:</b> {{ s.course.name }}</p>
+
+    <p>{{ s.description|truncatewords:20 }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>

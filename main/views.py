@@ -106,3 +106,11 @@ def institution_detail(request, id):
         'institution': institution,
         'courses': courses
     })
+
+from .models import Scholarship
+
+def scholarships(request):
+    scholarships = Scholarship.objects.all()
+    return render(request, 'scholarships.html', {
+        'scholarships': scholarships
+    })
