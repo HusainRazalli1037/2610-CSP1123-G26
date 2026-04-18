@@ -1,0 +1,25 @@
+<h1>📊 Website Analytics Dashboard</h1>
+
+<hr>
+
+<h2>Total Visitors: {{ total_visits }}</h2>
+<h2>Today Visitors: {{ today_visits }}</h2>
+
+<hr>
+
+<h2>Most Popular Pages</h2>
+
+<table border="1" cellpadding="10">
+<tr>
+    <th>Page</th>
+    <th>Total Visits</th>
+</tr>
+
+{% for p in popular_pages %}
+<tr>
+    <td>{{ p.page }}</td>
+    <td>{{ p.total }}</td>
+</tr>
+{% endfor %}
+
+</table>

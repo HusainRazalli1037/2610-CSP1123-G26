@@ -1,8 +1,14 @@
 from django.shortcuts import render
 from .models import Institution, Course
+from .models import Visitor
+
+from .models import Institution
 
 def institutions(request):
+    track_visit(request, 'Institutions')
+
     institutions = Institution.objects.all()
+
     return render(request, 'institutions.html', {
         'institutions': institutions
     })
@@ -10,12 +16,12 @@ def institutions(request):
 from .models import Institution
 
 def home(request):
-    institutions = Institution.objects.all()
-    return render(request, 'home.html', {
-        'institutions': institutions
-    })
+    track_visit(request, 'Home')
+    return render(request, 'home.html')
 
 def calculator(request):
+    track_visit(request, 'Calculator')
+
     result = None
 
     if request.method == "POST":
@@ -50,51 +56,45 @@ def calculator(request):
 
             subjek_utama = [bm, bi, math, sejarah]
 
-            # TERBAIK PAKEJ (2 SUBJECT)
+            # TERBAIK PAKEJ
             tp1 = nilai_gred_terbaik_pakej[request.POST['tp1']]
             tp2 = nilai_gred_terbaik_pakej[request.POST['tp2']]
 
-            subjek_terbaik_pakej = [tp1, tp2]
-
-            # TERBAIK (2 SUBJECT)
+            # TERBAIK
             t1 = nilai_gred_terbaik[request.POST['t1']]
             t2 = nilai_gred_terbaik[request.POST['t2']]
 
-            subjek_terbaik = [t1, t2]
-
-            # KOKO
             koko = float(request.POST['koko'])
 
-            skor_akademik = sum(subjek_utama) + sum(subjek_terbaik_pakej) + sum(subjek_terbaik)
-
+            skor_akademik = sum(subjek_utama) + tp1 + tp2 + t1 + t2
             jumlah_merit = skor_akademik + koko
 
             result = {
-                "skor_akademik": skor_akademik,
-                "koko": koko,
-                "jumlah": jumlah_merit
+                "skor_akademik": round(skor_akademik, 2),
+                "koko": round(koko, 2),
+                "jumlah": round(jumlah_merit, 2)
             }
 
         except KeyError:
             result = {"error": "Gred tidak sah"}
+
         except ValueError:
             result = {"error": "Markah kokurikulum mesti nombor"}
 
-    return render(request, 'calculator.html', {"result": result})
+    return render(request, 'calculator.html', {
+        "result": result
+    })
+
+from .models import Course
 
 def pathway(request):
+    track_visit(request, 'Pathway')
+
     courses = Course.objects.all()
 
-    field = request.GET.get('field')
-    program = request.GET.get('program')
-
-    if field and field != "":
-        courses = courses.filter(field=field)
-
-    if program and program != "":
-        courses = courses.filter(program_type=program)
-
-    return render(request, 'pathway.html', {'courses': courses})
+    return render(request, 'pathway.html', {
+        'courses': courses
+    })
 
 from .models import Institution, Course
 
@@ -109,8 +109,44 @@ def institution_detail(request, id):
 
 from .models import Scholarship
 
+from .models import Scholarship
+
 def scholarships(request):
+    track_visit(request, 'Scholarships')
+
     scholarships = Scholarship.objects.all()
+
     return render(request, 'scholarships.html', {
         'scholarships': scholarships
+    })
+
+from .models import Visitor
+
+def track_visit(request, page_name):
+    ip = request.META.get('REMOTE_ADDR')
+    Visitor.objects.create(
+        page=page_name,
+        ip_address=ip
+    )
+
+
+from django.db.models import Count
+from django.utils.timezone import now
+from datetime import date
+
+def analytics(request):
+    total_visits = Visitor.objects.count()
+
+    today_visits = Visitor.objects.filter(
+        visited_at__date=date.today()
+    ).count()
+
+    popular_pages = Visitor.objects.values('page').annotate(
+        total=Count('page')
+    ).order_by('-total')
+
+    return render(request, 'analytics.html', {
+        'total_visits': total_visits,
+        'today_visits': today_visits,
+        'popular_pages': popular_pages
     })

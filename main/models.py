@@ -53,3 +53,12 @@ class Scholarship(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Visitor(models.Model):
+    page = models.CharField(max_length=100)
+    ip_address = models.CharField(max_length=100)
+    visited_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.page
