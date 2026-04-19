@@ -1,25 +1,82 @@
-<h1>📊 Website Analytics Dashboard</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<hr>
+    <style>
+        body{
+            font-family: Arial;
+            background:#0f172a;
+            color:white;
+            padding:30px;
+        }
 
-<h2>Total Visitors: {{ total_visits }}</h2>
-<h2>Today Visitors: {{ today_visits }}</h2>
+        .card{
+            background:#1e293b;
+            padding:20px;
+            border-radius:12px;
+            margin-bottom:20px;
+        }
 
-<hr>
+        .grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+        }
 
-<h2>Most Popular Pages</h2>
+        canvas{
+            background:white;
+            border-radius:10px;
+            padding:15px;
+        }
 
-<table border="1" cellpadding="10">
-<tr>
-    <th>Page</th>
-    <th>Total Visits</th>
-</tr>
+        h1{
+            color:#93c5fd;
+        }
+    </style>
+</head>
+<body>
 
-{% for p in popular_pages %}
-<tr>
-    <td>{{ p.page }}</td>
-    <td>{{ p.total }}</td>
-</tr>
-{% endfor %}
+<h1>📊 Visitor Analytics Dashboard</h1>
 
-</table>
+<div class="grid">
+
+<div class="card">
+<h2>Total Visitors</h2>
+<h1>{{ total_visits }}</h1>
+</div>
+
+<div class="card">
+<h2>Today Visitors</h2>
+<h1>{{ today_visits }}</h1>
+</div>
+
+</div>
+
+<div class="card">
+<h2>Most Visited Features</h2>
+<canvas id="barChart"></canvas>
+</div>
+
+<script>
+const labels = {{ labels|safe }};
+const totals = {{ totals|safe }};
+
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Visits',
+            data: totals
+        }]
+    },
+    options: {
+        responsive:true
+    }
+});
+</script>
+
+</body>
+</html>

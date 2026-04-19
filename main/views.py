@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from .models import Institution, Course
 from .models import Visitor
-
 from .models import Institution
+from .models import Scholarship
+from django.db.models import Count
+from django.utils.timezone import now
+from datetime import date
+
 
 def institutions(request):
     track_visit(request, 'Institutions')
@@ -13,7 +17,6 @@ def institutions(request):
         'institutions': institutions
     })
 
-from .models import Institution
 
 def home(request):
     track_visit(request, 'Home')
@@ -85,7 +88,6 @@ def calculator(request):
         "result": result
     })
 
-from .models import Course
 
 def pathway(request):
     track_visit(request, 'Pathway')
@@ -96,7 +98,6 @@ def pathway(request):
         'courses': courses
     })
 
-from .models import Institution, Course
 
 def institution_detail(request, id):
     institution = Institution.objects.get(id=id)
@@ -107,9 +108,6 @@ def institution_detail(request, id):
         'courses': courses
     })
 
-from .models import Scholarship
-
-from .models import Scholarship
 
 def scholarships(request):
     track_visit(request, 'Scholarships')
@@ -120,7 +118,6 @@ def scholarships(request):
         'scholarships': scholarships
     })
 
-from .models import Visitor
 
 def track_visit(request, page_name):
     ip = request.META.get('REMOTE_ADDR')
@@ -129,11 +126,6 @@ def track_visit(request, page_name):
         ip_address=ip
     )
 
-
-from django.db.models import Count
-from django.utils.timezone import now
-from datetime import date
-
 def analytics(request):
     total_visits = Visitor.objects.count()
 
@@ -141,12 +133,16 @@ def analytics(request):
         visited_at__date=date.today()
     ).count()
 
-    popular_pages = Visitor.objects.values('page').annotate(
+    page_data = Visitor.objects.values('page').annotate(
         total=Count('page')
     ).order_by('-total')
+
+    labels = [item['page'] for item in page_data]
+    totals = [item['total'] for item in page_data]
 
     return render(request, 'analytics.html', {
         'total_visits': total_visits,
         'today_visits': today_visits,
-        'popular_pages': popular_pages
+        'labels': labels,
+        'totals': totals,
     })

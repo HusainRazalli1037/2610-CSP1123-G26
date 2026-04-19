@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,3 +122,31 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+JAZZMIN_SETTINGS = {
+    "site_title": "SPM Guideline Admin",
+    "site_header": "SPM Guideline",
+    "site_brand": "MyLuanier Admin",
+    "welcome_sign": "Welcome to MyLuanier Admin",
+    "copyright": "MyLuanier",
+
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index"},
+    ],
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    "dark_mode_theme": "darkly",
+
+    "navbar": "navbar-primary navbar-dark",
+    "accent": "accent-primary",
+
+    "sidebar": "sidebar-dark-primary",
+
+    "brand_colour": "navbar-primary",
+
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+}
