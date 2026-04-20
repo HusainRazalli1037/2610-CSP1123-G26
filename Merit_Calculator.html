@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPM Merit Calculator - MyLuanier</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav-container">
+        <div class="logo">
+          <img src="MyLuanierLogo.jpeg" alt="MyLuanier" class="logo-img" />
+        </div>
+        <nav>
+          <ul>
+            <li><a href="homepages.html">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <div class="dropdown">
+              <p><a href="#">Services ▾</a></p>
+              <div class="dropdown-content">
+                <a href="/asrar/bio.html">Asrar</a>
+                <a href="/Arif/fci-individual.html">Arif </a>
+              </div>
+            </div>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
+      </div>
+    </header>
+
+    <section class="calc-hero">
+      <div class="container">
+        <h1>SPM MERIT CALCULATOR</h1>
+        <p>
+          Instantly calculate your SPM merit score and unlock insights into your
+          university admission potential. Designed to be simple, fast, and
+          accurate for every student.
+        </p>
+      </div>
+    </section>
+
+    <main class="calculator-container">
+      <div class="container">
+        <div class="stream-selector">
+          <div class="label-box">Stream Type</div>
+          <select class="custom-select">
+            <option>CHOOSE STREAM</option>
+            <option>STEM A</option>
+            <option>STEM B</option>
+            <option>STEM C</option>
+            <option>KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN</option>
+          </select>
+        </div>
+
+        <div class="subjects-grid">
+          <div class="subject-card">
+            <div class="label-box">Universal Subject</div>
+            <div class="input-group">
+              <label>BAHASA MELAYU</label>
+              <select>
+                <option>PILIH</option>
+                <option>A+</option>
+                <option>A</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B</option>
+                <option>C+</option>
+                <option>C</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>BAHASA INGGERIS</label>
+              <select>
+                <option>PILIH</option>
+                <option>A+</option>
+                <option>A</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B</option>
+                <option>C+</option>
+                <option>C</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>MATEMATIK</label>
+              <select>
+                <option>PILIH</option>
+                <option>A+</option>
+                <option>A</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B</option>
+                <option>C+</option>
+                <option>C</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>SEJARAH</label>
+              <select>
+                <option>PILIH</option>
+                <option>A+</option>
+                <option>A</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B</option>
+                <option>C+</option>
+                <option>C</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="right-column">
+            <div class="subject-card">
+              <div class="label-box">Best Subject Package</div>
+              <div class="input-group-row">
+                <select>
+                  <option>CHOOSE SUBJECT</option>
+                </select>
+                <select>
+                  <option>PILIH</option>
+                </select>
+              </div>
+              <div class="input-group-row">
+                <select>
+                  <option>CHOOSE SUBJECT</option>
+                </select>
+                <select>
+                  <option>PILIH</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="subject-card">
+              <div class="label-box">Best Subject</div>
+              <div class="input-group-row">
+                <select>
+                  <option>CHOOSE SUBJECT</option>
+                </select>
+                <select>
+                  <option>PILIH</option>
+                </select>
+              </div>
+              <div class="input-group-row">
+                <select>
+                  <option>CHOOSE SUBJECT</option>
+                </select>
+                <select>
+                  <option>PILIH</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="co-curro">
+          <div class="label-box">Co-curricular Marks</div>
+          <select class="custom-select">
+            <option>MARKS</option>
+          </select>
+        </div>
+
+        <div class="guide-box">
+          <div class="guide-title">SPM MERIT CALCULATION GUIDE</div>
+          <div class="guide-content">
+            <div class="guide-col">
+              <strong>CALCULATION FORMULA</strong>
+              <ul>
+                <li>Compulsory Subject (40%): BM + BI + MATEMATIK + SEJARAH</li>
+                <li>Best Package Subject (30%): 2 subject based on stream</li>
+                <li>Best Subject (10%): 2 additional subject (if any)</li>
+                <li>Co-curricular (10%): Co-curricular activity marks</li>
+                <li>Total MERIT = ((Total/90) * 90) + Co-curriculum</li>
+              </ul>
+            </div>
+            <div class="guide-col">
+              <strong>CALCULATION STEPS</strong>
+              <ol>
+                <li>Choose stream type (STEM A/B/C or KSI)</li>
+                <li>Select grades for 4 compulsory subjects</li>
+                <li>Select 2 elective subjects based on stream</li>
+                <li>Select additional subjects (if applicable)</li>
+                <li>Select co-curricular marks (0.00 - 10.00)</li>
+                <li>MERIT score will be calculated automatically</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-reset">RESET</button>
+          <button class="btn-calculate">CALCULATE</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
