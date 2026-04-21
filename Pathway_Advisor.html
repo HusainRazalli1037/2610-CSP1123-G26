@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pathway Advisor - MyLuanier</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav-container">
+        <div class="logo">
+          <img src="MyLuanierLogo.jpeg" alt="MyLuanier" class="logo-img" />
+        </div>
+        <nav>
+          <ul>
+            <li><a href="homepages.html">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <div class="dropdown">
+              <p><a href="#">Services ▾</a></p>
+              <div class="dropdown-content">
+                <a href="Merit_Calculator.html">Merit Calculator</a>
+                <a href="Pathway_Hub.html">Info Hub </a>
+                <a href="Scholarship_Information.html">Scholarship</a>
+              </div>
+            </div>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
+      </div>
+    </header>
+
+    <main class="advisor-wrapper">
+      <section class="advisor-info">
+        <div class="info-content">
+          <h1>PATHWAY ADVISOR (FILTER SYSTEM)</h1>
+          <p>
+            Navigate your future with precision. Our Pathway Advisor filters
+            top-tier educational options—from Foundation and Diploma to
+            Matrikulasi and STPM—matching your unique interests and academic
+            results with the ideal course type.
+          </p>
+          <div class="advisor-image">
+            <img src="srmboys.jpeg" alt="Students studying" />
+          </div>
+        </div>
+      </section>
+
+      <section class="advisor-form">
+        <div class="form-container">
+          <h2>Academic Pathway</h2>
+
+          <div class="form-group">
+            <label>Please select your preferred field of study:</label>
+            <div class="select-wrapper">
+              <select>
+                <option value="" disabled selected>CHOOSE</option>
+                <option value="engineering">Engineering</option>
+                <option value="it">Information Technology</option>
+                <option value="medicine">Medicine</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Please select your preferred program:</label>
+            <div class="select-wrapper">
+              <select>
+                <option value="" disabled selected>CHOOSE</option>
+                <option value="foundation">Foundation</option>
+                <option value="diploma">Diploma</option>
+                <option value="degree">Degree</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="advisor-actions">
+            <button class="btn-reset">RESET</button>
+            <button class="btn-generate">GENERATE</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

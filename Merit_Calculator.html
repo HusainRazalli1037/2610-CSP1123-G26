@@ -19,8 +19,9 @@
             <div class="dropdown">
               <p><a href="#">Services ▾</a></p>
               <div class="dropdown-content">
-                <a href="/asrar/bio.html">Asrar</a>
-                <a href="/Arif/fci-individual.html">Arif </a>
+                <a href="Pathway_Advisor.html">Pathway Advisor</a>
+                <a href="Pathway_Hub.html">Info Hub </a>
+                <a href="Scholarship_Information.html">Scholarship </a>
               </div>
             </div>
             <li><a href="#">Contact</a></li>
@@ -47,7 +48,7 @@
           <div class="label-box">Stream Type</div>
           <select class="custom-select">
             <option>CHOOSE STREAM</option>
-            <option>STEM A</option>
+            <a href="homepages.html"><option>STEM A</option></a>
             <option>STEM B</option>
             <option>STEM C</option>
             <option>KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN</option>
@@ -156,9 +157,20 @@
 
         <div class="co-curro">
           <div class="label-box">Co-curricular Marks</div>
-          <select class="custom-select">
-            <option>MARKS</option>
-          </select>
+          <div class="input-wrapper">
+            <input
+              type="number"
+              class="number-input"
+              placeholder="0.00"
+              min="0"
+              max="10"
+              step="0.01"
+              oninput="
+                if (value > 10) value = 10;
+                if (value < 0) value = 0;
+              "
+            />
+          </div>
         </div>
 
         <div class="guide-box">
