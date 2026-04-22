@@ -159,6 +159,14 @@ nav a:hover {
   text-align: center;
 }
 
+.heroes {
+  height: 450px;
+  background: url("srmboys.jpeg") no-repeat center center/cover;
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
 .hero-overlay {
   background: rgba(0, 0, 0, 0.4);
   height: 100%;
@@ -813,5 +821,293 @@ select {
   }
   .scholarship-hero h1 {
     font-size: 2.5rem;
+  }
+}
+
+/* 6. ABOUT US PAGE */
+
+.heroes h1 {
+  padding: 0 230px 0;
+  font-size: 50px;
+}
+/* Story Section */
+
+.story-section {
+  padding: 60px 0;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 0; /* Flush look matching the image */
+  margin-bottom: 60px;
+}
+
+.story-text-box {
+  background-color: #1e2270; /* Slightly lighter navy for contrast */
+  color: white;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.story-text-box p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.story-text-box h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.story-content {
+  background-color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.story-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.story-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Mission & Vision Section */
+.mission-vision {
+  background-color: #4a6792; /* Lighter blue section */
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.mission-vision h2 {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+}
+
+.mv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.mv-card h3 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.mv-card p {
+  font-size: 1.1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Founder Section */
+.founders-section {
+  padding: 80px 0;
+  margin-bottom: 80px;
+}
+
+.founders-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+  color: #031c3a;
+}
+
+.founders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.founder-card {
+  text-align: center;
+}
+
+.founder-img img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 8px solid var(--cream); /* Matches background */
+  position: relative;
+  z-index: 2;
+  margin-bottom: -60px; /* Overlap effect */
+  background-color: #eee;
+}
+
+.founder-info {
+  background-color: #1e2270;
+  color: white;
+  padding: 80px 25px 40px;
+  border-radius: 10px;
+}
+
+.founder-info h4 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.founder-info .subtitle {
+  font-size: 0.8rem;
+  color: #cbd5e0;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.founder-info .desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Responsive for About Page */
+@media (max-width: 992px) {
+  .story-grid,
+  .mv-grid,
+  .founders-grid {
+    grid-template-columns: 1fr;
+  }
+  .story-text-box {
+    padding: 40px;
+  }
+}
+
+/* 7. CONTACT PAGE STYLING */
+
+.contact-page {
+  background-color: #fdfaf0; /* Cream background */
+  padding: 60px 0;
+  min-height: 100vh;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #000;
+  margin-bottom: 40px;
+  font-weight: 800;
+}
+
+.contact-card {
+  background-color: #030a3a; /* Deep Navy */
+  border-radius: 15px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  overflow: hidden;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Side - Form */
+.contact-form-side {
+  padding: 50px;
+}
+
+.contact-form-side h2 {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.form-item {
+  margin-bottom: 20px;
+}
+
+.form-item label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-item input,
+.form-item textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+.btn-send {
+  background-color: #007f3e; /* Green color from image */
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-send:hover {
+  background-color: #006632;
+}
+
+/* Right Side - Info */
+.contact-info-side {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.contact-info-side h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.email-link {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.email-link i {
+  color: #80dfff; /* Light blue icon */
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.social-list {
+  list-style: none;
+  padding: 0;
+}
+
+.social-list li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.social-list i {
+  font-size: 1.4rem;
+}
+
+/* Responsive Tweak */
+@media (max-width: 850px) {
+  .contact-card {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-info-side {
+    padding-top: 0;
   }
 }
