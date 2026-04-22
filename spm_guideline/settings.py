@@ -125,14 +125,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 JAZZMIN_SETTINGS = {
     "site_title": "SPM Guideline Admin",
-    "site_header": "SPM Guideline",
-    "site_brand": "MyLuanier Admin",
-    "welcome_sign": "Welcome to MyLuanier Admin",
-    "copyright": "MyLuanier",
-
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index"},
-    ],
+    "site_header": "SPM Guideline Management",
+    "site_brand": "SPM Admin",
+    "welcome_sign": "Welcome to Admin Dashboard",
+    "copyright": "SPM Guideline Team",
 }
 
 JAZZMIN_UI_TWEAKS = {
