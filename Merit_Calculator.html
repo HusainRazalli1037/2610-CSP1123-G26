@@ -46,12 +46,14 @@
       <div class="container">
         <div class="stream-selector">
           <div class="label-box">Stream Type</div>
-          <select class="custom-select">
-            <option>CHOOSE STREAM</option>
-            <a href="homepages.html"><option>STEM A</option></a>
-            <option>STEM B</option>
-            <option>STEM C</option>
-            <option>KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN</option>
+          <select id="streamSelector" class="custom-select">
+            <option value="">CHOOSE STREAM</option>
+            <option value="stem_a">STEM A</option>
+            <option value="stem_b">STEM B</option>
+            <option value="stem_c">STEM C</option>
+            <option value="ksi">
+              KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN
+            </option>
           </select>
         </div>
 
@@ -116,19 +118,33 @@
             <div class="subject-card">
               <div class="label-box">Best Subject Package</div>
               <div class="input-group-row">
-                <select>
+                <select class="package-subject-select">
                   <option>CHOOSE SUBJECT</option>
                 </select>
-                <select>
+                <select class="grade-select">
                   <option>PILIH</option>
+                  <option>A+</option>
+                  <option>A</option>
+                  <option>A-</option>
+                  <option>B+</option>
+                  <option>B</option>
+                  <option>C+</option>
+                  <option>C</option>
                 </select>
               </div>
               <div class="input-group-row">
-                <select>
+                <select class="package-subject-select">
                   <option>CHOOSE SUBJECT</option>
                 </select>
                 <select>
                   <option>PILIH</option>
+                  <option>A+</option>
+                  <option>A</option>
+                  <option>A-</option>
+                  <option>B+</option>
+                  <option>B</option>
+                  <option>C+</option>
+                  <option>C</option>
                 </select>
               </div>
             </div>
@@ -136,19 +152,33 @@
             <div class="subject-card">
               <div class="label-box">Best Subject</div>
               <div class="input-group-row">
-                <select>
+                <select class="package-subject-select">
                   <option>CHOOSE SUBJECT</option>
                 </select>
                 <select>
                   <option>PILIH</option>
+                  <option>A+</option>
+                  <option>A</option>
+                  <option>A-</option>
+                  <option>B+</option>
+                  <option>B</option>
+                  <option>C+</option>
+                  <option>C</option>
                 </select>
               </div>
               <div class="input-group-row">
-                <select>
+                <select class="package-subject-select">
                   <option>CHOOSE SUBJECT</option>
                 </select>
                 <select>
                   <option>PILIH</option>
+                  <option>A+</option>
+                  <option>A</option>
+                  <option>A-</option>
+                  <option>B+</option>
+                  <option>B</option>
+                  <option>C+</option>
+                  <option>C</option>
                 </select>
               </div>
             </div>
@@ -206,5 +236,6 @@
         </div>
       </div>
     </main>
+    <script src="myScript.js"></script>
   </body>
 </html>
