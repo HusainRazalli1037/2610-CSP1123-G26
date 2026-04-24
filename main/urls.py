@@ -9,4 +9,9 @@ urlpatterns = [
     path('institutions/', views.institutions, name='institutions'),
     path('scholarships/', views.scholarships, name='scholarships'),
     path('analytics/', views.analytics, name='analytics'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('reports/', views.reports, name='reports'),
+    path('export-pdf/', views.export_pdf, name='export_pdf'),
+    path('', views.homepage, name='homepage'),
+    path('about/', views.about_us, name='about_us')
 ]
