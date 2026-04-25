@@ -46,61 +46,94 @@
     <main class="scholarship-container">
       <div class="container">
         <div class="scholarship-grid">
-          <div class="scholarship-card">
-            <div class="card-logo">
-              <img src="khaice.jpeg" alt="Yayasan Axiata" />
+          <button class="btn2">
+            <div class="scholarship-card">
+              <div class="card-logo">
+                <img src="khaice.jpeg" alt="Yayasan Axiata" />
+              </div>
+              <h3>Yayasan Axiata</h3>
+              <div class="status-badge">Accepting</div>
+              <div class="date-text">1 May 2030</div>
             </div>
-            <h3>Yayasan Axiata</h3>
-            <div class="status-badge">Accepting</div>
-            <div class="date-text">1 May 2030</div>
-          </div>
+          </button>
 
-          <div class="scholarship-card">
-            <div class="card-logo">
-              <img src="khaice.jpeg" alt="Kijang" />
+          <button class="btn2">
+            <div class="scholarship-card">
+              <div class="card-logo">
+                <img src="khaice.jpeg" alt="Kijang" />
+              </div>
+              <h3>Kijang Scholarship</h3>
+              <div class="status-badge">Accepting</div>
+              <div class="date-text">1 May 2030</div>
             </div>
-            <h3>Kijang Scholarship</h3>
-            <div class="status-badge">Accepting</div>
-            <div class="date-text">1 May 2030</div>
-          </div>
+          </button>
 
-          <div class="scholarship-card">
-            <div class="card-logo">
-              <img src="khaice.jpeg" alt="JPA" />
+          <button class="btn2">
+            <div class="scholarship-card">
+              <div class="card-logo">
+                <img src="khaice.jpeg" alt="JPA" />
+              </div>
+              <h3>JPA Scholarship</h3>
+              <div class="status-badge">Accepting</div>
+              <div class="date-text">1 May 2030</div>
             </div>
-            <h3>JPA Scholarship</h3>
-            <div class="status-badge">Accepting</div>
-            <div class="date-text">1 May 2030</div>
-          </div>
-
-          <div class="scholarship-card">
-            <div class="card-logo">
-              <img src="khaice.jpeg" alt="Karangkraf" />
-            </div>
-            <h3>Karangkraf Scholarship</h3>
-            <div class="status-badge">Accepting</div>
-            <div class="date-text">1 May 2030</div>
-          </div>
-
-          <div class="scholarship-card">
-            <div class="card-logo">
-              <img src="khaice.jpeg" alt="PNB" />
-            </div>
-            <h3>PNB Global Scholarship</h3>
-            <div class="status-badge">Accepting</div>
-            <div class="date-text">1 May 2030</div>
-          </div>
-
-          <div class="scholarship-card">
-            <div class="card-logo">
-              <img src="khaice.jpeg" alt="Khazanah" />
-            </div>
-            <h3>Yayasan Khazanah</h3>
-            <div class="status-badge">Accepting</div>
-            <div class="date-text">1 May 2030</div>
-          </div>
+          </button>
         </div>
       </div>
     </main>
+    <div id="scholarshipModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+
+        <div class="modal-pagination">
+          <button id="prevScholarship" class="pagi-btn">
+            &#10094; Previous
+          </button>
+          <button id="nextScholarship" class="pagi-btn">Next &#10095;</button>
+        </div>
+
+        <div class="modal-scroll-area">
+          <div class="modal-header">
+            <h2 id="modalTitle">Scholarship Name</h2>
+            <div class="modal-logo-container">
+              <img src="khaice.jpeg" alt="Logo" id="modalLogo" />
+            </div>
+            <div class="status-badge large">Accepting</div>
+          </div>
+
+          <div class="modal-body">
+            <div class="info-row">
+              <strong>Deadline:</strong> <span id="modalDeadline"></span>
+            </div>
+            <div class="info-row">
+              <strong>Location:</strong> <span id="modalLocation"></span>
+            </div>
+            <div class="info-row">
+              <strong>Education Level:</strong> <span id="modalLevel"></span>
+            </div>
+            <div class="info-row">
+              <strong>Award Amount:</strong> <span id="modalAmount"></span>
+            </div>
+            <div class="info-row">
+              <strong>Type of Scholar:</strong> <span id="modalType"></span>
+            </div>
+            <div class="info-row">
+              <strong>Contract:</strong> <span id="modalContract"></span>
+            </div>
+
+            <div class="course-section">
+              <h3>Course Offered</h3>
+              <div class="course-grid" id="modalCourses"></div>
+            </div>
+
+            <div class="criteria-section">
+              <h3>Criteria</h3>
+              <ul id="modalCriteria"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="myScript2.js"></script>
   </body>
 </html>
