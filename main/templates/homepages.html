@@ -1,132 +1,175 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyLuanier - Your Path to Success</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <header>
-      <div class="container nav-container">
-        <div class="logo">
-          <a href="index.html">
-            <img src="{% static 'images/MyLuanierLogo.jpeg' %}" alt="MyLuanier - Your Path to Success"class="logo-img"/>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyLuanier - Your Path to Success</title>
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container nav-container">
+
+      <!-- LOGO -->
+      <div class="logo">
+        <a href="{% url 'homepage' %}">
+          <img src="{% static 'images/MyLuanierLogo.jpeg' %}"
+               alt="MyLuanier - Your Path to Success"
+               class="logo-img" />
+        </a>
+      </div>
+
+      <!-- NAVIGATION -->
+      <nav>
+        <ul>
+
+          <li>
+            <a href="{% url 'homepage' %}" class="active">Home</a>
+          </li>
+
+          <li>
+            <a href="{% url 'about_us' %}">About Us</a>
+          </li>
+
+          <!-- DROPDOWN -->
+          <li class="dropdown">
+            <a href="#" class="dropbtn">Services ▾</a>
+
+            <div class="dropdown-content">
+              <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+              <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+              <a href="{% url 'pathway_hub' %}">Info Hub</a>
+              <a href="{% url 'scholarship_information' %}">Scholarship</a>
+            </div>
+          </li>
+
+          <li>
+            <a href="{% url 'contact' %}">Contact</a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- TAGLINE -->
+      <div class="nav-tagline">
+        NAVIGATE<br />YOUR FUTURE
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay">
+      <div class="container">
+        <h1>Unlock Your Post-SPM<br />Potential with MyLuanier</h1>
+        <p>
+          Your intelligent system for guiding your post-SPM educational and
+          career path in Malaysia, using advanced data-driven tools
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WELCOME SECTION -->
+  <section class="welcome container">
+    <div class="welcome-grid">
+
+      <div class="welcome-image">
+        <img src="{% static 'images/career.jpeg' %}" alt="Student Planning" />
+      </div>
+
+      <div class="welcome-text">
+        <h2>Welcome to MyLuanier</h2>
+
+        <p>
+          Your intelligent SPM pathway advisor. Designed to eliminate the
+          complexity of post-secondary decision-making, our platform
+          integrates a high-precision Merit Calculator, a personalized Course
+          Recommendation Engine, and a comprehensive Scholarship Hub.
+        </p>
+
+        <p>
+          By analyzing your specific academic results and interests, MyLuanier
+          generates a data-backed roadmap to guide you through UPU,
+          Matrikulasi, STPM, and beyond.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services">
+    <div class="container">
+
+      <h2 class="section-title">Services</h2>
+
+      <div class="services-grid">
+
+        <div class="card">
+          <h3>MERIT CALCULATOR FOR SPM</h3>
+          <div class="card-icon"><i class="fas fa-calculator"></i></div>
+          <h4>SPM Merit Calculator</h4>
+          <p>
+            Instantly calculate your merits for IPTA and STPM based on your
+            actual SPM results. Fast and accurate.
+          </p>
+          <a href="{% url 'merit_calculator' %}">
+            <button class="btn">Calculate Now</button>
           </a>
         </div>
-        <nav>
-          <ul>
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="{% url 'about_us' %}">About Us</a></li>
-            <div class="dropdown">
-              <p><a href="#">Services ▾</a></p>
-              <div class="dropdown-content">
-                <a href="Merit_Calculator.html">Merit Calculator</a>
-                <a href="Pathway_Advisor.html">Pathway Advisor</a>
-                <a href="Pathway_Hub.html">Info Hub </a>
-                <a href="Scholarship_Information.html">Scholarship</a>
-              </div>
-            </div>
-            <li><a href="Contact.html">Contact</a></li>
-          </ul>
-        </nav>
-        <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
-      </div>
-    </header>
 
-    <section class="hero">
-      <div class="hero-overlay">
-        <div class="container">
-          <h1>Unlock Your Post-SPM<br />Potential with MyLuanier</h1>
+        <div class="card">
+          <h3>PATHWAY ADVISOR (FILTER SYSTEM)</h3>
+          <div class="card-icon"><i class="fas fa-cog"></i></div>
+          <h4>Personalized Pathway Advisor</h4>
           <p>
-            Your intelligent system for guiding your post-SPM educational and
-            career path in Malaysia, using advanced data-driven tools
+            Share your interests, results, and koko to filter and receive your
+            ideal post-SPM options.
           </p>
+          <a href="{% url 'pathway_advisor' %}">
+            <button class="btn">Filter Options</button>
+          </a>
         </div>
-      </div>
-    </section>
 
-    <section class="welcome container">
-      <div class="welcome-grid">
-        <div class="welcome-image">
-          <img src="{% static 'images/career.jpeg' %}" alt="Student Planning" />
-        </div>
-        <div class="welcome-text">
-          <h2>Welcome to MyLuanier</h2>
+        <div class="card">
+          <h3>INFO PATHWAY HUB</h3>
+          <div class="card-icon"><i class="fas fa-book-open"></i></div>
+          <h4>Explore Pathway Hub</h4>
           <p>
-            Your intelligent SPM pathway advisor. Designed to eliminate the
-            complexity of post-secondary decision-making, our platform
-            integrates a high-precision Merit Calculator, a personalized Course
-            Recommendation Engine, and a comprehensive Scholarship Hub.
+            Comprehensive guide to every academic pathway and program
+            available after SPM.
           </p>
-          <p>
-            By analyzing your specific academic results and interests, MyLuanier
-            generates a data-backed roadmap to guide you through UPU,
-            Matrikulasi, STPM, and beyond.
-          </p>
+          <a href="{% url 'pathway_hub' %}">
+            <button class="btn">Explore Info</button>
+          </a>
         </div>
-      </div>
-    </section>
 
-    <section class="services">
-      <div class="container">
-        <h2 class="section-title">Services</h2>
-        <div class="services-grid">
-          <div class="card">
-            <h3>MERIT CALCULATOR FOR SPM</h3>
-            <div class="card-icon"><i class="fas fa-calculator"></i></div>
-            <h4>SPM Merit Calculator</h4>
-            <p>
-              Instantly calculate your merits for IPTA and STPM based on your
-              actual SPM results. Fast and accurate.
-            </p>
-            <a href="Merit_Calculator.html"
-              ><button class="btn">Calculate Now</button></a
-            >
-          </div>
-          <div class="card">
-            <h3>PATHWAY ADVISOR (FILTER SYSTEM)</h3>
-            <div class="card-icon"><i class="fas fa-cog"></i></div>
-            <h4>Personalized Pathway Advisor</h4>
-            <p>
-              Share your interests, results, and koko to filter and receive your
-              ideal post-SPM options.
-            </p>
-            <a href="Pathway_Advisor.html"
-              ><button class="btn">Filter Options</button></a
-            >
-          </div>
-          <div class="card">
-            <h3>INFO PATHWAY HUB</h3>
-            <div class="card-icon"><i class="fas fa-book-open"></i></div>
-            <h4>Explore Pathway Hub</h4>
-            <p>
-              Comprehensive guide to every academic pathway and program
-              available after SPM.
-            </p>
-            <a href="Pathway_Hub.html"
-              ><button class="btn">Explore Info</button></a
-            >
-          </div>
-          <div class="card">
-            <h3>SCHOLARSHIP INFORMATION</h3>
-            <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
-            <h4>Scholarship Database</h4>
-            <p>
-              Discover scholarship opportunities tailored to your eligibility.
-              Apply with confidence.
-            </p>
-            <a href="Scholarship_Information.html"
-              ><button class="btn">Find Scholarship</button></a
-            >
-          </div>
+        <div class="card">
+          <h3>SCHOLARSHIP INFORMATION</h3>
+          <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+          <h4>Scholarship Database</h4>
+          <p>
+            Discover scholarship opportunities tailored to your eligibility.
+            Apply with confidence.
+          </p>
+          <a href="{% url 'scholarship_information' %}">
+            <button class="btn">Find Scholarship</button>
+          </a>
         </div>
+
       </div>
-    </section>
-  </body>
+
+    </div>
+  </section>
+
+</body>
 </html>

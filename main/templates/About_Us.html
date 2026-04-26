@@ -1,10 +1,11 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About Us - MyLuanier</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
   <body>
     <header>
@@ -12,7 +13,7 @@
         <div class="logo">
           <a href="index.html">
             <img
-              src="MyLuanierLogo.jpeg"
+              src="{% static 'images/MyLuanierLogo.jpeg' %}"
               alt="MyLuanier - Your Path to Success"
               class="logo-img"
             />
@@ -20,18 +21,18 @@
         </div>
         <nav>
           <ul>
-            <li><a href="homepages.html">Home</a></li>
-            <li><a href="#" class="active">About Us</a></li>
-            <div class="dropdown">
-              <p><a href="#">Services ▾</a></p>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}" class="active">About Us</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Services ▾</a>
               <div class="dropdown-content">
-                <a href="Merit_Calculator.html">Merit Calculator</a>
-                <a href="Pathway_Advisor.html">Pathway Advisor</a>
-                <a href="Pathway_Hub.html">Info Hub </a>
-                <a href="Scholarship_Information.html">Scholarship</a>
+                <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+                <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+                <a href="{% url 'pathway_hub' %}">Info Hub </a>
+                <a href="{% url 'scholarship_information' %}">Scholarship</a>
               </div>
-            </div>
-            <li><a href="Contact.html">Contact</a></li>
+            </li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
           </ul>
         </nav>
         <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
@@ -60,7 +61,7 @@
         <div class="story-content">
           <h2>Our Story</h2>
           <div class="story-image">
-            <img src="real.jpeg" alt="Our Team" />
+            <img src="{% static 'images/real.jpeg' %}" alt="Our Team" />
           </div>
         </div>
       </div>
@@ -92,7 +93,7 @@
       <h2>The MyLuanier Founder</h2>
       <div class="founders-grid">
         <div class="founder-card" style="position: relative; top: 80px">
-          <div class="founder-img"><img src="man.jpeg" alt="Mukhlis" /></div>
+          <div class="founder-img"><img src="{% static 'images/man.jpeg' %}" alt="Mukhlis" /></div>
           <div class="founder-info">
             <h4>Mukhlis (Backend Architect)</h4>
             <p class="subtitle">
@@ -106,7 +107,7 @@
           </div>
         </div>
         <div class="founder-card">
-          <div class="founder-img"><img src="man.jpeg" alt="Husain" /></div>
+          <div class="founder-img"><img src="{% static 'images/man.jpeg' %}" alt="Husain" /></div>
           <div class="founder-info">
             <h4>Husain (UI/UX Specialist)</h4>
             <p class="subtitle">
@@ -119,7 +120,7 @@
           </div>
         </div>
         <div class="founder-card" style="position: relative; bottom: 80px">
-          <div class="founder-img"><img src="man.jpeg" alt="Afif" /></div>
+          <div class="founder-img"><img src="{% static 'images/man.jpeg' %}" alt="Afif" /></div>
           <div class="founder-info">
             <h4>Afif (Data Strategist)</h4>
             <p class="subtitle">Foundation in Computing<br />JPA Scholar</p>

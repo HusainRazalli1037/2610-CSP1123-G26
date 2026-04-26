@@ -13,5 +13,10 @@ urlpatterns = [
     path('reports/', views.reports, name='reports'),
     path('export-pdf/', views.export_pdf, name='export_pdf'),
     path('', views.homepage, name='homepage'),
-    path('about/', views.about_us, name='about_us')
+    path('about/', views.about_us, name='about_us'),
+    path('contact/', views.contact, name='contact'),
+    path('merit-calculator/', views.merit_calculator, name='merit_calculator'),
+    path('pathway-advisor/', views.pathway_advisor, name='pathway_advisor'),
+    path('pathway-hub/', views.pathway_hub, name='pathway_hub'),
+    path('scholarship-information/', views.scholarship_information, name='scholarship_information'),
 ]

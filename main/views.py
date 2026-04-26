@@ -24,6 +24,9 @@ def institutions(request):
         'institutions': institutions
     })
 
+def contact(request):
+    return render(request, 'Contact.html')
+
 def homepage(request):
     return render(request, 'homepages.html')
 
@@ -33,6 +36,9 @@ def home(request):
 
 def about_us(request):
     return render(request, 'About_Us.html')
+
+def merit_calculator(request):
+    return render(request, 'Merit_Calculator.html')
 
 def calculator(request):
     track_visit(request, 'Calculator')
@@ -110,6 +116,11 @@ def pathway(request):
         'courses': courses
     })
 
+def pathway_advisor(request):
+    return render(request, 'Pathway_Advisor.html')
+
+def pathway_hub(request):
+    return render(request, 'Pathway_Hub.html')
 
 def institution_detail(request, id):
     institution = Institution.objects.get(id=id)
@@ -129,6 +140,9 @@ def scholarships(request):
     return render(request, 'scholarships.html', {
         'scholarships': scholarships
     })
+
+def scholarship_information(request):
+    return render(request, 'Scholarship_Information.html')
 
 
 def track_visit(request, page_name):
