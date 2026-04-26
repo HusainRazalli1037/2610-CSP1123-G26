@@ -636,6 +636,85 @@ select {
   }
 }
 
+/* --- ADVISOR MODAL ISOLATION (FINAL FIXED) --- */
+
+.advisor-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 5, 30, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.advisor-modal-content {
+  background: linear-gradient(white, #002244);
+  margin: 5vh auto;
+  width: 85%;
+  max-width: 800px;
+  height: 85vh;
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+}
+
+/* Added this to make sure the wrapper fills the modal */
+.advisor-scroll-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.advisor-modal-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(3, 28, 58, 0.1);
+}
+
+.advisor-vertical-results {
+  flex: 1;
+  overflow-y: auto !important; /* Force vertical scroll */
+  overflow-x: hidden;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+/* CRITICAL FIX: Overriding your global .course-box margins */
+.advisor-vertical-results .course-box {
+  width: 100% !important;
+  min-height: 250px !important;
+  margin: 0 !important; /* This was the bug causing the scroll lock */
+  background: white;
+  border: 2px solid #031c3a;
+  border-radius: 20px;
+  padding: 20px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.advisor-vertical-results::-webkit-scrollbar {
+  width: 10px;
+}
+.advisor-vertical-results::-webkit-scrollbar-thumb {
+  background: #031c3a;
+  border-radius: 10px;
+}
+
 /* 4. Info Hub Hero Styling */
 .info-hero {
   background-color: #030a3a;
@@ -715,6 +794,96 @@ select {
   .info-hero h1 {
     font-size: 2.2rem;
   }
+}
+
+/* Container for horizontal scrolling */
+/* Container for VERTICAL scrolling */
+.course-vertical-scroll {
+  display: flex;
+  flex-direction: column; /* Stacks boxes top to bottom */
+  gap: 15px;
+  padding: 10px;
+  max-height: 500px; /* Limits the height of the scroll area */
+  overflow-y: auto; /* Enables vertical scroll */
+  overflow-x: hidden; /* Prevents side-to-side shifting */
+  scroll-behavior: smooth;
+}
+
+/* Individual Course Box - Adjusted for 2-box fit */
+.course-box {
+  width: 100%;
+  /* Calculation: (Total Area / 2) - gap */
+  min-height: 230px;
+  background: white;
+  border: 2px solid #031c3a;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  color: #333;
+  flex-shrink: 0; /* Ensures boxes don't compress */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Custom Scrollbar for the vertical area */
+.course-vertical-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.course-vertical-scroll::-webkit-scrollbar-thumb {
+  background: #031c3a;
+  border-radius: 10px;
+}
+
+.course-code {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.course-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+/* Inner Grid for course details (Diploma, Merit, etc) */
+.course-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 8px;
+}
+
+.detail-tag {
+  background-color: #031c3a;
+  color: #59f8d3; /* Mint green text from your image */
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.course-label-badge {
+  background-color: #1e2270;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+/* Custom Scrollbar for horizontal scroll */
+.course-horizontal-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+.course-horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #031c3a;
+  border-radius: 10px;
 }
 
 /* 5. Scholarship Hero Section */
@@ -946,7 +1115,7 @@ select {
 .modal-pagination {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .pagi-btn {

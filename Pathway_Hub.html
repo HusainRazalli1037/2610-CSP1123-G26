@@ -35,9 +35,8 @@
       <div class="container">
         <h1>INFO PATHWAY HUB</h1>
         <p>
-          Instantly calculate your SPM merit score and unlock insights into your
-          university admission potential. Designed to be simple, fast, and
-          accurate for every student.
+          Comprehensive guide to every academic pathway and program available
+          after SPM.
         </p>
       </div>
     </section>
@@ -79,5 +78,23 @@
         </div>
       </div>
     </main>
+    <div id="pathwayModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+
+        <div class="modal-scroll-area">
+          <div class="modal-header">
+            <div class="modal-logo-container">
+              <img src="" alt="Logo" id="modalLogo" />
+            </div>
+            <div class="course-label-badge">Course Offered</div>
+          </div>
+
+          <div class="course-horizontal-scroll" id="modalPathways"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="pathwayScript.js"></script>
   </body>
 </html>
