@@ -3,6 +3,7 @@ from django.contrib.admin import AdminSite
 from django.db.models import Count
 from datetime import date
 from .models import Visitor, Institution, Course, Scholarship
+from .models import MeritResult
 
 
 # =========================
@@ -90,3 +91,4 @@ def custom_each_context(request):
 
 
 admin.site.each_context = custom_each_context
+admin.site.register(MeritResult)

@@ -9,6 +9,7 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
+from .models import MeritResult
 
 from .models import Visitor, Institution, Course
 total_visits = Visitor.objects.count()
@@ -38,7 +39,79 @@ def about_us(request):
     return render(request, 'About_Us.html')
 
 def merit_calculator(request):
-    return render(request, 'Merit_Calculator.html')
+
+    result = None
+
+    if request.method == "POST":
+
+        # MARK SCHEME (same as your JS/HTML logic)
+        universalMarks = {
+            'A+': 11.25, 'A': 10, 'A-': 8.75,
+            'B+': 7.5, 'B': 6.25,
+            'C+': 5, 'C': 3.75
+        }
+
+        packageMarks = {
+            'A+': 16.88, 'A': 15, 'A-': 13.13,
+            'B+': 11.25, 'B': 9.38,
+            'C+': 7.5, 'C': 5.63
+        }
+
+        bestMarks = {
+            'A+': 5.63, 'A': 5, 'A-': 4.38,
+            'B+': 3.75, 'B': 3.13,
+            'C+': 2.5, 'C': 1.88
+        }
+
+        # GET DATA FROM HTML
+        bm = request.POST.get("bm")
+        bi = request.POST.get("bi")
+        math = request.POST.get("math")
+        sejarah = request.POST.get("sejarah")
+
+        pg1 = request.POST.get("package_grade1")
+        pg2 = request.POST.get("package_grade2")
+
+        bg1 = request.POST.get("best_grade1")
+        bg2 = request.POST.get("best_grade2")
+
+        koko = float(request.POST.get("koko", 0))
+
+        # CALCULATION
+        total = (
+            universalMarks.get(bm, 0) +
+            universalMarks.get(bi, 0) +
+            universalMarks.get(math, 0) +
+            universalMarks.get(sejarah, 0) +
+            packageMarks.get(pg1, 0) +
+            packageMarks.get(pg2, 0) +
+            bestMarks.get(bg1, 0) +
+            bestMarks.get(bg2, 0) +
+            koko
+        )
+
+        # SAVE TO DATABASE
+        MeritResult.objects.create(
+            stream=request.POST.get("streamSelector"),
+            bm=bm,
+            bi=bi,
+            math=math,
+            sejarah=sejarah,
+            package_subject1=request.POST.get("package_subject1"),
+            package_grade1=pg1,
+            package_subject2=request.POST.get("package_subject2"),
+            package_grade2=pg2,
+            best_subject1=request.POST.get("best_subject1"),
+            best_grade1=bg1,
+            best_subject2=request.POST.get("best_subject2"),
+            best_grade2=bg2,
+            koko=koko,
+            merit=total
+        )
+
+        result = total
+
+    return render(request, "Merit_Calculator.html", {"result": result})
 
 def calculator(request):
     track_visit(request, 'Calculator')

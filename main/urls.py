@@ -19,4 +19,5 @@ urlpatterns = [
     path('pathway-advisor/', views.pathway_advisor, name='pathway_advisor'),
     path('pathway-hub/', views.pathway_hub, name='pathway_hub'),
     path('scholarship-information/', views.scholarship_information, name='scholarship_information'),
+    path('merit/', views.merit_calculator, name='merit_calculator'),
 ]

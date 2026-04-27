@@ -62,3 +62,30 @@ class Visitor(models.Model):
 
     def __str__(self):
         return self.page
+    
+
+class MeritResult(models.Model):
+    stream = models.CharField(max_length=50)
+
+    bm = models.CharField(max_length=5)
+    bi = models.CharField(max_length=5)
+    math = models.CharField(max_length=5)
+    sejarah = models.CharField(max_length=5)
+
+    package_subject1 = models.CharField(max_length=100)
+    package_grade1 = models.CharField(max_length=5)
+
+    package_subject2 = models.CharField(max_length=100)
+    package_grade2 = models.CharField(max_length=5)
+
+    best_subject1 = models.CharField(max_length=100)
+    best_grade1 = models.CharField(max_length=5)
+
+    best_subject2 = models.CharField(max_length=100)
+    best_grade2 = models.CharField(max_length=5)
+
+    koko = models.FloatField()
+    merit = models.FloatField()
+
+    def __str__(self):
+        return f"{self.stream} - {self.merit}"

@@ -1,242 +1,236 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SPM Merit Calculator - MyLuanier</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  </head>
-  <body>
-    <header>
-      <div class="container nav-container">
-        <div class="logo">
-          <img src="{% static 'images/MyLuanierLogo.jpeg' %}" alt="MyLuanier" class="logo-img" />
-        </div>
-        <nav>
-          <ul>
-            <li><a href="{% url 'homepage' %}">Home</a></li>
-            <li><a href="{% url 'about_us' %}">About Us</a></li>
-            <div class="dropdown">
-              <p><a href="#">Services ▾</a></p>
-              <div class="dropdown-content">
-                <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
-                <a href="{% url 'pathway_hub' %}">Info Hub </a>
-                <a href="{% url 'scholarship_information' %}">Scholarship </a>
-              </div>
-            </div>
-            <li><a href="{% url 'contact' %}">Contact</a></li>
-          </ul>
-        </nav>
-        <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
-      </div>
-    </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPM Merit Calculator - MyLuanier</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 
-    <section class="calc-hero">
-      <div class="container">
-        <h1>SPM MERIT CALCULATOR</h1>
-        <p>
-          Instantly calculate your SPM merit score and unlock insights into your
-          university admission potential. Designed to be simple, fast, and
-          accurate for every student.
-        </p>
-      </div>
-    </section>
+<body>
 
-    <main class="calculator-container">
-      <div class="container">
-        <div class="stream-selector">
-          <div class="label-box">Stream Type</div>
-          <select id="streamSelector" class="custom-select">
-            <option value="">CHOOSE STREAM</option>
-            <option value="stem_a">STEM A</option>
-            <option value="stem_b">STEM B</option>
-            <option value="stem_c">STEM C</option>
-            <option value="ksi">
-              KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN
-            </option>
-          </select>
-        </div>
+<header>
+  <div class="container nav-container">
 
-        <div class="subjects-grid">
-          <div class="subject-card">
-            <div class="label-box">Universal Subject</div>
-            <div class="input-group">
-              <label>BAHASA MELAYU</label>
-              <select>
-                <option>PILIH</option>
-                <option>A+</option>
-                <option>A</option>
-                <option>A-</option>
-                <option>B+</option>
-                <option>B</option>
-                <option>C+</option>
-                <option>C</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label>BAHASA INGGERIS</label>
-              <select>
-                <option>PILIH</option>
-                <option>A+</option>
-                <option>A</option>
-                <option>A-</option>
-                <option>B+</option>
-                <option>B</option>
-                <option>C+</option>
-                <option>C</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label>MATEMATIK</label>
-              <select>
-                <option>PILIH</option>
-                <option>A+</option>
-                <option>A</option>
-                <option>A-</option>
-                <option>B+</option>
-                <option>B</option>
-                <option>C+</option>
-                <option>C</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label>SEJARAH</label>
-              <select>
-                <option>PILIH</option>
-                <option>A+</option>
-                <option>A</option>
-                <option>A-</option>
-                <option>B+</option>
-                <option>B</option>
-                <option>C+</option>
-                <option>C</option>
-              </select>
-            </div>
+    <div class="logo">
+      <a href="{% url 'homepage' %}">
+        <img src="{% static 'images/MyLuanierLogo.jpeg' %}" class="logo-img">
+      </a>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'about_us' %}">About Us</a></li>
+
+        <li class="dropdown">
+          <a href="#">Services ▾</a>
+
+          <div class="dropdown-content">
+            <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+            <a href="{% url 'pathway_hub' %}">Info Hub</a>
+            <a href="{% url 'scholarship_information' %}">Scholarship</a>
           </div>
+        </li>
 
-          <div class="right-column">
-            <div class="subject-card">
-              <div class="label-box">Best Subject Package</div>
-              <div class="input-group-row">
-                <select class="package-subject-select">
-                  <option>CHOOSE SUBJECT</option>
-                </select>
-                <select class="grade-select">
-                  <option>PILIH</option>
-                  <option>A+</option>
-                  <option>A</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B</option>
-                  <option>C+</option>
-                  <option>C</option>
-                </select>
-              </div>
-              <div class="input-group-row">
-                <select class="package-subject-select">
-                  <option>CHOOSE SUBJECT</option>
-                </select>
-                <select>
-                  <option>PILIH</option>
-                  <option>A+</option>
-                  <option>A</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B</option>
-                  <option>C+</option>
-                  <option>C</option>
-                </select>
-              </div>
-            </div>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+      </ul>
+    </nav>
 
-            <div class="subject-card">
-              <div class="label-box">Best Subject</div>
-              <div class="input-group-row">
-                <select class="package-subject-select">
-                  <option>CHOOSE SUBJECT</option>
-                </select>
-                <select>
-                  <option>PILIH</option>
-                  <option>A+</option>
-                  <option>A</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B</option>
-                  <option>C+</option>
-                  <option>C</option>
-                </select>
-              </div>
-              <div class="input-group-row">
-                <select class="package-subject-select">
-                  <option>CHOOSE SUBJECT</option>
-                </select>
-                <select>
-                  <option>PILIH</option>
-                  <option>A+</option>
-                  <option>A</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B</option>
-                  <option>C+</option>
-                  <option>C</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="nav-tagline">
+      NAVIGATE<br>YOUR FUTURE
+    </div>
 
-        <div class="co-curro">
-          <div class="label-box">Co-curricular Marks</div>
-          <div class="input-wrapper">
-            <input
-              type="number"
-              class="number-input"
-              placeholder="0.00"
-              min="0"
-              max="10"
-              step="0.01"
-              oninput="
-                if (value > 10) value = 10;
-                if (value < 0) value = 0;
-              "
-            />
-          </div>
-        </div>
+  </div>
+</header>
 
-        <div class="guide-box">
-          <div class="guide-title">SPM MERIT CALCULATION GUIDE</div>
-          <div class="guide-content">
-            <div class="guide-col">
-              <strong>CALCULATION FORMULA</strong>
-              <ul>
-                <li>Compulsory Subject (40%): BM + BI + MATEMATIK + SEJARAH</li>
-                <li>Best Package Subject (30%): 2 subject based on stream</li>
-                <li>Best Subject (10%): 2 additional subject (if any)</li>
-                <li>Co-curricular (10%): Co-curricular activity marks</li>
-                <li>Total MERIT = ((Total/90) * 90) + Co-curriculum</li>
-              </ul>
-            </div>
-            <div class="guide-col">
-              <strong>CALCULATION STEPS</strong>
-              <ol>
-                <li>Choose stream type (STEM A/B/C or KSI)</li>
-                <li>Select grades for 4 compulsory subjects</li>
-                <li>Select 2 elective subjects based on stream</li>
-                <li>Select additional subjects (if applicable)</li>
-                <li>Select co-curricular marks (0.00 - 10.00)</li>
-                <li>MERIT score will be calculated automatically</li>
-              </ol>
-            </div>
-          </div>
-        </div>
+<section class="calc-hero">
+  <div class="container">
+    <h1>SPM MERIT CALCULATOR</h1>
+    <p>
+      Instantly calculate your SPM merit score and unlock your university potential.
+    </p>
+  </div>
+</section>
 
-        <div class="actions">
-          <button class="btn-reset">RESET</button>
-          <button class="btn-calculate">CALCULATE</button>
-        </div>
-      </div>
-    </main>
-    <script src="{% static 'js/myScript.js' %}"></script>
-  </body>
+<main class="calculator-container">
+<div class="container">
+
+<form method="POST">
+{% csrf_token %}
+
+<!-- STREAM -->
+<div class="stream-selector">
+  <div class="label-box">Stream Type</div>
+
+  <select id="streamSelector" name="streamSelector" class="custom-select">
+    <option value="">CHOOSE STREAM</option>
+    <option value="stem_a">STEM A</option>
+    <option value="stem_b">STEM B</option>
+    <option value="stem_c">STEM C</option>
+    <option value="ksi">KSI</option>
+  </select>
+</div>
+
+<!-- SUBJECTS -->
+<div class="subjects-grid">
+
+<!-- LEFT -->
+<div class="subject-card">
+
+<div class="label-box">Universal Subject</div>
+
+<div class="input-group">
+<label>BAHASA MELAYU</label>
+<select name="bm">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+<div class="input-group">
+<label>BAHASA INGGERIS</label>
+<select name="bi">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+<div class="input-group">
+<label>MATEMATIK</label>
+<select name="math">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+<div class="input-group">
+<label>SEJARAH</label>
+<select name="sejarah">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right-column">
+
+<!-- PACKAGE -->
+<div class="subject-card">
+
+<div class="label-box">Best Subject Package</div>
+
+<div class="input-group-row">
+<select class="package-subject-select" name="package_subject1">
+<option value="">CHOOSE SUBJECT</option>
+</select>
+
+<select name="package_grade1">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+<div class="input-group-row">
+<select class="package-subject-select" name="package_subject2">
+<option value="">CHOOSE SUBJECT</option>
+</select>
+
+<select name="package_grade2">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+</div>
+
+<!-- BEST SUBJECT -->
+<div class="subject-card">
+
+<div class="label-box">Best Subject</div>
+
+<div class="input-group-row">
+<select class="package-subject-select" name="best_subject1">
+<option value="">CHOOSE SUBJECT</option>
+</select>
+
+<select name="best_grade1">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+<div class="input-group-row">
+<select class="package-subject-select" name="best_subject2">
+<option value="">CHOOSE SUBJECT</option>
+</select>
+
+<select name="best_grade2">
+<option value="">PILIH</option>
+<option>A+</option><option>A</option><option>A-</option>
+<option>B+</option><option>B</option>
+<option>C+</option><option>C</option>
+</select>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- KOKO -->
+<div class="co-curro">
+<div class="label-box">Co-curricular Marks</div>
+
+<div class="input-wrapper">
+<input
+type="number"
+name="koko"
+class="number-input"
+placeholder="0.00"
+min="0"
+max="10"
+step="0.01">
+</div>
+</div>
+
+<!-- BUTTON -->
+<div class="actions">
+<button type="reset" class="btn-reset">RESET</button>
+<button type="submit" class="btn-calculate">CALCULATE</button>
+</div>
+
+</form>
+
+<!-- RESULT -->
+{% if result %}
+<div class="result-box">
+<h2>Your Merit Score</h2>
+<h1>{{ result|floatformat:2 }}%</h1>
+</div>
+{% endif %}
+
+</div>
+</main>
+
+<script src="{% static 'js/myScript.js' %}"></script>
+
+</body>
 </html>
