@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-2(mh$5t^=g@l0(r#wvlks#vq1tr9z3)$*^^&x6ezfb-qd^)h#$
 DEBUG = True
 
 ALLOWED_HOSTS = []
+LOGIN_URL = '/admin/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 
 

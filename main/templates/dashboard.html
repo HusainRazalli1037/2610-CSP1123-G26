@@ -42,66 +42,46 @@ body{
     margin-left:250px;
     padding:30px;
 }
-
-.card{
-    border:none;
-    border-radius:15px;
-}
-
-h1,h3{
-    color:#0d1b52;
-}
 </style>
 </head>
 
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
     <h2>📊 Dashboard</h2>
-
     <a href="/dashboard/">Home</a>
-    <a href="/admin/main/institution/">Institutions</a>
-    <a href="/admin/main/course/">Courses</a>
-    <a href="/admin/main/scholarship/">Scholarships</a>
-    <a href="/admin/main/visitor/">Visitors</a>
-    <a href="/admin/">Django Admin</a>
+    <a href="/admin/">Admin</a>
 </div>
 
-<!-- Main -->
 <div class="main">
 
-{% extends 'base_dashboard.html' %}
-
-{% block content %}
-
-<h1 class="mb-4">📊 Dashboard</h1>
+<h1>📊 Dashboard</h1>
 
 <div class="row">
 
-<div class="col-md-3 mb-3">
-<div class="card shadow p-3">
+<div class="col-md-3">
+<div class="card p-3 shadow">
 <h5>Total Visits</h5>
 <h2>{{ total_visits }}</h2>
 </div>
 </div>
 
-<div class="col-md-3 mb-3">
-<div class="card shadow p-3">
+<div class="col-md-3">
+<div class="card p-3 shadow">
 <h5>Today Visits</h5>
 <h2>{{ today_visits }}</h2>
 </div>
 </div>
 
-<div class="col-md-3 mb-3">
-<div class="card shadow p-3">
-<h5>Institutions</h5>
-<h2>{{ total_institutions }}</h2>
+<div class="col-md-3">
+<div class="card p-3 shadow">
+<h5>Universities</h5>
+<h2>{{ total_universities }}</h2>
 </div>
 </div>
 
-<div class="col-md-3 mb-3">
-<div class="card shadow p-3">
+<div class="col-md-3">
+<div class="card p-3 shadow">
 <h5>Courses</h5>
 <h2>{{ total_courses }}</h2>
 </div>
@@ -109,59 +89,39 @@ h1,h3{
 
 </div>
 
-<h3 class="mt-4">🏆 Top Institutions</h3>
+<h3 class="mt-4">🏆 Top Universities</h3>
 
-<table class="table table-striped bg-white shadow">
+<table class="table table-striped">
 <tr>
 <th>Rank</th>
 <th>Name</th>
-<th>Total Courses</th>
+<th>Courses</th>
 </tr>
 
-{% for i in institutions %}
+{% for i in universities %}
 <tr>
 <td>{{ forloop.counter }}</td>
 <td>{{ i.name }}</td>
 <td>{{ i.total_courses }}</td>
 </tr>
 {% endfor %}
-
 </table>
 
-{% endblock %}
-</div>
-
-<!-- Chart -->
-<div class="card shadow p-4 mt-4">
 <h3>📈 Popular Pages</h3>
-<canvas id="myChart" height="100"></canvas>
-</div>
+<canvas id="chart"></canvas>
 
 </div>
 
 <script>
-const ctx = document.getElementById('myChart');
-
-new Chart(ctx, {
-    type:'bar',
-    data:{
-        labels:[
-            {% for p in popular_pages %}
-            "{{ p.page }}",
-            {% endfor %}
-        ],
-        datasets:[{
-            label:'Visits',
-            data:[
-                {% for p in popular_pages %}
-                {{ p.total }},
-                {% endfor %}
-            ],
-            backgroundColor:'#0d6efd'
+new Chart(document.getElementById('chart'), {
+    type: 'bar',
+    data: {
+        labels: [{% for p in popular_pages %}"{{ p.page }}",{% endfor %}],
+        datasets: [{
+            label: 'Visits',
+            data: [{% for p in popular_pages %}{{ p.total }},{% endfor %}],
+            backgroundColor: '#0d6efd'
         }]
-    },
-    options:{
-        responsive:true
     }
 });
 </script>

@@ -1,58 +1,47 @@
 from django.db import models
 
-class Subject(models.Model):
-    name = models.CharField(max_length=100)
-    grade = models.CharField(max_length=5)
-    merit_point = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.name} - {self.grade}"
-
-
-class Institution(models.Model):
-    name = models.CharField(max_length=200)
-    location = models.CharField(max_length=200)
-
-    # NEW FIELDS
-    logo = models.ImageField(upload_to='logos/')
-    description = models.TextField(blank=True)
-    semester_info = models.CharField(max_length=200, blank=True)
-    entry_criteria = models.TextField(blank=True)
+class University(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    logo = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.name
 
 
 class Course(models.Model):
-    PROGRAM_CHOICES = [
-        ('Foundation', 'Foundation'),
-        ('Diploma', 'Diploma'),
-        ('Degree', 'Degree'),
-    ]
-
-    FIELD_CHOICES = [
-        ('Engineering', 'Engineering'),
-        ('Business', 'Business'),
-        ('IT', 'IT'),
-    ]
-
-    name = models.CharField(max_length=200)
-    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
-    program_type = models.CharField(max_length=50, choices=PROGRAM_CHOICES)
-    field = models.CharField(max_length=50, choices=FIELD_CHOICES)
+    university = models.ForeignKey(University, on_delete=models.CASCADE)
+    code = models.CharField(max_length=50, default='TEMP')
+    name = models.CharField(max_length=255)
+    level = models.CharField(max_length=50)
+    merit = models.FloatField(default=0)
+    duration = models.CharField(max_length=50)
+    course_type = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
 
 class Scholarship(models.Model):
-    name = models.CharField(max_length=200)
-    provider = models.CharField(max_length=200)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    description = models.TextField()
+    name = models.CharField(max_length=255)
+    deadline = models.DateField(blank=True, null=True)
+
+    location = models.CharField(max_length=100, blank=True, null=True)
+    level = models.CharField(max_length=100, blank=True, null=True)
+
+    amount = models.CharField(max_length=100, blank=True, null=True)
+    scholarship_type = models.CharField(max_length=100, blank=True, null=True)
+    contract = models.CharField(max_length=100, blank=True, null=True, default="N/A")
 
     def __str__(self):
         return self.name
+    
+class ScholarshipCourse(models.Model):
+    scholarship = models.ForeignKey(Scholarship, on_delete=models.CASCADE)
+    course_name = models.CharField(max_length=100)
+
+class ScholarshipCriteria(models.Model):
+    scholarship = models.ForeignKey(Scholarship, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
 
 
 class Visitor(models.Model):
@@ -62,7 +51,7 @@ class Visitor(models.Model):
 
     def __str__(self):
         return self.page
-    
+
 
 class MeritResult(models.Model):
     stream = models.CharField(max_length=50)
@@ -89,3 +78,63 @@ class MeritResult(models.Model):
 
     def __str__(self):
         return f"{self.stream} - {self.merit}"
+
+
+class PathwayHub(models.Model):
+    FIELD_CHOICES = [
+        ('engineering', 'Engineering'),
+        ('business', 'Business'),
+        ('science', 'Science'),
+        ('arts', 'Arts'),
+        ('it', 'IT'),
+    ]
+
+    field = models.CharField(max_length=50, choices=FIELD_CHOICES)
+    location = models.CharField(max_length=100)
+
+    university = models.CharField(max_length=200)
+    logo = models.ImageField(upload_to='university_logos/', blank=True, null=True)
+
+    code = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
+
+    level = models.CharField(max_length=50)
+    merit = models.FloatField()  # store as number (NOT string %)
+
+    duration = models.CharField(max_length=50)
+    course_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+
+class PathwayAdvisor(models.Model):
+    code = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
+
+    level = models.CharField(max_length=50)
+    merit = models.FloatField()
+
+    duration = models.CharField(max_length=50)
+    course_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+
+class SubjectCategory(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+
+class Subject(models.Model):
+    category = models.ForeignKey(SubjectCategory, on_delete=models.CASCADE)
+
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
+
