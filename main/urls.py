@@ -17,6 +17,7 @@ urlpatterns = [
     # SCHOLARSHIPS
     path('scholarships/', views.scholarships, name='scholarships'),
     path('scholarship-information/', views.scholarship_information, name='scholarship_information'),
+    path('scholarship/<int:id>/', views.scholarship_detail, name='scholarship_detail'),
 
     # SYSTEM PAGES
     path('analytics/', views.analytics, name='analytics'),

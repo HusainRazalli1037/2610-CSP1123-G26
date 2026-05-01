@@ -4,7 +4,19 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from datetime import date
 
-from .models import Course, Visitor, Scholarship, MeritResult, University
+from .models import (
+    Course,
+    Visitor,
+    Scholarship,
+    MeritResult,
+    University,
+    PathwayHub,
+    PathwayAdvisor,
+    SubjectCategory,
+    Subject,
+    ScholarshipCourse,
+    ScholarshipCriteria
+)
 
 # =========================
 # TRACK VISITOR
@@ -67,11 +79,19 @@ def pathway(request):
 
 
 def pathway_advisor(request):
-    return render(request, 'Pathway_Advisor.html')
+    advisors = PathwayAdvisor.objects.all()
+
+    return render(request, 'Pathway_Advisor.html', {
+        'advisors': advisors
+    })
 
 
 def pathway_hub(request):
-    return render(request, 'Pathway_Hub.html')
+    hubs = PathwayHub.objects.all()
+
+    return render(request, 'Pathway_Hub.html', {
+        'hubs': hubs
+    })
 
 
 # =========================
@@ -80,7 +100,7 @@ def pathway_hub(request):
 def scholarships(request):
     track_visit(request, 'Scholarships')
 
-    scholarships = Scholarship.objects.select_related('course').all()
+    scholarships = Scholarship.objects.all()
 
     return render(request, 'scholarships.html', {
         'scholarships': scholarships
@@ -88,7 +108,42 @@ def scholarships(request):
 
 
 def scholarship_information(request):
-    return render(request, 'Scholarship_Information.html')
+
+    scholarships = Scholarship.objects.all()
+
+    return render(
+        request,
+        'Scholarship_Information.html',
+        {
+            'scholarships': scholarships
+        }
+    )
+
+
+def scholarship_detail(request, id):
+
+    scholarship = get_object_or_404(
+        Scholarship,
+        id=id
+    )
+
+    courses = ScholarshipCourse.objects.filter(
+        scholarship=scholarship
+    )
+
+    criterias = ScholarshipCriteria.objects.filter(
+        scholarship=scholarship
+    )
+
+    return render(
+        request,
+        'scholarship_detail.html',
+        {
+            'scholarship': scholarship,
+            'courses': courses,
+            'criterias': criterias
+        }
+    )
 
 
 # =========================
@@ -155,19 +210,19 @@ def merit_calculator(request):
 
     if request.method == "POST":
 
-        universalMarks = {
+        universal_marks = {
             'A+': 11.25, 'A': 10, 'A-': 8.75,
             'B+': 7.5, 'B': 6.25,
             'C+': 5, 'C': 3.75
         }
 
-        packageMarks = {
+        package_marks = {
             'A+': 16.88, 'A': 15, 'A-': 13.13,
             'B+': 11.25, 'B': 9.38,
             'C+': 7.5, 'C': 5.63
         }
 
-        bestMarks = {
+        best_marks = {
             'A+': 5.63, 'A': 5, 'A-': 4.38,
             'B+': 3.75, 'B': 3.13,
             'C+': 2.5, 'C': 1.88
@@ -187,38 +242,53 @@ def merit_calculator(request):
         koko = float(request.POST.get("koko", 0))
 
         total = (
-            universalMarks.get(bm, 0) +
-            universalMarks.get(bi, 0) +
-            universalMarks.get(math, 0) +
-            universalMarks.get(sejarah, 0) +
-            packageMarks.get(pg1, 0) +
-            packageMarks.get(pg2, 0) +
-            bestMarks.get(bg1, 0) +
-            bestMarks.get(bg2, 0) +
+            universal_marks.get(bm, 0) +
+            universal_marks.get(bi, 0) +
+            universal_marks.get(math, 0) +
+            universal_marks.get(sejarah, 0) +
+            package_marks.get(pg1, 0) +
+            package_marks.get(pg2, 0) +
+            best_marks.get(bg1, 0) +
+            best_marks.get(bg2, 0) +
             koko
         )
 
+        # Save to database
         MeritResult.objects.create(
             stream=request.POST.get("streamSelector"),
+
             bm=bm,
             bi=bi,
             math=math,
             sejarah=sejarah,
+
             package_subject1=request.POST.get("package_subject1"),
             package_grade1=pg1,
+
             package_subject2=request.POST.get("package_subject2"),
             package_grade2=pg2,
+
             best_subject1=request.POST.get("best_subject1"),
             best_grade1=bg1,
+
             best_subject2=request.POST.get("best_subject2"),
             best_grade2=bg2,
+
             koko=koko,
             merit=total
         )
 
         result = total
 
-    return render(request, "Merit_Calculator.html", {"result": result})
+    # Get subjects from database
+    categories = SubjectCategory.objects.prefetch_related(
+        'subject_set'
+    ).all()
+
+    return render(request, "Merit_Calculator.html", {
+        "result": result,
+        "categories": categories
+    })
 
 def reports(request):
     return render(request, 'reports.html')
