@@ -22,26 +22,47 @@ class Course(models.Model):
 
 
 class Scholarship(models.Model):
+    title = models.CharField(max_length=255)
+
+    logo = models.ImageField(
+        upload_to='scholarship_logos/',
+        blank=True,
+        null=True
+    )
+
+    deadline = models.CharField(max_length=100)
+    location = models.CharField(max_length=255)
+    level = models.CharField(max_length=255)
+    amount = models.CharField(max_length=255)
+    scholarship_type = models.CharField(max_length=255)
+    contract = models.TextField()
+    link = models.URLField()
+
+    def __str__(self):
+        return self.title
+    
+class ScholarshipCourse(models.Model):
+    scholarship = models.ForeignKey(
+        Scholarship,
+        on_delete=models.CASCADE,
+        related_name='courses'
+    )
     name = models.CharField(max_length=255)
-    deadline = models.DateField(blank=True, null=True)
-
-    location = models.CharField(max_length=100, blank=True, null=True)
-    level = models.CharField(max_length=100, blank=True, null=True)
-
-    amount = models.CharField(max_length=100, blank=True, null=True)
-    scholarship_type = models.CharField(max_length=100, blank=True, null=True)
-    contract = models.CharField(max_length=100, blank=True, null=True, default="N/A")
 
     def __str__(self):
         return self.name
-    
-class ScholarshipCourse(models.Model):
-    scholarship = models.ForeignKey(Scholarship, on_delete=models.CASCADE)
-    course_name = models.CharField(max_length=100)
+
 
 class ScholarshipCriteria(models.Model):
-    scholarship = models.ForeignKey(Scholarship, on_delete=models.CASCADE)
-    description = models.CharField(max_length=255)
+    scholarship = models.ForeignKey(
+        Scholarship,
+        on_delete=models.CASCADE,
+        related_name='criteria'
+    )
+    text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.text
 
 
 class Visitor(models.Model):

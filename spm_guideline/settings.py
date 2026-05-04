@@ -123,7 +123,7 @@ STATIC_URL = 'static/'
 import os
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 JAZZMIN_SETTINGS = {
     "site_title": "SPM Guideline Admin",

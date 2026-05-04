@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import export_summary_pdf
 
 urlpatterns = [
     # HOME
@@ -31,4 +32,6 @@ urlpatterns = [
 
     # MERIT
     path('merit-calculator/', views.merit_calculator, name='merit_calculator'),
+    path('export-pdf/', export_summary_pdf, name='export_pdf'),
+
 ]

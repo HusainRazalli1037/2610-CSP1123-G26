@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from datetime import date
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from io import BytesIO
+from .models import University
 
 from .models import (
     Course,
@@ -310,5 +315,65 @@ def export_pdf(request):
     elements.append(Spacer(1, 12))
 
     doc.build(elements)
+
+    return response
+
+
+def export_summary_pdf(request):
+
+    buffer = BytesIO()
+
+    response = HttpResponse(
+        content_type='application/pdf'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="summary_report.pdf"'
+    )
+
+    doc = SimpleDocTemplate(buffer)
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    title = Paragraph(
+        "University Pathway Summary Report",
+        styles['Title']
+    )
+
+    elements.append(title)
+    elements.append(Spacer(1, 20))
+
+
+    universities = University.objects.prefetch_related('courses')
+
+    for uni in universities:
+
+        uni_text = f"<b>{uni.name}</b>"
+        elements.append(
+            Paragraph(uni_text, styles['Heading2'])
+        )
+
+        for course in uni.courses.all():
+
+            course_text = (
+                f"{course.code} - "
+                f"{course.name} "
+                f"({course.level})"
+            )
+
+            elements.append(
+                Paragraph(course_text, styles['BodyText'])
+            )
+
+        elements.append(Spacer(1, 10))
+
+    doc.build(elements)
+
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    response.write(pdf)
 
     return response

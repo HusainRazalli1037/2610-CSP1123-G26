@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
 from datetime import date
+from django.utils.html import format_html
 
 from .models import (
     Visitor,
@@ -48,23 +49,29 @@ class CourseAdmin(admin.ModelAdmin):
 # =========================
 # SCHOLARSHIP ADMIN (FIXED)
 # =========================
-class ScholarshipCourseInline(admin.TabularInline):
-    model = ScholarshipCourse
-    extra = 1
-
-
-class ScholarshipCriteriaInline(admin.TabularInline):
-    model = ScholarshipCriteria
-    extra = 1
-
-
 @admin.register(Scholarship)
 class ScholarshipAdmin(admin.ModelAdmin):
-    list_display = ('name', 'deadline', 'location', 'level', 'amount', 'scholarship_type', 'contract')
-    search_fields = ('name', 'location', 'level', 'scholarship_type')
-    list_filter = ('level', 'location', 'scholarship_type')
-    inlines = [ScholarshipCourseInline, ScholarshipCriteriaInline]
-    list_per_page = 20
+    list_display = (
+        'logo_preview',
+        'title',
+        'deadline',
+        'location',
+        'level'
+    )
+
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html(
+                '<img src="{}" width="50" height="50" style="border-radius:8px;" />',
+                obj.logo.url
+            )
+        return "No Logo"
+
+    logo_preview.short_description = "Logo"
+
+
+admin.site.register(ScholarshipCourse)
+admin.site.register(ScholarshipCriteria)
 
 
 # =========================
