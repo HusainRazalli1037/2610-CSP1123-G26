@@ -1371,6 +1371,12 @@ select {
   background-color: #006632;
 }
 
+.btn-send:disabled {
+  background-color: #7a7d8a;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Right Side - Info */
 .contact-info-side {
   padding: 50px;

@@ -9,6 +9,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("bOKLkuGx2JuFJ1HJf"); // You get this from EmailJS Account settings
+      })();
+    </script>
   </head>
   <body>
     <header>
@@ -49,24 +58,45 @@
         <div class="contact-card">
           <div class="contact-form-side">
             <h2>GET IN TOUCH</h2>
-            <form action="#">
+            <form id="contact-form">
               <div class="form-item">
                 <label>Full Name:</label>
-                <input type="text" placeholder="Sofea Albarakbah" />
+                <input
+                  type="text"
+                  id="user_name"
+                  name="from_name"
+                  placeholder="Sofea Albarakbah"
+                  required
+                />
               </div>
               <div class="form-item">
                 <label>Email Address:</label>
-                <input type="email" placeholder="Sofea.Albarakbah@gmail.com" />
+                <input
+                  type="email"
+                  id="user_email"
+                  name="user_email"
+                  placeholder="Sofea.Albarakbah@gmail.com"
+                  required
+                />
               </div>
               <div class="form-item">
                 <label>Subject:</label>
-                <input type="text" placeholder="General Inquiry" />
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder="General Inquiry"
+                  required
+                />
               </div>
               <div class="form-item">
                 <label>Message:</label>
                 <textarea
+                  id="message"
+                  name="message"
                   rows="6"
                   placeholder="Enter your message here:"
+                  required
                 ></textarea>
               </div>
               <button type="submit" class="btn-send">SEND MESSAGE</button>
@@ -95,5 +125,6 @@
         </div>
       </div>
     </main>
+    <script src="contact.js"></script>
   </body>
 </html>
