@@ -1276,7 +1276,7 @@ const pathwayData = {
     courses: [
       {
         code: "UK0010001",
-        name: "ASASI PENDIDIKAN",
+        name: "ASASI PINTAR",
         level: "Asasi",
         merit: "94.99%",
         duration: "02 Semester",
@@ -1546,7 +1546,7 @@ const pathwayData = {
       },
       {
         code: "UR4523003",
-        name: "DIPLOMAKEJURUTERAAN ELEKTRONIK",
+        name: "DIPLOMA KEJURUTERAAN ELEKTRONIK",
         level: "Diploma",
         merit: "67.95%",
         duration: "06 Semester",
