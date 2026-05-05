@@ -183,6 +183,17 @@ function updateModalContent(index) {
       .map((c) => `<li>${c}</li>`)
       .join("");
 
+    // Link
+    const linkElement = document.getElementById("modalLink");
+    if (data.link) {
+
+      const urlBenar = data.link.startsWith('http') ? data.link : `https://${data.link}`;
+      linkElement.href = urlBenar;
+      linkElement.style.display = "inline";
+    } else {
+      linkElement.style.display = "none";
+    }
+
     // Update Button States
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === scholarshipKeys.length - 1;
