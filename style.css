@@ -1429,3 +1429,125 @@ select {
     padding-top: 0;
   }
 }
+
+/* FINAL FOOTER STYLING (USING BACKGROUND IMAGE) */
+.final-footer {
+  /* THIS APPLIES YOUR WAVE IMAGE */
+  background-color: #002244; /* <-- NAME YOUR IMAGE HERE */
+  background-repeat: no-repeat;
+  background-size: cover; /* Ensures the image stretches to fill the whole width */
+  background-position: center top; /* Keeps the wave aligned at the top */
+  color: white;
+  width: 100%;
+}
+
+/* Container to center and align all content */
+.footer-overlay-container {
+  max-width: 1100px;
+  margin: 0 auto; /* Adjust top padding so brand aligns in the white space */
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-logo {
+  height: 90px;
+  margin-bottom: 10px;
+}
+
+.footer-tagline {
+  color: #031c3a; /* Deep blue from your image logo */
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+/* Center all other content */
+.footer-center-content {
+  text-align: center;
+  margin-top: 100px;
+  position: relative;
+  bottom: 60px;
+}
+
+.footer-headline-big {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+  letter-spacing: -1px;
+}
+
+/* Link Rows */
+.footer-nav-links {
+  margin-bottom: 40px;
+}
+
+.link-row {
+  display: flex;
+  justify-content: center;
+  gap: 45px;
+  margin-bottom: 25px;
+}
+
+.link-row a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.link-row a:hover {
+  color: #ffca3a; /* Yellow hover effect from brand */
+}
+
+.secondary-links a {
+  font-size: 1.3rem; /* Taller links like in your image */
+  font-weight: 700;
+}
+
+/* Social Media Icons */
+.footer-social-icons {
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  position: relative;
+  top: 20px;
+}
+
+.footer-social-icons a {
+  color: white;
+  transition: transform 0.3s;
+}
+
+.footer-social-icons a:hover {
+  transform: translateY(-5px);
+}
+
+/* Solid White Bottom Copyright Bar */
+.footer-bottom-copyright {
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 20px 0;
+  font-weight: 700;
+  border-top: 1px solid #ddd;
+}
+
+/* Responsive Tweak for Mobiles */
+@media (max-width: 768px) {
+  .footer-headline-big {
+    font-size: 2.2rem;
+  }
+  .link-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .footer-top-brand {
+    align-self: center;
+    text-align: center;
+  }
+  .footer-overlay-container {
+    padding-top: 20px;
+  }
+}
