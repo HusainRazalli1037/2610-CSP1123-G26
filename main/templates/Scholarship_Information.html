@@ -5,9 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scholarship Details - MyLuanier</title>
+    <!-- Linking to your static CSS file -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
+    <!-- HEADER -->
     <header>
       <div class="container nav-container">
         <div class="logo">
@@ -32,60 +34,55 @@
       </div>
     </header>
 
+    <!-- HERO SECTION -->
     <section class="scholarship-hero">
       <div class="container">
         <h1>Scholarship Details</h1>
         <p>
           Unlock financial support for your academic journey. Explore a curated
-          database of Malaysia’s top scholarship opportunities—including JPA,
-          PETRONAS, and Yayasan TM—filtered by eligibility, field of study, and
-          application deadlines to help you secure the funding you deserve.
+          database of Malaysia’s top scholarship opportunities filtered by 
+          eligibility, field of study, and application deadlines.
         </p>
       </div>
     </section>
 
+    <!-- SCHOLARSHIP LISTING GRID -->
     <main class="scholarship-container">
       <div class="container">
-        <div class="scholarship-grid">
-          <button class="btn2">
-            <div class="scholarship-card">
-              <div class="card-logo">
-                <img src="{% static 'images/khaice.jpeg' %}" alt="Yayasan Axiata" />
+        <!-- The ID 'scholarshipContainer' is vital for myScript2.js dynamic rendering[cite: 1, 2] -->
+        <div class="scholarship-grid" id="scholarshipContainer">
+          {% for scholarship in scholarships %}
+            <!-- openModal uses the loop index to pull the correct data from the API array -->
+            <button class="btn2" onclick="openModal({{ forloop.counter0 }})">
+              <div class="scholarship-card">
+                <div class="card-logo">
+                  {% if scholarship.logo %}
+                    <img src="{{ scholarship.logo.url }}" alt="{{ scholarship.title }}" />
+                  {% else %}
+                    <img src="{% static 'images/default-logo.jpeg' %}" alt="Logo" />
+                  {% endif %}
+                </div>
+                <h3>{{ scholarship.title }}</h3>
+                <div class="status-badge">Accepting</div>
+                <div class="date-text">{{ scholarship.deadline }}</div>
               </div>
-              <h3>Yayasan Axiata</h3>
-              <div class="status-badge">Accepting</div>
-              <div class="date-text">1 May 2030</div>
+            </button>
+          {% empty %}
+            <div class="no-data">
+                <p>No scholarships are currently available in the database.</p>
             </div>
-          </button>
-
-          <button class="btn2">
-            <div class="scholarship-card">
-              <div class="card-logo">
-                <img src="{% static 'images/khaice.jpeg' %}" alt="Kijang" />
-              </div>
-              <h3>Kijang Scholarship</h3>
-              <div class="status-badge">Accepting</div>
-              <div class="date-text">1 May 2030</div>
-            </div>
-          </button>
-
-          <button class="btn2">
-            <div class="scholarship-card">
-              <div class="card-logo">
-                <img src="{% static 'images/khaice.jpeg' %}" alt="JPA" />
-              </div>
-              <h3>JPA Scholarship</h3>
-              <div class="status-badge">Accepting</div>
-              <div class="date-text">1 May 2030</div>
-            </div>
-          </button>
+          {% endfor %}
         </div>
       </div>
     </main>
+
+    <!-- SCHOLARSHIP MODAL -->
     <div id="scholarshipModal" class="modal">
       <div class="modal-content">
+        <!-- Close button handled by myScript2.js -->
         <span class="close-btn">&times;</span>
 
+        <!-- Pagination for navigating between scholarships within the modal[cite: 1, 2] -->
         <div class="modal-pagination">
           <button id="prevScholarship" class="pagi-btn">
             &#10094; Previous
@@ -97,12 +94,13 @@
           <div class="modal-header">
             <h2 id="modalTitle">Scholarship Name</h2>
             <div class="modal-logo-container">
-              <img src="{% static 'images/khaice.jpeg' %}" alt="Logo" id="modalLogo" />
+              <img src="" alt="Logo" id="modalLogo" />
             </div>
             <div class="status-badge large">Accepting</div>
           </div>
 
           <div class="modal-body">
+            <!-- Dynamic info rows injected by myScript2.js -->
             <div class="info-row">
               <strong>Deadline:</strong> <span id="modalDeadline"></span>
             </div>
@@ -122,19 +120,27 @@
               <strong>Contract:</strong> <span id="modalContract"></span>
             </div>
 
+            <!-- Courses and Criteria sections -->
             <div class="course-section">
-              <h3>Course Offered</h3>
+              <h3>Courses Offered</h3>
               <div class="course-grid" id="modalCourses"></div>
             </div>
 
             <div class="criteria-section">
-              <h3>Criteria</h3>
+              <h3>Eligibility Criteria</h3>
               <ul id="modalCriteria"></ul>
+            </div>
+
+            <!-- Apply Button -->
+            <div class="apply-section">
+              <a id="modalLink" href="#" target="_blank" class="apply-btn">Apply Now</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Loading the dynamic script at the end[cite: 1, 2] -->
     <script src="{% static 'js/myScript2.js' %}"></script>
   </body>
 </html>

@@ -18,26 +18,47 @@ from .models import (
 )
 
 # =========================
-# COURSE INLINE (inside University)
+# INLINES
 # =========================
+
 class CourseInline(admin.TabularInline):
+    """Allows editing courses directly inside the University page."""
     model = Course
     extra = 1
+    # Matches related_name='university_courses' from updated models.py
+    fk_name = "university"
+
+class ScholarshipCourseInline(admin.TabularInline):
+    """Allows adding courses to a scholarship without leaving the page."""
+    model = ScholarshipCourse
+    extra = 3
+
+class ScholarshipCriteriaInline(admin.TabularInline):
+    """Allows adding eligibility criteria to a scholarship directly."""
+    model = ScholarshipCriteria
+    extra = 3
 
 
 # =========================
 # UNIVERSITY ADMIN
 # =========================
+
 @admin.register(University)
 class UniversityAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'course_count')
     search_fields = ('name',)
     inlines = [CourseInline]
+
+    def course_count(self, obj):
+        # Uses the related name to count linked courses
+        return obj.university_courses.count()
+    course_count.short_description = "Total Courses"
 
 
 # =========================
 # COURSE ADMIN
 # =========================
+
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'university', 'course_type', 'level', 'merit')
@@ -47,49 +68,54 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 # =========================
-# SCHOLARSHIP ADMIN (FIXED)
+# SCHOLARSHIP ADMIN
 # =========================
+
 @admin.register(Scholarship)
 class ScholarshipAdmin(admin.ModelAdmin):
+    """
+    Core management for the Scholarship system.
+    Note: Always edit Courses and Criteria in the Inlines at the bottom
+    of the page to ensure the frontend displays text instead of objects.
+    """
     list_display = (
         'logo_preview',
         'title',
         'deadline',
         'location',
-        'level'
+        'scholarship_type'
     )
+    search_fields = ('title', 'location')
+    list_filter = ('scholarship_type', 'level')
+    # These inlines allow myScript2.js to receive nested string data[cite: 2]
+    inlines = [ScholarshipCourseInline, ScholarshipCriteriaInline]
 
     def logo_preview(self, obj):
         if obj.logo:
             return format_html(
-                '<img src="{}" width="50" height="50" style="border-radius:8px;" />',
+                '<img src="{}" width="40" height="40" style="border-radius:4px; object-fit:contain;" />',
                 obj.logo.url
             )
         return "No Logo"
-
+    
     logo_preview.short_description = "Logo"
 
 
-admin.site.register(ScholarshipCourse)
-admin.site.register(ScholarshipCriteria)
-
-
 # =========================
-# VISITOR ADMIN
+# VISITOR & ANALYTICS ADMIN
 # =========================
+
 @admin.register(Visitor)
 class VisitorAdmin(admin.ModelAdmin):
     list_display = ('page', 'ip_address', 'visited_at')
     search_fields = ('ip_address', 'page')
     list_filter = ('page', 'visited_at')
+    # Tracking data is read-only to preserve analytics integrity[cite: 2]
     readonly_fields = ('page', 'ip_address', 'visited_at')
     ordering = ('-visited_at',)
-    list_per_page = 30
+    list_per_page = 50
 
 
-# =========================
-# MERIT RESULT ADMIN
-# =========================
 @admin.register(MeritResult)
 class MeritResultAdmin(admin.ModelAdmin):
     list_display = ('stream', 'merit', 'koko')
@@ -98,18 +124,16 @@ class MeritResultAdmin(admin.ModelAdmin):
 
 
 # =========================
-# PATHWAY HUB ADMIN
+# PATHWAY & HUB ADMIN
 # =========================
+
 @admin.register(PathwayHub)
 class PathwayHubAdmin(admin.ModelAdmin):
-    list_display = ('code', 'name', 'field', 'university', 'level', 'merit', 'course_type')
+    list_display = ('code', 'name', 'field', 'university', 'level', 'merit')
     search_fields = ('name', 'code', 'university')
     list_filter = ('field', 'level', 'course_type')
 
 
-# =========================
-# PATHWAY ADVISOR ADMIN
-# =========================
 @admin.register(PathwayAdvisor)
 class PathwayAdvisorAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'level', 'merit', 'duration', 'course_type')
@@ -118,17 +142,15 @@ class PathwayAdvisorAdmin(admin.ModelAdmin):
 
 
 # =========================
-# SUBJECT CATEGORY ADMIN
+# SUBJECT CONFIGURATION
 # =========================
+
 @admin.register(SubjectCategory)
 class SubjectCategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
 
 
-# =========================
-# SUBJECT ADMIN
-# =========================
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
@@ -139,17 +161,18 @@ class SubjectAdmin(admin.ModelAdmin):
 # =========================
 # CUSTOM ADMIN DASHBOARD CONTEXT
 # =========================
+
 original_each_context = admin.site.each_context
 
 def custom_each_context(request):
+    """Injects real-time system stats into the Admin dashboard[cite: 2]"""
     context = original_each_context(request)
 
+    # Calculate basic analytics for the dashboard[cite: 2]
     total_visits = Visitor.objects.count()
+    today_visits = Visitor.objects.filter(visited_at__date=date.today()).count()
 
-    today_visits = Visitor.objects.filter(
-        visited_at__date=date.today()
-    ).count()
-
+    # Determine the most popular page[cite: 2]
     popular = Visitor.objects.values('page').annotate(
         total=Count('page')
     ).order_by('-total').first()
@@ -157,13 +180,13 @@ def custom_each_context(request):
     context.update({
         'total_visits': total_visits,
         'today_visits': today_visits,
-        'universities': University.objects.count(),
-        'courses': Course.objects.count(),
-        'scholarships': Scholarship.objects.count(),
+        'universities_count': University.objects.count(),
+        'courses_count': Course.objects.count(),
+        'scholarships_count': Scholarship.objects.count(),
         'popular_page': popular['page'] if popular else "No Data"
     })
 
     return context
 
-
+# Applies the custom context to the Admin site[cite: 2]
 admin.site.each_context = custom_each_context
