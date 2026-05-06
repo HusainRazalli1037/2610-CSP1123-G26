@@ -1,6 +1,6 @@
 // 1. Setup the data
 const subjectsByStream = {
-  stem_a: ["Biology", "Physics", "Chemistry", "Additional Mathematics"],
+  stem_a: ["Biology", "Physic", "Chemistry", "Additional Mathematics"],
   stem_b: [
     "Asas Kelestarian",
     "Biology",
@@ -108,19 +108,40 @@ const subjectsByStream = {
   ],
 };
 
+// NEW: Create a master list of ALL subjects from ALL streams for the "Best Subject" category
+const allAvailableSubjects = [
+  ...new Set(Object.values(subjectsByStream).flat()),
+].sort();
+
 // 2. Grab the elements
 const streamSelector = document.getElementById("streamSelector");
-// This grabs ALL 4 dropdowns because they all share this class
 const allSubjectSelects = document.querySelectorAll(".package-subject-select");
+// Target the rows in "Best Subject Package" to hide the second one for STEM C
+const packageRows = document.querySelectorAll(
+  ".right-column .subject-card:first-child .input-group-row",
+);
 
 // 3. FUNCTION: Populate dropdowns when Stream changes
 streamSelector.addEventListener("change", function () {
   const selectedStream = this.value;
-  const availableSubjects = subjectsByStream[selectedStream] || [];
+  const streamSpecificSubjects = subjectsByStream[selectedStream] || [];
 
-  allSubjectSelects.forEach((select) => {
+  // Logic for STEM C: Hide the second row in the package card
+  if (selectedStream === "stem_c") {
+    packageRows[1].style.display = "none";
+    allSubjectSelects[1].value = ""; // Reset the hidden dropdown
+  } else {
+    packageRows[1].style.display = "flex";
+  }
+
+  allSubjectSelects.forEach((select, index) => {
+    // Determine which list to use:
+    // Index 0 and 1 are "Best Subject Package" (Stream Specific)
+    // Index 2 and 3 are "Best Subject" (All Subjects)
+    const listToUse = index < 2 ? streamSpecificSubjects : allAvailableSubjects;
+
     select.innerHTML = '<option value="">CHOOSE SUBJECT</option>';
-    availableSubjects.forEach((subject) => {
+    listToUse.forEach((subject) => {
       const option = document.createElement("option");
       option.value = subject;
       option.textContent = subject;
@@ -129,23 +150,17 @@ streamSelector.addEventListener("change", function () {
   });
 });
 
-// 4. FUNCTION: The "Master Filter" for duplicates
+// 4. FUNCTION: The "Master Filter" for duplicates (remains the same)
 allSubjectSelects.forEach((currentSelect) => {
   currentSelect.addEventListener("change", function () {
-    // Step A: Create a list of all currently selected values across all 4 boxes
     const selectedValues = Array.from(allSubjectSelects)
       .map((s) => s.value)
-      .filter((val) => val !== ""); // Ignore empty/default choices
+      .filter((val) => val !== "");
 
-    // Step B: Update every dropdown to disable what others have picked
     allSubjectSelects.forEach((dropdown) => {
-      const currentChoice = dropdown.value; // What this specific box has picked
-
+      const currentChoice = dropdown.value;
       Array.from(dropdown.options).forEach((option) => {
-        if (option.value === "") return; // Skip the "CHOOSE SUBJECT" option
-
-        // If this option is picked in ANOTHER box, disable it
-        // BUT, don't disable it if it's the one THIS box currently has selected
+        if (option.value === "") return;
         if (
           selectedValues.includes(option.value) &&
           option.value !== currentChoice
