@@ -5,12 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Info Pathway Hub - MyLuanier</title>
-    <!-- Linking project-specific stylesheets -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/pathway.css' %}" />
   </head>
   <body>
-    <!-- HEADER -->
     <header>
       <div class="container nav-container">
         <div class="logo">
@@ -35,7 +33,6 @@
       </div>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="info-hero">
       <div class="container">
         <h1>INFO PATHWAY HUB</h1>
@@ -46,20 +43,23 @@
       </div>
     </section>
 
-    <!-- UNIVERSITY GRID SECTION -->
     <main class="info-container">
       <div class="container">
         <div class="university-grid">
           
-          <!-- DYNAMIC LOOP: Generates cards based on institutions in your database -->
-          {% for hub in hubs %}
+          {# We use a custom logic to only show unique university logos #}
+          {% regroup hubs by university as university_list %}
+          
+          {% for university in university_list %}
             <div class="uni-card">
-              {% if hub.logo %}
-                <!-- The alt text is used by pathwayScript.js to filter courses in the modal -->
-                <img src="{{ hub.logo.url }}" alt="{{ hub.university }}" />
-              {% else %}
-                <img src="{% static 'images/default_uni.png' %}" alt="{{ hub.university }}" />
-              {% endif %}
+              {# Get the logo from the first entry of this university grouping #}
+              {% with university.list|first as first_entry %}
+                {% if first_entry.logo %}
+                  <img src="{{ first_entry.logo.url }}" alt="{{ university.grouper }}" />
+                {% else %}
+                  <img src="{% static 'images/default_uni.png' %}" alt="{{ university.grouper }}" />
+                {% endif %}
+              {% endwith %}
             </div>
           {% empty %}
             <div class="no-data">
@@ -71,28 +71,24 @@
       </div>
     </main>
 
-    <!-- PATHWAY MODAL (Populated by pathwayScript.js) -->
     <div id="pathwayModal" class="modal">
       <div class="modal-content">
-        <!-- Close button handled by JavaScript -->
         <span class="close-btn">&times;</span>
 
         <div class="modal-scroll-area">
           <div class="modal-header">
             <div class="modal-logo-container">
-              <!-- Source injected dynamically by JS -->
               <img src="" alt="University Logo" id="modalLogo" />
             </div>
-            <div class="course-label-badge">Courses Offered</div>
+            <div class="course-label-badge" id="modalUniTitle">Courses Offered</div>
           </div>
 
-          <!-- Container for horizontal scrolling course boxes[cite: 2] -->
-          <div class="course-horizontal-scroll" id="modalPathways"></div>
+          <div class="course-horizontal-scroll" id="modalPathways">
+            </div>
         </div>
       </div>
     </div>
 
-    <!-- SCRIPT: Handles the logic of opening the modal and filtering data[cite: 2] -->
     <script src="{% static 'js/pathwayScript.js' %}"></script>
   </body>
 </html>

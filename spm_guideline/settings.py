@@ -5,9 +5,14 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- SECURITY ---
+# Keep this secret in production!
 SECRET_KEY = 'django-insecure-2(mh$5t^=g@l0(r#wvlks#vq1tr9z3)$*^^&x6ezfb-qd^)h#$'
+
+# Set to False in production
 DEBUG = True
-ALLOWED_HOSTS = ['*'] # Modified to allow local development access
+
+# Allows local development access
+ALLOWED_HOSTS = ['*']
 
 # --- AUTHENTICATION URLS ---
 LOGIN_URL = '/admin/login/'
@@ -25,7 +30,7 @@ INSTALLED_APPS = [
     
     # Third-party Apps
     'rest_framework',
-    'corsheaders',  # Required for frontend-backend communication
+    'corsheaders',  # Essential for JS fetch() requests to work
     
     # Local Apps
     'main',
@@ -71,7 +76,7 @@ DATABASES = {
 }
 
 # --- REST FRAMEWORK & CORS ---
-# Essential for your Scholarship API and myScript2.js
+# Required for both myScript2.js (Scholarships) and pathwayScript.js (Pathway Hub)
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
@@ -82,7 +87,7 @@ REST_FRAMEWORK = {
     )
 }
 
-# Allow your local frontend to talk to your backend
+# Allows the browser to fetch API data without security blocks
 CORS_ALLOW_ALL_ORIGINS = True 
 
 # --- STATIC & MEDIA FILES ---
@@ -90,6 +95,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Essential for showing university and scholarship logos
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -107,7 +113,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "SPM Admin",
     "welcome_sign": "Welcome to Admin Dashboard",
     "copyright": "SPM Guideline Team",
-    "search_model": ["main.Scholarship", "main.University"],
+    "search_model": ["main.Scholarship", "main.PathwayHub"],
     "topmenu_links": [
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"name": "Main Website", "url": "/", "new_window": True},

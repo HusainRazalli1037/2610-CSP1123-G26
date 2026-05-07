@@ -25,7 +25,6 @@ class Course(models.Model):
         return f"{self.name} ({self.university.name})"
 
 # --- SCHOLARSHIP SYSTEM ---
-# These models are designed to work with your API root
 
 class Scholarship(models.Model):
     title = models.CharField(max_length=255)
@@ -49,7 +48,7 @@ class ScholarshipCourse(models.Model):
     scholarship = models.ForeignKey(
         Scholarship,
         on_delete=models.CASCADE,
-        related_name='courses' # Matches JS data.courses loop
+        related_name='courses' # Used by ScholarshipSerializer and myScript2.js
     )
     name = models.CharField(max_length=255)
 
@@ -60,7 +59,7 @@ class ScholarshipCriteria(models.Model):
     scholarship = models.ForeignKey(
         Scholarship,
         on_delete=models.CASCADE,
-        related_name='criteria' # Matches JS data.criteria loop[cite: 2]
+        related_name='criteria' # Used by ScholarshipSerializer and myScript2.js
     )
     text = models.CharField(max_length=255)
 
@@ -70,11 +69,11 @@ class ScholarshipCriteria(models.Model):
     def __str__(self):
         return self.text
 
-# --- MERIT & ANALYTICS ---
+# --- ANALYTICS & RESULTS ---
 
 class Visitor(models.Model):
     page = models.CharField(max_length=100)
-    ip_address = models.GenericIPAddressField() # More accurate for IPs
+    ip_address = models.GenericIPAddressField()
     visited_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -96,6 +95,7 @@ class MeritResult(models.Model):
     best_grade2 = models.CharField(max_length=5)
     koko = models.FloatField()
     merit = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True) # Added for Dashboard analytics
 
     def __str__(self):
         return f"{self.stream} - {self.merit}"
@@ -103,17 +103,16 @@ class MeritResult(models.Model):
 # --- INFO HUB & ADVISOR ---
 
 class PathwayHub(models.Model):
-    FIELD_CHOICES = [
-        ('engineering', 'Engineering'),
-        ('business', 'Business'),
-        ('science', 'Science'),
-        ('arts', 'Arts'),
-        ('it', 'IT'),
-    ]
-    field = models.CharField(max_length=50, choices=FIELD_CHOICES)
-    location = models.CharField(max_length=100)
-    university = models.CharField(max_length=200)
+    # 1. Remove the FIELD_CHOICES list if you no longer need it anywhere
+    
+    # 2. Change 'field' to a standard CharField without 'choices'
+    university = models.CharField(max_length=200) 
     logo = models.ImageField(upload_to='university_logos/', blank=True, null=True)
+    
+    # This was a dropdown, now it is a normal text input
+    field = models.CharField(max_length=100) 
+    
+    location = models.CharField(max_length=100)
     code = models.CharField(max_length=20)
     name = models.CharField(max_length=255)
     level = models.CharField(max_length=50)
@@ -121,8 +120,12 @@ class PathwayHub(models.Model):
     duration = models.CharField(max_length=50)
     course_type = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name = "Pathway Hub Entry"
+        verbose_name_plural = "Pathway Hub Entries"
+
     def __str__(self):
-        return self.name
+        return f"{self.university} - {self.name}"
 
 class PathwayAdvisor(models.Model):
     code = models.CharField(max_length=20)

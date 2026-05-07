@@ -25,11 +25,10 @@ class CourseInline(admin.TabularInline):
     """Allows editing courses directly inside the University page."""
     model = Course
     extra = 1
-    # Matches related_name='university_courses' from updated models.py
     fk_name = "university"
 
 class ScholarshipCourseInline(admin.TabularInline):
-    """Allows adding courses to a scholarship without leaving the page."""
+    """Allows adding courses to a scholarship directly on its edit page."""
     model = ScholarshipCourse
     extra = 3
 
@@ -50,7 +49,7 @@ class UniversityAdmin(admin.ModelAdmin):
     inlines = [CourseInline]
 
     def course_count(self, obj):
-        # Uses the related name to count linked courses
+        # Uses the related_name defined in the Course model
         return obj.university_courses.count()
     course_count.short_description = "Total Courses"
 
@@ -74,9 +73,9 @@ class CourseAdmin(admin.ModelAdmin):
 @admin.register(Scholarship)
 class ScholarshipAdmin(admin.ModelAdmin):
     """
-    Core management for the Scholarship system.
-    Note: Always edit Courses and Criteria in the Inlines at the bottom
-    of the page to ensure the frontend displays text instead of objects.
+    Manages Scholarship data. 
+    Crucial: Adding courses/criteria here ensures the API sends text strings
+    instead of [object Object] to the frontend.
     """
     list_display = (
         'logo_preview',
@@ -87,7 +86,6 @@ class ScholarshipAdmin(admin.ModelAdmin):
     )
     search_fields = ('title', 'location')
     list_filter = ('scholarship_type', 'level')
-    # These inlines allow myScript2.js to receive nested string data[cite: 2]
     inlines = [ScholarshipCourseInline, ScholarshipCriteriaInline]
 
     def logo_preview(self, obj):
@@ -97,7 +95,6 @@ class ScholarshipAdmin(admin.ModelAdmin):
                 obj.logo.url
             )
         return "No Logo"
-    
     logo_preview.short_description = "Logo"
 
 
@@ -110,7 +107,6 @@ class VisitorAdmin(admin.ModelAdmin):
     list_display = ('page', 'ip_address', 'visited_at')
     search_fields = ('ip_address', 'page')
     list_filter = ('page', 'visited_at')
-    # Tracking data is read-only to preserve analytics integrity[cite: 2]
     readonly_fields = ('page', 'ip_address', 'visited_at')
     ordering = ('-visited_at',)
     list_per_page = 50
@@ -118,9 +114,10 @@ class VisitorAdmin(admin.ModelAdmin):
 
 @admin.register(MeritResult)
 class MeritResultAdmin(admin.ModelAdmin):
-    list_display = ('stream', 'merit', 'koko')
-    list_filter = ('stream',)
+    list_display = ('stream', 'merit', 'koko', 'created_at')
+    list_filter = ('stream', 'created_at')
     search_fields = ('stream',)
+    readonly_fields = ('created_at',)
 
 
 # =========================
@@ -129,9 +126,22 @@ class MeritResultAdmin(admin.ModelAdmin):
 
 @admin.register(PathwayHub)
 class PathwayHubAdmin(admin.ModelAdmin):
-    list_display = ('code', 'name', 'field', 'university', 'level', 'merit')
+    """
+    Manages the Info Pathway Hub.
+    Ensure 'university' field matches the HTML 'alt' text for data to show up.
+    """
+    list_display = ('logo_preview', 'university', 'code', 'name', 'level', 'merit', 'course_type')
     search_fields = ('name', 'code', 'university')
-    list_filter = ('field', 'level', 'course_type')
+    list_filter = ('university', 'level', 'course_type')
+
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html(
+                '<img src="{}" width="40" height="40" style="border-radius:4px; object-fit:contain;" />',
+                obj.logo.url
+            )
+        return "No Logo"
+    logo_preview.short_description = "Logo"
 
 
 @admin.register(PathwayAdvisor)
@@ -165,14 +175,14 @@ class SubjectAdmin(admin.ModelAdmin):
 original_each_context = admin.site.each_context
 
 def custom_each_context(request):
-    """Injects real-time system stats into the Admin dashboard[cite: 2]"""
+    """Injects stats into the sidebar/header of the Admin panel."""
     context = original_each_context(request)
 
-    # Calculate basic analytics for the dashboard[cite: 2]
+    # Basic Analytics
     total_visits = Visitor.objects.count()
     today_visits = Visitor.objects.filter(visited_at__date=date.today()).count()
 
-    # Determine the most popular page[cite: 2]
+    # Find the most visited page
     popular = Visitor.objects.values('page').annotate(
         total=Count('page')
     ).order_by('-total').first()
@@ -188,5 +198,5 @@ def custom_each_context(request):
 
     return context
 
-# Applies the custom context to the Admin site[cite: 2]
+# Override the default admin context to show custom stats
 admin.site.each_context = custom_each_context

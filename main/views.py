@@ -18,7 +18,7 @@ from .models import (
     PathwayHub, PathwayAdvisor, SubjectCategory, Subject,
     ScholarshipCourse, ScholarshipCriteria
 )
-from .serializers import ScholarshipSerializer
+from .serializers import ScholarshipSerializer, PathwayHubSerializer
 
 # =========================
 # TRACK VISITOR (UTILITY)
@@ -55,6 +55,7 @@ def universities(request):
 
 def university_detail(request, id):
     university = get_object_or_404(University, id=id)
+    # Using the correct related name 'university_courses' defined in models.py
     courses = Course.objects.filter(university=university)
     return render(request, 'university_detail.html', {
         'university': university,
@@ -71,6 +72,9 @@ def pathway_advisor(request):
     return render(request, 'Pathway_Advisor.html', {'advisors': advisors})
 
 def pathway_hub(request):
+    """Renders the HTML for Pathway Hub with institution logos."""
+    track_visit(request, 'Pathway Hub')
+    # Use distinct university logos for the grid
     hubs = PathwayHub.objects.all()
     return render(request, 'Pathway_Hub.html', {'hubs': hubs})
 
@@ -79,7 +83,6 @@ def pathway_hub(request):
 # SCHOLARSHIPS (FRONTEND & API)
 # =========================
 def scholarships(request):
-    """Renders the general scholarship listing page."""
     track_visit(request, 'Scholarships')
     scholarships_list = Scholarship.objects.all()
     return render(request, 'scholarships.html', {'scholarships': scholarships_list})
@@ -87,31 +90,31 @@ def scholarships(request):
 def scholarship_information(request):
     """Renders the main Info Hub (Scholarship_Information.html)."""
     track_visit(request, 'Scholarship Info Hub')
-    # Prefetch related data to avoid N+1 queries during rendering
+    # Prefetch related data to avoid [object Object] issues during rendering
     scholarships_list = Scholarship.objects.prefetch_related('courses', 'criteria').all()
     return render(request, 'Scholarship_Information.html', {'scholarships': scholarships_list})
 
 def scholarship_detail(request, id):
-    """Renders the standalone detail page for a specific scholarship."""
     scholarship = get_object_or_404(Scholarship, id=id)
-    courses = ScholarshipCourse.objects.filter(scholarship=scholarship)
-    criterias = ScholarshipCriteria.objects.filter(scholarship=scholarship)
+    # Use the related_name from models.py for cleaner queries
+    courses = scholarship.courses.all()
+    criterias = scholarship.criteria.all()
     return render(request, 'scholarship_detail.html', {
         'scholarship': scholarship,
         'courses': courses,
         'criterias': criterias
     })
 
-# API Endpoint for myScript2.js
+# API ViewSets for JS fetch calls
 class ScholarshipViewSet(viewsets.ModelViewSet):
-    """DRF ViewSet to provide scholarship data to the frontend JS."""
+    """API for myScript2.js - includes nested course/criteria names."""
     queryset = Scholarship.objects.prefetch_related('courses', 'criteria').all()
     serializer_class = ScholarshipSerializer
 
-def scholarship_list_api(request):
-    """Simple JSON API if DRF is not used directly."""
-    scholarships_data = list(Scholarship.objects.values())
-    return JsonResponse(scholarships_data, safe=False)
+class PathwayHubViewSet(viewsets.ModelViewSet):
+    """API for pathwayScript.js - provides university pathway data."""
+    queryset = PathwayHub.objects.all()
+    serializer_class = PathwayHubSerializer
 
 
 # =========================
@@ -134,10 +137,12 @@ def analytics(request):
 
 @login_required
 def dashboard(request):
+    """Dashboard view fixing the FieldError by using correct related_name."""
     return render(request, 'dashboard.html', {
         'total_visits': Visitor.objects.count(),
         'today_visits': Visitor.objects.filter(visited_at__date=date.today()).count(),
-        'universities': University.objects.annotate(total_courses=Count('course')).order_by('-total_courses'),
+        # Fixed: Changed 'course' to 'university_courses' to match models.py
+        'universities': University.objects.annotate(total_courses=Count('university_courses')).order_by('-total_courses'),
         'popular_pages': Visitor.objects.values('page').annotate(total=Count('page')).order_by('-total'),
         'total_universities': University.objects.count(),
         'total_courses': Course.objects.count(),
@@ -151,12 +156,10 @@ def dashboard(request):
 def merit_calculator(request):
     result = None
     if request.method == "POST":
-        # Weightage logic
         univ_marks = {'A+': 11.25, 'A': 10, 'A-': 8.75, 'B+': 7.5, 'B': 6.25, 'C+': 5, 'C': 3.75}
         pack_marks = {'A+': 16.88, 'A': 15, 'A-': 13.13, 'B+': 11.25, 'B': 9.38, 'C+': 7.5, 'C': 5.63}
         best_marks = {'A+': 5.63, 'A': 5, 'A-': 4.38, 'B+': 3.75, 'B': 3.13, 'C+': 2.5, 'C': 1.88}
 
-        # Collect POST data
         bm = request.POST.get("bm")
         bi = request.POST.get("bi")
         math = request.POST.get("math")
@@ -167,7 +170,6 @@ def merit_calculator(request):
         bg2 = request.POST.get("best_grade2")
         koko = float(request.POST.get("koko", 0))
 
-        # Calculate Total
         total = (
             univ_marks.get(bm, 0) + univ_marks.get(bi, 0) + univ_marks.get(math, 0) + univ_marks.get(sejarah, 0) +
             pack_marks.get(pg1, 0) + pack_marks.get(pg2, 0) +
@@ -196,7 +198,7 @@ def reports(request):
     return render(request, 'reports.html')
 
 def export_summary_pdf(request):
-    """Generates a summary PDF report of universities and courses."""
+    """Generates a summary PDF report."""
     buffer = io.BytesIO()
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="summary_report.pdf"'
@@ -216,14 +218,4 @@ def export_summary_pdf(request):
     doc.build(elements)
     response.write(buffer.getvalue())
     buffer.close()
-    return response
-
-def export_pdf(request):
-    """Generic system report PDF."""
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="system_report.pdf"'
-    doc = SimpleDocTemplate(response)
-    styles = getSampleStyleSheet()
-    elements = [Paragraph("System Report", styles['Title']), Spacer(1, 12)]
-    doc.build(elements)
     return response
