@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pathway Advisor - MyLuanier</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav-container">
+        <div class="logo">
+          <img src="MyLuanierLogo.jpeg" alt="MyLuanier" class="logo-img" />
+        </div>
+        <nav>
+          <ul>
+            <li><a href="homepages.html">Home</a></li>
+            <li><a href="About_Us.html">About Us</a></li>
+            <div class="dropdown">
+              <p><a href="#">Services ▾</a></p>
+              <div class="dropdown-content">
+                <a href="Merit_Calculator.html">Merit Calculator</a>
+                <a href="Pathway_Hub.html">Info Hub </a>
+                <a href="Scholarship_Information.html">Scholarship</a>
+              </div>
+            </div>
+            <li><a href="Contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
+      </div>
+    </header>
+
+    <main class="advisor-wrapper">
+      <section class="advisor-info">
+        <div class="info-content">
+          <h1>PATHWAY ADVISOR (FILTER SYSTEM)</h1>
+          <p>
+            Navigate your future with precision. Our Pathway Advisor filters
+            top-tier educational options—from Foundation and Diploma to
+            Matrikulasi and STPM—matching your unique interests and academic
+            results with the ideal course type.
+          </p>
+          <div class="advisor-image">
+            <img src="alkhaice.jpeg" alt="Students studying" />
+          </div>
+        </div>
+      </section>
+
+      <section class="advisor-form">
+        <div class="form-container">
+          <h2>Academic Pathway</h2>
+
+          <div class="form-group">
+            <label>Please select your preferred field of study:</label>
+            <div class="select-wrapper">
+              <select>
+                <option value="" disabled selected>CHOOSE</option>
+                <option value="engineering">Engineering</option>
+                <option value="it">Information Technology</option>
+                <option value="medicine">Medicine</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Please select your preferred location of study:</label>
+            <div class="select-wrapper">
+              <select>
+                <option value="" disabled selected>CHOOSE</option>
+                <option value="Johor">Johor</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Kelantan">Kelantan</option>
+                <option value="Melaka">Melaka</option>
+                <option value="N9">Negeri Sembilan</option>
+                <option value="Pahang">Pahang</option>
+                <option value="Perak">Perak</option>
+                <option value="Perlis">Perlis</option>
+                <option value="Pineng">Pulau Pinang</option>
+                <option value="Sabah">Sabah</option>
+                <option value="Sarawak">Sarawak</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Terengganu">Terengganu</option>
+                <option value="KL">Kuala Lumpur</option>
+                <option value="Putrajaya">Putrajaya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="advisor-actions">
+            <button class="btn-reset">RESET</button>
+            <button class="btn-generate">GENERATE</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="pathwayModal" class="advisor-modal">
+      <div class="advisor-modal-content">
+        <span class="close-btn">&times;</span>
+
+        <div class="advisor-scroll-area">
+          <div class="advisor-modal-header">
+            <div class="modal-logo-container">
+              <h2 id="dynamicTitle"></h2>
+            </div>
+            <div class="course-label-badge">Recommended Pathways</div>
+          </div>
+
+          <div class="advisor-vertical-results" id="modalPathways"></div>
+        </div>
+      </div>
+    </div>
+
+    <section class="roadmap-section">
+      <h2 class="roadmap-title">Step-by-Step Roadmap</h2>
+
+      <div class="roadmap-grid">
+        <div class="step-item step-1">
+          <div class="step-content">
+            <h3>Step 1: Calculate</h3>
+            <p>Use our Merit Calculator to see where you stand</p>
+          </div>
+          <div class="roadmap-arrow arrow-horizontal"></div>
+        </div>
+
+        <div class="step-item step-2">
+          <div class="step-content">
+            <h3>Step 2: Explore</h3>
+            <p>Filter courses based on your interests.</p>
+          </div>
+          <div class="roadmap-arrow arrow-vertical"></div>
+        </div>
+
+        <div class="step-item step-4">
+          <div class="step-content">
+            <span class="crown-icon">👑</span>
+            <h3>Step 4: Success</h3>
+            <p>Secure your future with the right choice</p>
+          </div>
+        </div>
+
+        <div class="step-item step-3">
+          <div class="step-content">
+            <h3>Step 3: Apply</h3>
+            <p>Apply your favourite courses and University</p>
+          </div>
+          <div class="roadmap-arrow arrow-horizontal reverse"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="final-footer">
+      <div class="footer-overlay-container">
+        <div class="footer-center-content">
+          <h2 class="footer-headline-big">Navigate Your Future</h2>
+
+          <div class="footer-nav-links">
+            <div class="link-row primary-links">
+              <a href="Merit_Calculator.html">Merit Calculator</a>
+              <a href="Pathway_Advisor.html">Pathway Advisor</a>
+              <a href="Pathway_Hub.html">Info Hub</a>
+              <a href="Scholarship_Information.html">Scholarship</a>
+            </div>
+            <div class="link-row secondary-links">
+              <a href="homepages.html">Home</a>
+              <a href="About_Us.html">About Us</a>
+              <a href="Contact.html">Contact Us</a>
+            </div>
+          </div>
+
+          <div class="footer-social-icons">
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-copyright">
+        <p>&copy; 2026 MyLuanier. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="advisorScript.js"></script>
+  </body>
+</html>
