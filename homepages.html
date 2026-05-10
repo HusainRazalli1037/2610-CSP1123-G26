@@ -76,6 +76,46 @@
       </div>
     </section>
 
+    <section class="whats-hot container">
+      <h2 class="section-title">What's Hot!</h2>
+      <div class="hot-slider-container">
+        <button class="slider-arrow prev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="hot-slider">
+          <div class="hot-slider-track">
+            <a href="Scholarship_Information.html" class="hot-card">
+              <div class="hot-badge">CLOSING SOON</div>
+              <img src="upu_logo.png" alt="UPU" />
+              <h4>UPU Phase 1 Intake</h4>
+              <p>Closing: 30th May 2026</p>
+            </a>
+            <a href="Scholarship_Information.html" class="hot-card active-card">
+              <div class="hot-badge open">OPEN NOW</div>
+              <img src="shell_logo.png" alt="Shell" />
+              <h4>Shell Scholarship 2026</h4>
+              <p>Apply before 15th June</p>
+            </a>
+            <a href="Pathway_Hub.html" class="hot-card">
+              <div class="hot-badge">NEW</div>
+              <img src="matrik_logo.png" alt="Matrikulasi" />
+              <h4>Matrikulasi Results</h4>
+              <p>Check your placement</p>
+            </a>
+            <a href="Scholarship_Information.html" class="hot-card">
+              <div class="hot-badge">CLOSING SOON</div>
+              <img src="upu_logo.png" alt="UPU" />
+              <h4>UPU Phase 1 Intake</h4>
+              <p>Closing: 30th May 2026</p>
+            </a>
+          </div>
+        </div>
+        <button class="slider-arrow next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+
     <section class="services">
       <div class="container">
         <h2 class="section-title">Services</h2>
@@ -131,6 +171,64 @@
         </div>
       </div>
     </section>
+
+    <section class="scholars-section">
+      <h2 class="section-title white-text">From Scholars, For Scholars</h2>
+      <div class="chalkboard-container">
+        <img src="chalkboard.jpeg" class="chalkboard-bg" alt="Chalkboard" />
+
+        <!-- Envelopes -->
+        <div
+          class="envelope"
+          style="top: 20%; left: 20%"
+          onclick="showMessage('Lanje aku makan do. - Afif JPA Scholar')"
+        >
+          <img src="envelope.png" alt="Message" />
+        </div>
+        <div
+          class="envelope"
+          style="top: 25%; left: 45%"
+          onclick="showMessage('Kambing kau - Amin, YTM Scholar')"
+        >
+          <img src="envelope.png" alt="Message" />
+        </div>
+        <div
+          class="envelope"
+          style="top: 15%; left: 70%"
+          onclick="
+            showMessage('Alak kau sambung belajar - Muhaimin, YTM Scholar')
+          "
+        >
+          <img src="envelope.png" alt="Message" />
+        </div>
+        <div
+          class="envelope"
+          style="top: 55%; left: 30%"
+          onclick="
+            showMessage('Banyak balai scholarship - Mukhlis, YTM Scholar')
+          "
+        >
+          <img src="envelope.png" alt="Message" />
+        </div>
+        <div
+          class="envelope"
+          style="top: 60%; left: 65%"
+          onclick="showMessage('Mabar jom. - Zaid, YTM Scholar')"
+        >
+          <img src="envelope.png" alt="Message" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Message Modal -->
+    <div id="scholarModal" class="modal">
+      <div class="modal-content scholar-msg-content">
+        <span class="close-btn" onclick="closeScholarModal()">&times;</span>
+        <h3>A Message For You:</h3>
+        <p id="scholarMessageText"></p>
+      </div>
+    </div>
+
     <footer class="final-footer">
       <div class="footer-overlay-container">
         <div class="footer-center-content">
@@ -162,5 +260,6 @@
         <p>&copy; 2026 MyLuanier. All rights reserved.</p>
       </div>
     </footer>
+    <script src="homepage.js"></script>
   </body>
 </html>
