@@ -88,7 +88,41 @@
         </div>
       </div>
     </div>
+    <footer class="final-footer">
+      <div class="footer-overlay-container">
+        <div class="footer-center-content">
+          <h2 class="footer-headline-big">Navigate Your Future</h2>
 
+          <div class="footer-nav-links">
+            <div class="link-row primary-links">
+              <!-- Dynamically linked to your Django URL names -->
+              <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+              <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+              <a href="{% url 'pathway_hub' %}">Info Hub</a>
+              <a href="{% url 'scholarship_information' %}">Scholarship</a>
+            </div>
+            <div class="link-row secondary-links">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about_us' %}">About Us</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+            </div>
+          </div>
+
+          <div class="footer-social-icons">
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-copyright">
+        <!-- Replaced static 2026 with a dynamic Django year tag -->
+        <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JS loaded via Django Static -->
     <script src="{% static 'js/pathwayScript.js' %}"></script>
   </body>
 </html>

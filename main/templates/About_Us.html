@@ -131,7 +131,7 @@
 
       <div class="founder-card" style="position: relative; top: 80px">
         <div class="founder-img">
-          <img src="{% static 'images/man.jpeg' %}" alt="Mukhlis" />
+          <img src="{% static 'images/mukh.jpeg' %}" alt="Mukhlis" />
         </div>
 
         <div class="founder-info">
@@ -140,15 +140,16 @@
             Foundation in Computing<br />Yayasan TM Scholar
           </p>
           <p class="desc">
-            Responsible for the core logic and system security. Ensures all
-            calculations are accurate and reliable.
+            Responsible for the core logic and system security. Mukhlis
+            ensures that every merit calculation and recommendation is
+            mathematically sound.
           </p>
         </div>
       </div>
 
       <div class="founder-card">
         <div class="founder-img">
-          <img src="{% static 'images/man.jpeg' %}" alt="Husain" />
+          <img src="{% static 'images/Husain.jpeg' %}" alt="Husain" />
         </div>
 
         <div class="founder-info">
@@ -157,14 +158,15 @@
             Foundation in Computing<br />Yayasan TM Scholar
           </p>
           <p class="desc">
-            Designs clean and intuitive interfaces to simplify student decision-making.
+              The creative force behind the visuals. Husain's focus is on making
+              the complex world of academic data look beautiful and intuitive.
           </p>
         </div>
       </div>
 
       <div class="founder-card" style="position: relative; bottom: 80px">
         <div class="founder-img">
-          <img src="{% static 'images/man.jpeg' %}" alt="Afif" />
+          <img src="{% static 'images/afif.jpeg' %}" alt="Afif" />
         </div>
 
         <div class="founder-info">
@@ -173,7 +175,8 @@
             Foundation in Computing<br />JPA Scholar
           </p>
           <p class="desc">
-            Manages data accuracy for scholarships, courses, and pathway logic.
+              The master of the Information Hub. Afif meticulously curates the
+              scholarship databases and pathway rules to ensure accuracy.
           </p>
         </div>
       </div>
@@ -181,6 +184,38 @@
     </div>
 
   </section>
+  <footer class="final-footer">
+      <div class="footer-overlay-container">
+        <div class="footer-center-content">
+          <h2 class="footer-headline-big">Navigate Your Future</h2>
 
-</body>
+          <div class="footer-nav-links">
+            <div class="link-row primary-links">
+              <!-- Using standard Django URL names -->
+              <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+              <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+              <a href="{% url 'pathway_hub' %}">Info Hub</a>
+              <a href="{% url 'scholarship_information' %}">Scholarship</a>
+            </div>
+            <div class="link-row secondary-links">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about_us' %}">About Us</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+            </div>
+          </div>
+
+          <div class="footer-social-icons">
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-copyright">
+        <!-- Using Django's built-in 'now' tag for the current year -->
+        <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
 </html>
