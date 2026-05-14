@@ -18,7 +18,7 @@ from .models import (
     PathwayHub, PathwayAdvisor, SubjectCategory, Subject,
     ScholarshipCourse, ScholarshipCriteria
 )
-from .serializers import ScholarshipSerializer, PathwayHubSerializer
+from .serializers import ScholarshipSerializer, PathwayHubSerializer, PathwayAdvisorSerializer
 
 # =========================
 # TRACK VISITOR (UTILITY)
@@ -68,8 +68,17 @@ def pathway(request):
     return render(request, 'pathway.html', {'courses': courses})
 
 def pathway_advisor(request):
-    advisors = PathwayAdvisor.objects.all()
-    return render(request, 'Pathway_Advisor.html', {'advisors': advisors})
+    track_visit(request, 'Pathway Advisor')
+    
+    # Fetch unique values directly from the database entries
+    # This ensures if you add 'Cybersecurity' in Admin, it appears in the dropdown
+    fields = PathwayAdvisor.objects.values_list('field', flat=True).distinct().order_by('field')
+    locations = PathwayAdvisor.objects.values_list('location', flat=True).distinct().order_by('location')
+    
+    return render(request, 'Pathway_Advisor.html', {
+        'fields': fields,
+        'locations': locations
+    })
 
 def pathway_hub(request):
     """Renders the HTML for Pathway Hub with institution logos."""
@@ -115,6 +124,12 @@ class PathwayHubViewSet(viewsets.ModelViewSet):
     """API for pathwayScript.js - provides university pathway data."""
     queryset = PathwayHub.objects.all()
     serializer_class = PathwayHubSerializer
+
+
+class PathwayAdvisorViewSet(viewsets.ModelViewSet):
+    """API endpoint for Pathway Advisor (Recommendation) data."""
+    queryset = PathwayAdvisor.objects.all()
+    serializer_class = PathwayAdvisorSerializer # Ensure this is created in serializers.py
 
 
 # =========================

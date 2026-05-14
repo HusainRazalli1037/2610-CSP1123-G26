@@ -106,11 +106,11 @@ class PathwayHub(models.Model):
     # 1. Remove the FIELD_CHOICES list if you no longer need it anywhere
     
     # 2. Change 'field' to a standard CharField without 'choices'
-    university = models.CharField(max_length=200) 
+    university = models.CharField(max_length=200, blank=True, null=True)
     logo = models.ImageField(upload_to='university_logos/', blank=True, null=True)
     
     # This was a dropdown, now it is a normal text input
-    field = models.CharField(max_length=100) 
+    field = models.CharField(max_length=100, blank=True, null=True)
     
     location = models.CharField(max_length=100)
     code = models.CharField(max_length=20)
@@ -128,12 +128,17 @@ class PathwayHub(models.Model):
         return f"{self.university} - {self.name}"
 
 class PathwayAdvisor(models.Model):
-    code = models.CharField(max_length=20)
-    name = models.CharField(max_length=255)
-    level = models.CharField(max_length=50)
-    merit = models.FloatField()
-    duration = models.CharField(max_length=50)
-    course_type = models.CharField(max_length=50)
+    # Fixed: Added defaults so migrations won't fail
+    field = models.CharField(max_length=50, default="general") 
+    location = models.CharField(max_length=100, default="Malaysia") 
+    
+    university = models.CharField(max_length=200, blank=True, null=True, default="")
+    code = models.CharField(max_length=20, default="")
+    name = models.CharField(max_length=255, default="")
+    level = models.CharField(max_length=50, default="")
+    merit = models.FloatField(default=0.0)
+    duration = models.CharField(max_length=50, default="")
+    course_type = models.CharField(max_length=50, default="")
 
     def __str__(self):
         return self.name

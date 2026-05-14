@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pathway Advisor - MyLuanier</title>
-    <!-- Use static tag for the main CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
@@ -20,14 +20,14 @@
           <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'about_us' %}">About Us</a></li>
-            <div class="dropdown">
-              <p><a href="#">Services ▾</a></p>
+            <li class="dropdown">
+              <a href="#">Services ▾</a>
               <div class="dropdown-content">
                 <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
-                <a href="{% url 'pathway_hub' %}">Info Hub </a>
+                <a href="{% url 'pathway_hub' %}">Info Hub</a>
                 <a href="{% url 'scholarship_information' %}">Scholarship</a>
               </div>
-            </div>
+            </li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
           </ul>
         </nav>
@@ -41,8 +41,7 @@
           <h1>PATHWAY ADVISOR (FILTER SYSTEM)</h1>
           <p>
             Navigate your future with precision. Our Pathway Advisor filters
-            top-tier educational options—from Foundation and Diploma to
-            Matrikulasi and STPM—matching your unique interests and academic
+            top-tier educational options matching your unique interests and academic
             results with the ideal course type.
           </p>
           <div class="advisor-image">
@@ -56,61 +55,54 @@
           <h2>Academic Pathway</h2>
 
           <div class="form-group">
-            <label>Please select your preferred field of study:</label>
+            <label for="fieldSelector">Please select your preferred field of study:</label>
             <div class="select-wrapper">
               <select id="fieldSelector">
                 <option value="" disabled selected>CHOOSE</option>
-                <option value="engineering">Engineering</option>
-                <option value="it">Information Technology</option>
-                <option value="medicine">Medicine</option>
+                {% for field in fields %}
+                  {# Using the raw value for the API filter and a Title Case version for display #}
+                  <option value="{{ field }}">{{ field|title }}</option>
+                {% empty %}
+                  <option disabled>No fields available</option>
+                {% endfor %}
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Please select your preferred location of study:</label>
+            <label for="locationSelector">Please select your preferred location of study:</label>
             <div class="select-wrapper">
               <select id="locationSelector">
                 <option value="" disabled selected>CHOOSE</option>
-                <option value="Johor">Johor</option>
-                <option value="Kedah">Kedah</option>
-                <option value="Kelantan">Kelantan</option>
-                <option value="Melaka">Melaka</option>
-                <option value="N9">Negeri Sembilan</option>
-                <option value="Pahang">Pahang</option>
-                <option value="Perak">Perak</option>
-                <option value="Perlis">Perlis</option>
-                <option value="Pineng">Pulau Pinang</option>
-                <option value="Sabah">Sabah</option>
-                <option value="Sarawak">Sarawak</option>
-                <option value="Selangor">Selangor</option>
-                <option value="Terengganu">Terengganu</option>
-                <option value="KL">Kuala Lumpur</option>
-                <option value="Putrajaya">Putrajaya</option>
+                {% for loc in locations %}
+                  <option value="{{ loc }}">{{ loc }}</option>
+                {% empty %}
+                  <option disabled>No locations available</option>
+                {% endfor %}
               </select>
             </div>
           </div>
 
           <div class="advisor-actions">
-            <button class="btn-reset">RESET</button>
-            <button class="btn-generate">GENERATE</button>
+            <button type="button" class="btn-reset">RESET</button>
+            <button type="button" class="btn-generate">GENERATE</button>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Modal for displaying results -->
     <div id="pathwayModal" class="advisor-modal">
       <div class="advisor-modal-content">
         <span class="close-btn">&times;</span>
         <div class="advisor-scroll-area">
           <div class="advisor-modal-header">
             <div class="modal-logo-container">
-              <h2 id="dynamicTitle"></h2>
+              <h2 id="dynamicTitle">Course Recommendations</h2>
             </div>
             <div class="course-label-badge">Recommended Pathways</div>
           </div>
-          <div class="advisor-vertical-results" id="modalPathways"></div>
+          <div class="advisor-vertical-results" id="modalPathways">
+             </div>
         </div>
       </div>
     </div>
@@ -121,14 +113,14 @@
         <div class="step-item step-1">
           <div class="step-content">
             <h3>Step 1: Calculate</h3>
-            <p>Use our <a href="{% url 'merit_calculator' %}">Merit Calculator</a> to see where you stand</p>
+            <p>Use our <a href="{% url 'merit_calculator' %}">Merit Calculator</a></p>
           </div>
           <div class="roadmap-arrow arrow-horizontal"></div>
         </div>
         <div class="step-item step-2">
           <div class="step-content">
             <h3>Step 2: Explore</h3>
-            <p>Filter courses based on your interests.</p>
+            <p>Filter courses based on interests.</p>
           </div>
           <div class="roadmap-arrow arrow-vertical"></div>
         </div>
@@ -136,13 +128,13 @@
           <div class="step-content">
             <span class="crown-icon">👑</span>
             <h3>Step 4: Success</h3>
-            <p>Secure your future with the right choice</p>
+            <p>Secure your future</p>
           </div>
         </div>
         <div class="step-item step-3">
           <div class="step-content">
             <h3>Step 3: Apply</h3>
-            <p>Apply your favourite courses and University</p>
+            <p>Apply your favourite courses</p>
           </div>
           <div class="roadmap-arrow arrow-horizontal reverse"></div>
         </div>
@@ -178,7 +170,6 @@
       </div>
     </footer>
 
-    <!-- Load your custom advisor JS -->
     <script src="{% static 'js/advisorScript.js' %}"></script>
   </body>
 </html>

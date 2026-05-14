@@ -3,12 +3,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import ScholarshipViewSet, PathwayHubViewSet, export_summary_pdf
+from .views import (
+    ScholarshipViewSet, 
+    PathwayHubViewSet, 
+    PathwayAdvisorViewSet, # Add this one
+    export_summary_pdf
+)
 
 # 1. Setup the REST Framework Router
 router = DefaultRouter()
 router.register(r'scholarships', ScholarshipViewSet)
 router.register(r'pathway-hub', PathwayHubViewSet) # This MUST be here for pathwayScript.js
+router.register(r'pathway-advisor', PathwayAdvisorViewSet)
 
 urlpatterns = [
     # HOME

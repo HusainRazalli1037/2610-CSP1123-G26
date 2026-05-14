@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import (
+    PathwayAdvisor,
     Scholarship, 
     ScholarshipCourse, 
     ScholarshipCriteria, 
@@ -56,4 +57,9 @@ class PathwayHubSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = PathwayHub
+        fields = '__all__'
+
+class PathwayAdvisorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PathwayAdvisor
         fields = '__all__'
