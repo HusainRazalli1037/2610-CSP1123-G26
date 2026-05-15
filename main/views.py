@@ -19,6 +19,9 @@ from .models import (
     ScholarshipCourse, ScholarshipCriteria
 )
 from .serializers import ScholarshipSerializer, PathwayHubSerializer, PathwayAdvisorSerializer
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import ContactInquiry
 
 # =========================
 # TRACK VISITOR (UTILITY)
@@ -234,3 +237,19 @@ def export_summary_pdf(request):
     response.write(buffer.getvalue())
     buffer.close()
     return response
+
+@csrf_exempt # Only for simplicity; in production use CSRF tokens
+def save_inquiry(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            ContactInquiry.objects.create(
+                name=data.get('name'),
+                email=data.get('email'),
+                subject=data.get('subject'),
+                message=data.get('message')
+            )
+            return JsonResponse({"status": "success"}, status=201)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    return JsonResponse({"status": "invalid method"}, status=405)

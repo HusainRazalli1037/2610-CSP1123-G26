@@ -6,21 +6,22 @@ from . import views
 from .views import (
     ScholarshipViewSet, 
     PathwayHubViewSet, 
-    PathwayAdvisorViewSet, # Add this one
-    export_summary_pdf
+    PathwayAdvisorViewSet,
+    export_summary_pdf,
+    save_inquiry  # Added import for your contact form logic
 )
 
 # 1. Setup the REST Framework Router
 router = DefaultRouter()
 router.register(r'scholarships', ScholarshipViewSet)
-router.register(r'pathway-hub', PathwayHubViewSet) # This MUST be here for pathwayScript.js
+router.register(r'pathway-hub', PathwayHubViewSet) 
 router.register(r'pathway-advisor', PathwayAdvisorViewSet)
 
 urlpatterns = [
     # HOME
     path('', views.home, name='home'),
 
-    # API ROOT (Serves /api/scholarships/ and /api/pathway-hub/)
+    # API ROOT (Serves /api/scholarships/, /api/pathway-hub/, /api/pathway-advisor/)
     path('api/', include(router.urls)),
 
     # UNIVERSITIES
@@ -42,15 +43,17 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('reports/', views.reports, name='reports'),
 
-    # STATIC PAGES
+    # CONTACT & INQUIRIES
     path('about/', views.about_us, name='about_us'),
     path('contact/', views.contact, name='contact'),
+    # This path connects your contact.js 'fetch("/save-inquiry/")' to the backend
+    path('save-inquiry/', save_inquiry, name='save_inquiry'),
 
     # MERIT & EXPORTS
     path('merit-calculator/', views.merit_calculator, name='merit_calculator'),
     path('export-pdf/', export_summary_pdf, name='export_pdf'),
 ]
 
-# Media support for Logos
+# Media support for Logos (Only during development)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
