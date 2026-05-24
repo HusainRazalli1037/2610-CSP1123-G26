@@ -23,27 +23,29 @@
       <div class="container nav-container">
         <div class="logo">
           <a href="{% url 'home' %}">
-            <img src="{% static 'images/MyLuanierLogo.jpeg' %}" alt="MyLuanier" class="logo-img" />
+            <img
+              src="{% static 'images/MyLuanierLogo.jpeg' %}"
+              alt="MyLuanier - Your Path to Success"
+              class="logo-img"
+            />
           </a>
         </div>
-
         <nav>
           <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'about_us' %}">About Us</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropbtn">Services ▾</a>
+            <div class="dropdown">
+              <p><a href="#">Services ▾</a></p>
               <div class="dropdown-content">
                 <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
                 <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
-                <a href="{% url 'pathway_hub' %}">Info Hub</a>
+                <a href="{% url 'pathway_hub' %}">Info Hub </a>
                 <a href="{% url 'scholarship_information' %}">Scholarship</a>
               </div>
-            </li>
+            </div>
             <li><a href="{% url 'contact' %}" class="active">Contact</a></li>
           </ul>
         </nav>
-
         <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
       </div>
     </header>
