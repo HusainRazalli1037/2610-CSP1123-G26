@@ -2,10 +2,503 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPM Merit Calculator - MyLuanier</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPM Merit Calculator - MyLuanier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        /* --- BRAND PALETTE: DEEP NAVY, MIDNIGHT BLUE & CYBER BLACK --- */
+        :root {
+            --bg-black: #030712;         /* Cyber ultra dark background */
+            --bg-deep-navy: #0b132b;    /* Rich structural navy */
+            --bg-midnight: #1c2541;     /* Surface level midnight blue */
+            --accent-blue: #00b4d8;     /* Tech glow blue */
+            --accent-cyan: #00f5d4;     /* High conversion highlight cyan */
+            --text-light: #f8fafc;      /* Crisp slate white text */
+            --text-muted: #94a3b8;      /* Soft structural text */
+            --gradient-glow: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            --gradient-dark: linear-gradient(180deg, var(--bg-black) 0%, var(--bg-deep-navy) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Inter, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- STICKY NAVIGATION HEADER --- */
+        header {
+            width: 100%;
+            background-color: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav ul li a, .dropdown p a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active, .dropdown:hover p a {
+            color: var(--accent-cyan);
+        }
+
+        /* Dropdown Element Configuration */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown p a {
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(11, 19, 43, 0.95);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 10px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: var(--text-light);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--gradient-glow);
+            color: var(--bg-black);
+            font-weight: 600;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-tagline {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            line-height: 1.2;
+            text-align: right;
+            border-left: 2px solid var(--accent-cyan);
+            padding-left: 10px;
+        }
+
+        /* --- HERO HEADER PARADIGM --- */
+        .calc-hero {
+            padding: 60px 0;
+            background: radial-gradient(circle at 50% 30%, rgba(0, 180, 216, 0.15) 0%, transparent 60%);
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .calc-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(to right, #ffffff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .calc-hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- FORMULARY WORKSPACE CALCULATOR --- */
+        .calculator-container {
+            padding: 60px 0 100px 0;
+        }
+
+        .label-box {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Stream Selector Card */
+        .stream-selector {
+            background-color: var(--bg-deep-navy);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            background-color: var(--bg-black);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            padding: 12px 18px;
+            border-radius: 12px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 12px rgba(0, 180, 216, 0.2);
+        }
+
+        /* Grid Framework for Subjects Section */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .subject-card {
+            background-color: var(--bg-deep-navy);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            gap: 20px;
+        }
+
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .input-group select {
+            width: 130px;
+            flex-shrink: 0;
+        }
+
+        /* Dynamic Selector Multi-Rows */
+        .input-group-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .input-group-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .input-group-row select:first-child {
+            flex-grow: 2;
+        }
+
+        .input-group-row select:last-child {
+            width: 130px;
+            flex-shrink: 0;
+        }
+
+        /* Co-Curricular (Koko) Styling Row */
+        .co-curro {
+            background-color: var(--bg-deep-navy);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .co-curro .number-input {
+            max-width: 250px;
+        }
+
+        /* --- DOCUMENTATION / GUIDE CONTAINER BOX --- */
+        .guide-box {
+            background-color: rgba(28, 37, 65, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .guide-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .guide-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .guide-col strong {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .guide-col ul, .guide-col ol {
+            padding-left: 18px;
+            list-style-position: outside;
+        }
+
+        .guide-col li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* --- PROCESS INTERFACE ACTIONS --- */
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 35px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-calculate {
+            background: var(--gradient-glow);
+            color: var(--bg-black);
+            border: none;
+            padding: 14px 45px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 245, 212, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
+        }
+
+        /* --- COMPUTED SCORES RESULT MODULE --- */
+        .result-box {
+            background: linear-gradient(135deg, rgba(11, 19, 43, 0.8) 0%, rgba(28, 37, 65, 0.8) 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.15);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        .result-box h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .result-box h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--gradient-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 25px rgba(0, 245, 212, 0.1); }
+            100% { box-shadow: 0 0 40px rgba(0, 245, 212, 0.25); }
+        }
+
+        /* --- CLOSING FINALE FOOTER --- */
+        .final-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            background-color: var(--bg-black);
+            padding: 80px 0 20px 0;
+        }
+
+        .footer-center-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-headline-big {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #ffffff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .footer-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .link-row a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 14px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .link-row a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .footer-social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 45px;
+        }
+
+        .footer-social-icons a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: var(--bg-deep-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social-icons a:hover {
+            color: var(--bg-black);
+            background: var(--gradient-glow);
+            border-color: transparent;
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.4);
+        }
+
+        .footer-bottom-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- DEVICE MEDIA CONSTRAINTS --- */
+        @media (max-width: 992px) {
+            .subjects-grid, .guide-content { grid-template-columns: 1fr; }
+            .nav-container { flex-direction: column; gap: 20px; }
+            .nav-tagline { text-align: center; border-left: none; border-top: 2px solid var(--accent-cyan); padding-top: 5px; }
+            .calc-hero h1 { font-size: 2.4rem; }
+            .actions { justify-content: center; }
+            .btn-calculate, .btn-reset { width: 50%; text-align: center; }
+        }
+
+        @media (max-width: 600px) {
+            nav ul { flex-direction: column; gap: 15px; }
+            .input-group label { font-size: 0.8rem; }
+            .actions { flex-direction: column; gap: 10px; }
+            .btn-calculate, .btn-reset { width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
@@ -13,25 +506,23 @@
       <div class="container nav-container">
         <div class="logo">
           <a href="{% url 'home' %}">
-            <img
-              src="{% static 'images/MyLuanierLogo.jpeg' %}"
-              alt="MyLuanier - Your Path to Success"
-              class="logo-img"
-            />
+            <img src="{% static 'images/MyLuanierLogo.jpeg' %}" alt="MyLuanier" class="logo-img" />
           </a>
         </div>
         <nav>
           <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'about_us' %}">About Us</a></li>
-            <div class="dropdown">
-              <p><a href="#">Services ▾</a></p>
-              <div class="dropdown-content">
-                <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
-                <a href="{% url 'pathway_hub' %}">Info Hub </a>
-                <a href="{% url 'scholarship_information' %}">Scholarship</a>
-              </div>
-            </div>
+            <li>
+                <div class="dropdown">
+                  <p><a href="#">Services ▾</a></p>
+                  <div class="dropdown-content">
+                    <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+                    <a href="{% url 'pathway_hub' %}">Info Hub</a>
+                    <a href="{% url 'scholarship_information' %}">Scholarship</a>
+                  </div>
+                </div>
+            </li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
           </ul>
         </nav>
@@ -39,265 +530,220 @@
       </div>
     </header>
 
-    
-<section class="calc-hero">
-  <div class="container">
-    <h1>SPM MERIT CALCULATOR</h1>
-    <p>
-      Instantly calculate your SPM merit score and unlock your university potential.
-    </p>
-  </div>
-</section>
+    <section class="calc-hero">
+      <div class="container">
+        <h1>SPM MERIT CALCULATOR</h1>
+        <p>Instantly calculate your SPM merit score and unlock your university potential.</p>
+      </div>
+    </section>
 
-<main class="calculator-container">
-<div class="container">
+    <main class="calculator-container">
+      <div class="container">
 
-<form method="POST">
-{% csrf_token %}
+        <form method="POST">
+          {% csrf_token %}
 
-<!-- STREAM -->
-<div class="stream-selector">
-  <div class="label-box">Stream Type</div>
+          <div class="stream-selector">
+            <div class="label-box">Stream Type</div>
+            <select id="streamSelector" name="streamSelector" class="custom-select">
+              <option value="">CHOOSE STREAM</option>
+              <option value="stem_a">STEM A</option>
+              <option value="stem_b">STEM B</option>
+              <option value="stem_c">STEM C</option>
+              <option value="ksi">KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN</option>
+            </select>
+          </div>
 
-  <select id="streamSelector" name="streamSelector" class="custom-select">
-    <option value="">CHOOSE STREAM</option>
-    <option value="stem_a">STEM A</option>
-    <option value="stem_b">STEM B</option>
-    <option value="stem_c">STEM C</option>
-    <option value="ksi">KEMANUSIAAN DAN SASTERA IKHTISAS/ LAIN-LAIN</option>
-  </select>
-</div>
+          <div class="subjects-grid">
 
-<!-- SUBJECTS -->
-<div class="subjects-grid">
+            <div class="subject-card">
+              <div class="label-box">Universal Subject</div>
 
-<!-- LEFT -->
-<div class="subject-card">
+              <div class="input-group">
+                <label>BAHASA MELAYU</label>
+                <select name="bm">
+                  <option value="">PILIH</option>
+                  <option>A+</option><option>A</option><option>A-</option>
+                  <option>B+</option><option>B</option>
+                  <option>C+</option><option>C</option>
+                </select>
+              </div>
 
-<div class="label-box">Universal Subject</div>
+              <div class="input-group">
+                <label>BAHASA INGGERIS</label>
+                <select name="bi">
+                  <option value="">PILIH</option>
+                  <option>A+</option><option>A</option><option>A-</option>
+                  <option>B+</option><option>B</option>
+                  <option>C+</option><option>C</option>
+                </select>
+              </div>
 
-<div class="input-group">
-<label>BAHASA MELAYU</label>
-<select name="bm">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
+              <div class="input-group">
+                <label>MATEMATIK</label>
+                <select name="math">
+                  <option value="">PILIH</option>
+                  <option>A+</option><option>A</option><option>A-</option>
+                  <option>B+</option><option>B</option>
+                  <option>C+</option><option>C</option>
+                </select>
+              </div>
 
-<div class="input-group">
-<label>BAHASA INGGERIS</label>
-<select name="bi">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-<div class="input-group">
-<label>MATEMATIK</label>
-<select name="math">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-<div class="input-group">
-<label>SEJARAH</label>
-<select name="sejarah">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-</div>
-
-<!-- RIGHT -->
-<div class="right-column">
-
-<!-- PACKAGE -->
-<div class="subject-card">
-
-<div class="label-box">Best Subject Package</div>
-
-<div class="input-group-row">
-<select class="package-subject-select" name="package_subject1">
-<option value="">CHOOSE SUBJECT</option>
-</select>
-
-<select name="package_grade1">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-<div class="input-group-row">
-<select class="package-subject-select" name="package_subject2">
-<option value="">CHOOSE SUBJECT</option>
-</select>
-
-<select name="package_grade2">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-</div>
-
-<!-- BEST SUBJECT -->
-<div class="subject-card">
-
-<div class="label-box">Best Subject</div>
-
-<div class="input-group-row">
-<select class="package-subject-select" name="best_subject1">
-<option value="">CHOOSE SUBJECT</option>
-</select>
-
-<select name="best_grade1">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-<div class="input-group-row">
-<select class="package-subject-select" name="best_subject2">
-<option value="">CHOOSE SUBJECT</option>
-</select>
-
-<select name="best_grade2">
-<option value="">PILIH</option>
-<option>A+</option><option>A</option><option>A-</option>
-<option>B+</option><option>B</option>
-<option>C+</option><option>C</option>
-</select>
-</div>
-
-</div>
-
-</div>
-</div>
-
-<!-- KOKO -->
-<div class="co-curro">
-<div class="label-box">Co-curricular Marks</div>
-
-<div class="input-wrapper">
-<input
-type="number"
-name="koko"
-class="number-input"
-placeholder="0.00"
-min="0"
-max="10"
-step="0.01">
-</div>
-</div>
-
-<div class="guide-box">
-  <div class="guide-title">SPM MERIT CALCULATION GUIDE</div>
-  <div class="guide-content">
-    
-    {# Section: Calculation Formula #}
-    <div class="guide-col">
-      <strong>CALCULATION FORMULA</strong>
-      <ul>
-        <li>Compulsory Subject (40%): BM + BI + MATEMATIK + SEJARAH</li>
-        <li>
-          Best Package Subject (30%): 2 subjects based on stream 
-          {% if current_stream %}(Current: {{ current_stream }}){% endif %}
-        </li>
-        <li>Best Subject (10%): 2 additional subjects (if any)</li>
-        <li>Co-curricular (10%): Co-curricular activity marks</li>
-        <li>Total MERIT = ((Total/90) * 90) + Co-curriculum</li>
-      </ul>
-    </div>
-    
-    {# Section: Calculation Steps #}
-    <div class="guide-col">
-      <strong>CALCULATION STEPS</strong>
-      <ol>
-        {# Dynamically display streams if passed from your view, otherwise fallback #}
-        <li>
-          Choose stream type 
-          {% if streams %}
-            ({% for stream in streams %}{{ stream }}{% if not forloop.last %}/{% endif %}{% endfor %})
-          {% else %}
-            (STEM A/B/C or KSI)
-          {% endif %}
-        </li>
-        <li>Select grades for 4 compulsory subjects</li>
-        <li>Select 2 elective subjects based on stream</li>
-        <li>Select additional subjects (if applicable)</li>
-        <li>Select co-curricular marks (0.00 - 10.00)</li>
-        <li>MERIT score will be calculated automatically</li>
-      </ol>
-    </div>
-
-  </div>
-</div>
-
-<!-- BUTTON -->
-<div class="actions">
-<button type="reset" class="btn-reset">RESET</button>
-<button type="submit" class="btn-calculate">CALCULATE</button>
-</div>
-
-</form>
-
-<!-- RESULT -->
-{% if result %}
-<div class="result-box">
-<h2>Your Merit Score</h2>
-<h1>{{ result|floatformat:2 }}%</h1>
-</div>
-{% endif %}
-
-</div>
-</main>
-<footer class="final-footer">
-    <div class="footer-overlay-container">
-        <div class="footer-center-content">
-            <h2 class="footer-headline-big">Navigate Your Future</h2>
-
-            <div class="footer-nav-links">
-                <div class="link-row primary-links">
-                    <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
-                    <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
-                    <a href="{% url 'pathway_hub' %}">Info Hub</a>
-                    <a href="{% url 'scholarship_information' %}">Scholarship</a>
-                </div>
-                <div class="link-row secondary-links">
-                    <a href="{% url 'home' %}">Home</a>
-                    <a href="{% url 'about_us' %}">About Us</a>
-                    <a href="{% url 'contact' %}">Contact Us</a>
-                </div>
+              <div class="input-group">
+                <label>SEJARAH</label>
+                <select name="sejarah">
+                  <option value="">PILIH</option>
+                  <option>A+</option><option>A</option><option>A-</option>
+                  <option>B+</option><option>B</option>
+                  <option>C+</option><option>C</option>
+                </select>
+              </div>
             </div>
 
-            <div class="footer-social-icons">
-                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <div class="right-column">
+
+              <div class="subject-card">
+                <div class="label-box">Best Subject Package</div>
+
+                <div class="input-group-row">
+                  <select class="package-subject-select" name="package_subject1">
+                    <option value="">CHOOSE SUBJECT</option>
+                  </select>
+                  <select name="package_grade1">
+                    <option value="">PILIH</option>
+                    <option>A+</option><option>A</option><option>A-</option>
+                    <option>B+</option><option>B</option>
+                    <option>C+</option><option>C</option>
+                  </select>
+                </div>
+
+                <div class="input-group-row">
+                  <select class="package-subject-select" name="package_subject2">
+                    <option value="">CHOOSE SUBJECT</option>
+                  </select>
+                  <select name="package_grade2">
+                    <option value="">PILIH</option>
+                    <option>A+</option><option>A</option><option>A-</option>
+                    <option>B+</option><option>B</option>
+                    <option>C+</option><option>C</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="subject-card">
+                <div class="label-box">Best Subject</div>
+
+                <div class="input-group-row">
+                  <select class="package-subject-select" name="best_subject1">
+                    <option value="">CHOOSE SUBJECT</option>
+                  </select>
+                  <select name="best_grade1">
+                    <option value="">PILIH</option>
+                    <option>A+</option><option>A</option><option>A-</option>
+                    <option>B+</option><option>B</option>
+                    <option>C+</option><option>C</option>
+                  </select>
+                </div>
+
+                <div class="input-group-row">
+                  <select class="package-subject-select" name="best_subject2">
+                    <option value="">CHOOSE SUBJECT</option>
+                  </select>
+                  <select name="best_grade2">
+                    <option value="">PILIH</option>
+                    <option>A+</option><option>A</option><option>A-</option>
+                    <option>B+</option><option>B</option>
+                    <option>C+</option><option>C</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="co-curro">
+            <div class="label-box">Co-curricular Marks</div>
+            <div class="input-wrapper">
+              <input type="number" name="koko" class="number-input" placeholder="0.00" min="0" max="10" step="0.01">
+            </div>
+          </div>
+
+          <div class="guide-box">
+            <div class="guide-title">SPM MERIT CALCULATION GUIDE</div>
+            <div class="guide-content">
+              
+              <div class="guide-col">
+                <strong>CALCULATION FORMULA</strong>
+                <ul>
+                  <li>Compulsory Subject (40%): BM + BI + MATEMATIK + SEJARAH</li>
+                  <li>Best Package Subject (30%): 2 subjects based on stream {% if current_stream %}(Current: {{ current_stream }}){% endif %}</li>
+                  <li>Best Subject (10%): 2 additional subjects (if any)</li>
+                  <li>Co-curricular (10%): Co-curricular activity marks</li>
+                  <li>Total MERIT = ((Total/90) * 90) + Co-curriculum</li>
+                </ul>
+              </div>
+              
+              <div class="guide-col">
+                <strong>CALCULATION STEPS</strong>
+                <ol>
+                  <li>Choose stream type {% if streams %}({% for stream in streams %}{{ stream }}{% if not forloop.last %}/{% endif %}{% endfor %}){% else %}(STEM A/B/C or KSI){% endif %}</li>
+                  <li>Select grades for 4 compulsory subjects</li>
+                  <li>Select 2 elective subjects based on stream</li>
+                  <li>Select additional subjects (if applicable)</li>
+                  <li>Select co-curricular marks (0.00 - 10.00)</li>
+                  <li>MERIT score will be calculated automatically</li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="reset" class="btn-reset">RESET</button>
+            <button type="submit" class="btn-calculate">CALCULATE</button>
+          </div>
+
+        </form>
+
+        {% if result %}
+        <div class="result-box">
+          <h2>Your Merit Score</h2>
+          <h1>{{ result|floatformat:2 }}%</h1>
+        </div>
+        {% endif %}
+
+      </div>
+    </main>
+
+    <footer class="final-footer">
+        <div class="footer-overlay-container">
+            <div class="footer-center-content">
+                <h2 class="footer-headline-big">Navigate Your Future</h2>
+                <div class="footer-nav-links">
+                    <div class="link-row primary-links">
+                        <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+                        <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+                        <a href="{% url 'pathway_hub' %}">Info Hub</a>
+                        <a href="{% url 'scholarship_information' %}">Scholarship</a>
+                    </div>
+                    <div class="link-row secondary-links">
+                        <a href="{% url 'home' %}">Home</a>
+                        <a href="{% url 'about_us' %}">About Us</a>
+                        <a href="{% url 'contact' %}">Contact Us</a>
+                    </div>
+                </div>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="footer-bottom-copyright">
+            <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
+        </div>
+    </footer>
 
-    <div class="footer-bottom-copyright">
-        <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
-    </div>
-</footer>
-<script src="{% static 'js/myScript.js' %}"></script>
+    <script src="{% static 'js/myScript.js' %}"></script>
 </body>
 </html>

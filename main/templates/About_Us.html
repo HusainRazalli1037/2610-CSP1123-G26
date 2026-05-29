@@ -2,11 +2,489 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Us - MyLuanier</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - MyLuanier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        /* --- BRAND PALETTE: DEEP NAVY, MIDNIGHT BLUE & CYBER BLACK --- */
+        :root {
+            --bg-black: #030712;         /* Cyber ultra dark background */
+            --bg-deep-navy: #0b132b;    /* Rich structural navy */
+            --bg-midnight: #1c2541;     /* Surface level midnight blue */
+            --accent-blue: #00b4d8;     /* Tech glow blue */
+            --accent-cyan: #00f5d4;     /* High conversion highlight cyan */
+            --text-light: #f8fafc;      /* Crisp slate white text */
+            --text-muted: #94a3b8;      /* Soft structural text */
+            --gradient-glow: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            --gradient-dark: linear-gradient(180deg, var(--bg-black) 0%, var(--bg-deep-navy) 100%);
+        }
 
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Inter, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- STICKY NAVIGATION HEADER --- */
+        header {
+            width: 100%;
+            background-color: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav ul li a, .dropdown p a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active, .dropdown:hover p a {
+            color: var(--accent-cyan);
+        }
+
+        /* Dropdown Custom Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown p a {
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(11, 19, 43, 0.95);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 10px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: var(--text-light);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--gradient-glow);
+            color: var(--bg-black);
+            font-weight: 600;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-tagline {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            line-height: 1.2;
+            text-align: right;
+            border-left: 2px solid var(--accent-cyan);
+            padding-left: 10px;
+        }
+
+        /* --- IMMERSIVE HERO SECTION --- */
+        .hero {
+            position: relative;
+            min-height: 50vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 0 2000px rgba(3, 7, 18, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-overlay {
+            width: 100%;
+            padding: 60px 0;
+            background: radial-gradient(circle at 15% 30%, rgba(0, 180, 216, 0.2) 0%, transparent 60%);
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            line-height: 1.15;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-glow);
+            margin-top: 15px;
+            border-radius: 2px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 650px;
+        }
+
+        /* --- OUR STORY LAYOUT WRAPPER --- */
+        .story-section {
+            padding: 100px 20px;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .story-text-box p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .story-text-box h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+
+        .story-content h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .story-image {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px dashed rgba(0, 180, 216, 0.3);
+            padding: 8px;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* --- MISSION & VISION CONTAINER --- */
+        .mission-vision {
+            background: linear-gradient(180deg, var(--bg-black) 0%, #060b19 100%);
+            padding: 90px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .mission-vision h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+        }
+
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .mv-card {
+            background: rgba(11, 19, 43, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: left;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            background: rgba(11, 19, 43, 0.7);
+            box-shadow: 0 15px 35px rgba(0, 245, 212, 0.08);
+        }
+
+        .mv-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mv-card h3::before {
+            content: '•';
+            color: var(--accent-cyan);
+            font-size: 1.8rem;
+        }
+
+        .mv-card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* --- FOUNDERS MATRIX DECORATION --- */
+        .founders-section {
+            padding: 120px 20px 180px 20px;
+            text-align: center;
+        }
+
+        .founders-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 80px;
+        }
+
+        .founders-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            align-items: start;
+        }
+
+        .founder-card {
+            background: rgba(11, 19, 43, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 28px;
+            padding: 30px 25px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .founder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-color: rgba(0, 245, 212, 0.2);
+        }
+
+        .founder-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 25px auto;
+            background: var(--gradient-glow);
+            padding: 4px;
+            box-shadow: 0 8px 25px rgba(0, 180, 216, 0.3);
+        }
+
+        .founder-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: var(--bg-deep-navy);
+        }
+
+        .founder-info h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-light);
+        }
+
+        .founder-info .subtitle {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .founder-info .desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* --- CLOSING FINALE FOOTER --- */
+        .final-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            background-color: var(--bg-black);
+            padding: 60px 0 20px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-center-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-headline-big {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #ffffff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .link-row a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .link-row a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .footer-social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .footer-social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-deep-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social-icons a:hover {
+            color: var(--bg-black);
+            background: var(--gradient-glow);
+            border-color: transparent;
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.4);
+        }
+
+        .footer-bottom-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- RESPONSIVE OPTIMIZATIONS --- */
+        @media (max-width: 992px) {
+            .story-grid, .mv-grid, .founders-grid {
+                grid-template-columns: 1fr;
+            }
+            .story-grid {
+                text-align: center;
+            }
+            .story-text-box {
+                order: 2;
+            }
+            .story-content {
+                order: 1;
+            }
+            .founder-card {
+                position: static !important;
+                margin-bottom: 20px;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .nav-tagline {
+                text-align: center;
+                border-left: none;
+                border-top: 2px solid var(--accent-cyan);
+                padding-top: 5px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -14,26 +492,24 @@
       <div class="container nav-container">
         <div class="logo">
           <a href="{% url 'home' %}">
-            <img
-              src="{% static 'images/MyLuanierLogo.jpeg' %}"
-              alt="MyLuanier - Your Path to Success"
-              class="logo-img"
-            />
+            <img src="{% static 'images/MyLuanierLogo.jpeg' %}" alt="MyLuanier" class="logo-img" />
           </a>
         </div>
         <nav>
           <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'about_us' %}" class="active">About Us</a></li>
-            <div class="dropdown">
-              <p><a href="#">Services ▾</a></p>
-              <div class="dropdown-content">
-                <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
-                <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
-                <a href="{% url 'pathway_hub' %}">Info Hub </a>
-                <a href="{% url 'scholarship_information' %}">Scholarship</a>
-              </div>
-            </div>
+            <li>
+                <div class="dropdown">
+                  <p><a href="#">Services ▾</a></p>
+                  <div class="dropdown-content">
+                    <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+                    <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+                    <a href="{% url 'pathway_hub' %}">Info Hub</a>
+                    <a href="{% url 'scholarship_information' %}">Scholarship</a>
+                  </div>
+                </div>
+            </li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
           </ul>
         </nav>
@@ -41,144 +517,95 @@
       </div>
     </header>
 
-  <!-- HERO SECTION -->
-<section class="hero" style="background-image: url('{% static "images/aaa.jpg" %}');">
-  <div class="hero-overlay">
-    <div class="container">
-      <h1 class="hero-title">Unlock Your Post-SPM<br>Potential with MyLuanier</h1>
-      <p class="hero-description">
-        Your intelligent system for guiding your post-SPM educational and
-        career path in Malaysia, using advanced data-driven tools.
-      </p>
-    </div>
-  </div>
-</section>
-
-  <!-- STORY SECTION -->
-  <section class="container story-section">
-    <div class="story-grid">
-
-      <div class="story-text-box">
-        <p>
-          MyLuanier began as a collaborative project between three students
-          who realized that many of their peers struggled to understand the
-          difference between STPM, Matrikulasi, Foundation, and Diploma.
-          We decided to build a tool that makes that choice clear.
-        </p>
-
-        <h3>Smarter Decision for a Brighter Tomorrow.</h3>
-      </div>
-
-      <div class="story-content">
-        <h2>Our Story</h2>
-
-        <div class="story-image">
-          <img src="{% static 'images/real.jpeg' %}" alt="Our Team" />
+    <section class="hero" style="background-image: url('{% static "images/aaa.jpg" %}');">
+      <div class="hero-overlay">
+        <div class="container">
+          <h1 class="hero-title">Unlock Your Post-SPM<br>Potential with MyLuanier</h1>
+          <p class="hero-description">
+            Your intelligent system for guiding your post-SPM educational and career path in Malaysia, using advanced data-driven tools.
+          </p>
         </div>
       </div>
+    </section>
 
-    </div>
-  </section>
-
-  <!-- MISSION & VISION -->
-  <section class="mission-vision">
-    <div class="container">
-
-      <h2>Mission & Vision</h2>
-
-      <div class="mv-grid">
-
-        <div class="mv-card">
-          <h3>Our Mission</h3>
+    <section class="container story-section">
+      <div class="story-grid">
+        <div class="story-text-box">
           <p>
-            To eliminate confusion and anxiety by providing data-backed,
-            personalized academic roadmaps through innovative technology.
+            MyLuanier began as a collaborative project between three students who realized that many of their peers struggled to understand the difference between STPM, Matrikulasi, Foundation, and Diploma. We decided to build a tool that makes that choice clear.
           </p>
+          <h3>Smarter Decision for a Brighter Tomorrow.</h3>
         </div>
 
-        <div class="mv-card">
-          <h3>Our Vision</h3>
-          <p>
-            To be the leading digital compass for every Malaysian student
-            transitioning from secondary school to higher education.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- FOUNDERS -->
-  <section class="container founders-section">
-
-    <h2>The MyLuanier Founders</h2>
-
-    <div class="founders-grid">
-
-      <div class="founder-card" style="position: relative; top: 80px">
-        <div class="founder-img">
-          <img src="{% static 'images/mukh.jpeg' %}" alt="Mukhlis" />
-        </div>
-
-        <div class="founder-info">
-          <h4>Mukhlis (Backend Architect)</h4>
-          <p class="subtitle">
-            Foundation in Computing<br />Yayasan TM Scholar
-          </p>
-          <p class="desc">
-            Responsible for the core logic and system security. Mukhlis
-            ensures that every merit calculation and recommendation is
-            mathematically sound.
-          </p>
+        <div class="story-content">
+          <h2>Our Story</h2>
+          <div class="story-image">
+            <img src="{% static 'images/real.jpeg' %}" alt="Our Team" />
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="founder-card">
-        <div class="founder-img">
-          <img src="{% static 'images/Husain.jpeg' %}" alt="Husain" />
-        </div>
-
-        <div class="founder-info">
-          <h4>Husain (UI/UX Specialist)</h4>
-          <p class="subtitle">
-            Foundation in Computing<br />Yayasan TM Scholar
-          </p>
-          <p class="desc">
-              The creative force behind the visuals. Husain's focus is on making
-              the complex world of academic data look beautiful and intuitive.
-          </p>
-        </div>
-      </div>
-
-      <div class="founder-card" style="position: relative; bottom: 80px">
-        <div class="founder-img">
-          <img src="{% static 'images/afif.jpeg' %}" alt="Afif" />
-        </div>
-
-        <div class="founder-info">
-          <h4>Afif (Data Strategist)</h4>
-          <p class="subtitle">
-            Foundation in Computing<br />JPA Scholar
-          </p>
-          <p class="desc">
-              The master of the Information Hub. Afif meticulously curates the
-              scholarship databases and pathway rules to ensure accuracy.
-          </p>
+    <section class="mission-vision">
+      <div class="container">
+        <h2>Mission & Vision</h2>
+        <div class="mv-grid">
+          <div class="mv-card">
+            <h3>Our Mission</h3>
+            <p>To eliminate confusion and anxiety by providing data-backed, personalized academic roadmaps through innovative technology.</p>
+          </div>
+          <div class="mv-card">
+            <h3>Our Vision</h3>
+            <p>To be the leading digital compass for every Malaysian student transitioning from secondary school to higher education.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-    </div>
+    <section class="container founders-section">
+      <h2>The MyLuanier Founders</h2>
+      <div class="founders-grid">
+        <div class="founder-card" style="position: relative; top: 80px">
+          <div class="founder-img">
+            <img src="{% static 'images/mukh.jpeg' %}" alt="Mukhlis" />
+          </div>
+          <div class="founder-info">
+            <h4>Mukhlis (Backend Architect)</h4>
+            <p class="subtitle">Foundation in Computing<br />Yayasan TM Scholar</p>
+            <p class="desc">Responsible for the core logic and system security. Mukhlis ensures that every merit calculation and recommendation is mathematically sound.</p>
+          </div>
+        </div>
 
-  </section>
-  <footer class="final-footer">
+        <div class="founder-card">
+          <div class="founder-img">
+            <img src="{% static 'images/Husain.jpeg' %}" alt="Husain" />
+          </div>
+          <div class="founder-info">
+            <h4>Husain (UI/UX Specialist)</h4>
+            <p class="subtitle">Foundation in Computing<br />Yayasan TM Scholar</p>
+            <p class="desc">The creative force behind the visuals. Husain's focus is on making the complex world of academic data look beautiful and intuitive.</p>
+          </div>
+        </div>
+
+        <div class="founder-card" style="position: relative; bottom: 80px">
+          <div class="founder-img">
+            <img src="{% static 'images/afif.jpeg' %}" alt="Afif" />
+          </div>
+          <div class="founder-info">
+            <h4>Afif (Data Strategist)</h4>
+            <p class="subtitle">Foundation in Computing<br />JPA Scholar</p>
+            <p class="desc">The master of the Information Hub. Afif meticulously curates the scholarship databases and pathway rules to ensure accuracy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="final-footer">
       <div class="footer-overlay-container">
         <div class="footer-center-content">
           <h2 class="footer-headline-big">Navigate Your Future</h2>
-
           <div class="footer-nav-links">
             <div class="link-row primary-links">
-              <!-- Using standard Django URL names -->
               <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
               <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
               <a href="{% url 'pathway_hub' %}">Info Hub</a>
@@ -190,7 +617,6 @@
               <a href="{% url 'contact' %}">Contact Us</a>
             </div>
           </div>
-
           <div class="footer-social-icons">
             <a href="#"><i class="fa-brands fa-linkedin"></i></a>
             <a href="#"><i class="fa-brands fa-facebook"></i></a>
@@ -198,12 +624,9 @@
           </div>
         </div>
       </div>
-
       <div class="footer-bottom-copyright">
-        <!-- Using Django's built-in 'now' tag for the current year -->
         <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
       </div>
     </footer>
-  </body>
+</body>
 </html>
-
