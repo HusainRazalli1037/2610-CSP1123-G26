@@ -108,38 +108,32 @@ const subjectsByStream = {
   ],
 };
 
-// NEW: Create a master list of ALL subjects from ALL streams for the "Best Subject" category
 const allAvailableSubjects = [
   ...new Set(Object.values(subjectsByStream).flat()),
 ].sort();
 
-// 2. Grab the elements
+// 2. Elements
 const streamSelector = document.getElementById("streamSelector");
 const allSubjectSelects = document.querySelectorAll(".package-subject-select");
-// Target the rows in "Best Subject Package" to hide the second one for STEM C
 const packageRows = document.querySelectorAll(
   ".right-column .subject-card:first-child .input-group-row",
 );
+const meritForm = document.getElementById("meritForm");
 
-// 3. FUNCTION: Populate dropdowns when Stream changes
+// 3. Populate dropdowns
 streamSelector.addEventListener("change", function () {
   const selectedStream = this.value;
   const streamSpecificSubjects = subjectsByStream[selectedStream] || [];
 
-  // Logic for STEM C: Hide the second row in the package card
   if (selectedStream === "stem_c") {
     packageRows[1].style.display = "none";
-    allSubjectSelects[1].value = ""; // Reset the hidden dropdown
+    allSubjectSelects[1].value = "";
   } else {
     packageRows[1].style.display = "flex";
   }
 
   allSubjectSelects.forEach((select, index) => {
-    // Determine which list to use:
-    // Index 0 and 1 are "Best Subject Package" (Stream Specific)
-    // Index 2 and 3 are "Best Subject" (All Subjects)
     const listToUse = index < 2 ? streamSpecificSubjects : allAvailableSubjects;
-
     select.innerHTML = '<option value="">CHOOSE SUBJECT</option>';
     listToUse.forEach((subject) => {
       const option = document.createElement("option");
@@ -150,28 +144,50 @@ streamSelector.addEventListener("change", function () {
   });
 });
 
-// 4. FUNCTION: The "Master Filter" for duplicates (remains the same)
+// 4. Duplicate filter
 allSubjectSelects.forEach((currentSelect) => {
   currentSelect.addEventListener("change", function () {
     const selectedValues = Array.from(allSubjectSelects)
       .map((s) => s.value)
       .filter((val) => val !== "");
-
     allSubjectSelects.forEach((dropdown) => {
       const currentChoice = dropdown.value;
       Array.from(dropdown.options).forEach((option) => {
         if (option.value === "") return;
-        if (
+        option.disabled =
           selectedValues.includes(option.value) &&
-          option.value !== currentChoice
-        ) {
-          option.disabled = true;
-          option.style.color = "#ccc";
-        } else {
-          option.disabled = false;
-          option.style.color = "";
-        }
+          option.value !== currentChoice;
+        option.style.color = option.disabled ? "#ccc" : "";
       });
     });
   });
 });
+
+// 5. Asynchronous Calculation
+meritForm.addEventListener("submit", async function (event) {
+  event.preventDefault(); // Prevents page reload
+
+  const formData = new FormData(this);
+
+  try {
+    const response = await fetch("/merit-calculator/", {
+      method: "POST",
+      body: formData,
+      headers: { "X-CSRFToken": formData.get("csrfmiddlewaretoken") },
+    });
+
+    const data = await response.json();
+
+    // Update the UI
+    document.getElementById("scoreDisplay").innerText =
+      data.result.toFixed(2) + "%";
+    document.getElementById("resultModal").style.display = "flex";
+  } catch (error) {
+    console.error("Error calculating merit:", error);
+    alert("There was an error processing your calculation.");
+  }
+});
+
+function closeModal() {
+  document.getElementById("resultModal").style.display = "none";
+}

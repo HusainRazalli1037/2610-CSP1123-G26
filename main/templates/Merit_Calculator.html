@@ -57,7 +57,7 @@
 
     <main class="calculator-container">
       <div class="container">
-        <form method="POST">
+        <form id="meritForm">
           {% csrf_token %}
 
           <div class="stream-selector">
@@ -314,7 +314,14 @@
         <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
       </div>
     </footer>
-
+    <div id="resultModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2>Your Merit Score</h2>
+        <h1 id="scoreDisplay">0.00%</h1>
+        <p>Your academic potential has been calculated</p>
+      </div>
+    </div>
     <script src="{% static 'js/myScript.js' %}"></script>
   </body>
 </html>
