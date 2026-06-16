@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='meritresult',
             name='best_grade1',
-            field=models.CharField(default=django.utils.timezone.now, max_length=5),
+            field=models.CharField(default='0000', max_length=5),
             preserve_default=False,
         ),
         migrations.AlterField(
@@ -35,19 +35,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='meritresult',
             name='best_subject2',
-            field=models.CharField(default=django.utils.timezone.now, max_length=100),
+            field=models.CharField(default='0000', max_length=100),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='meritresult',
             name='package_grade2',
-            field=models.CharField(default=django.utils.timezone.now, max_length=5),
+            field=models.CharField(default='0000', max_length=5),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='meritresult',
             name='package_subject2',
-            field=models.CharField(default=django.utils.timezone.now, max_length=100),
+            field=models.CharField(default='0000', max_length=100),
             preserve_default=False,
         ),
         migrations.AlterField(
