@@ -1,21 +1,27 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pathway Advisor - MyLuanier</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-    
-</head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
 
-<body>
+  <body>
     <header>
       <div class="container nav-container">
         <div class="logo">
           <a href="{% url 'home' %}">
-            <img src="{% static 'images/MyLuanierLogo.jpeg' %}" alt="MyLuanier" class="logo-img" />
+            <img
+              src="{% static 'images/Myluanier2.jpeg' %}"
+              alt="MyLuanier"
+              class="logo-img"
+            />
           </a>
         </div>
         <nav>
@@ -23,14 +29,14 @@
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'about_us' %}">About Us</a></li>
             <li>
-                <div class="dropdown">
-                  <p><a href="#">Services ▾</a></p>
-                  <div class="dropdown-content">
-                    <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
-                    <a href="{% url 'pathway_hub' %}">Info Hub</a>
-                    <a href="{% url 'scholarship_information' %}">Scholarship</a>
-                  </div>
+              <div class="dropdown">
+                <p><a href="#">Services ▾</a></p>
+                <div class="dropdown-content">
+                  <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+                  <a href="{% url 'pathway_hub' %}">Info Hub</a>
+                  <a href="{% url 'scholarship_information' %}">Scholarship</a>
                 </div>
+              </div>
             </li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
           </ul>
@@ -44,10 +50,15 @@
         <div class="info-content">
           <h1>PATHWAY ADVISOR (FILTER SYSTEM)</h1>
           <p>
-            Navigate your future with precision. Our Pathway Advisor filters top-tier educational options matching your unique interests and academic results with the ideal course type.
+            Navigate your future with precision. Our Pathway Advisor filters
+            top-tier educational options matching your unique interests and
+            academic results with the ideal course type.
           </p>
           <div class="advisor-image">
-            <img src="{% static 'images/alkhaice.jpeg' %}" alt="Students studying" />
+            <img
+              src="{% static 'images/alkhaice.jpeg' %}"
+              alt="Students studying"
+            />
           </div>
         </div>
       </section>
@@ -57,28 +68,32 @@
           <h2>Academic Pathway</h2>
 
           <div class="form-group">
-            <label for="fieldSelector">Please select your preferred field of study:</label>
+            <label for="fieldSelector"
+              >Please select your preferred field of study:</label
+            >
             <div class="select-wrapper">
               <select id="fieldSelector">
                 <option value="" disabled selected>CHOOSE</option>
                 {% for field in fields %}
-                  <option value="{{ field }}">{{ field|title }}</option>
+                <option value="{{ field }}">{{ field|title }}</option>
                 {% empty %}
-                  <option disabled>No fields available</option>
+                <option disabled>No fields available</option>
                 {% endfor %}
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="locationSelector">Please select your preferred location of study:</label>
+            <label for="locationSelector"
+              >Please select your preferred location of study:</label
+            >
             <div class="select-wrapper">
               <select id="locationSelector">
                 <option value="" disabled selected>CHOOSE</option>
                 {% for loc in locations %}
-                  <option value="{{ loc }}">{{ loc }}</option>
+                <option value="{{ loc }}">{{ loc }}</option>
                 {% empty %}
-                  <option disabled>No locations available</option>
+                <option disabled>No locations available</option>
                 {% endfor %}
               </select>
             </div>
@@ -102,8 +117,7 @@
             </div>
             <div class="course-label-badge">Recommended Pathways</div>
           </div>
-          <div class="advisor-vertical-results" id="modalPathways">
-             </div>
+          <div class="advisor-vertical-results" id="modalPathways"></div>
         </div>
       </div>
     </div>
@@ -114,17 +128,20 @@
         <div class="step-item step-1">
           <div class="step-content">
             <h3>Step 1: Calculate</h3>
-            <p>Use our <a href="{% url 'merit_calculator' %}">Merit Calculator</a></p>
+            <p>
+              Use our
+              <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+            </p>
           </div>
         </div>
-        
+
         <div class="step-item step-2">
           <div class="step-content">
             <h3>Step 2: Explore</h3>
             <p>Filter courses based on interests.</p>
           </div>
         </div>
-        
+
         <div class="step-item step-4">
           <div class="step-content">
             <span class="crown-icon">👑</span>
@@ -132,7 +149,7 @@
             <p>Secure your future</p>
           </div>
         </div>
-        
+
         <div class="step-item step-3">
           <div class="step-content">
             <h3>Step 3: Apply</h3>

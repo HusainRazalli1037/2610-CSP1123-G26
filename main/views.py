@@ -172,8 +172,8 @@ def dashboard(request):
 # MERIT CALCULATOR
 # =========================
 def merit_calculator(request):
-    result = None
     if request.method == "POST":
+        # ... (keep your marks dictionaries and calculation logic exactly as they are) ...
         univ_marks = {'A+': 11.25, 'A': 10, 'A-': 8.75, 'B+': 7.5, 'B': 6.25, 'C+': 5, 'C': 3.75}
         pack_marks = {'A+': 16.88, 'A': 15, 'A-': 13.13, 'B+': 11.25, 'B': 9.38, 'C+': 7.5, 'C': 5.63}
         best_marks = {'A+': 5.63, 'A': 5, 'A-': 4.38, 'B+': 3.75, 'B': 3.13, 'C+': 2.5, 'C': 1.88}
@@ -194,6 +194,7 @@ def merit_calculator(request):
             best_marks.get(bg1, 0) + best_marks.get(bg2, 0) + koko
         )
 
+        # Save to DB
         MeritResult.objects.create(
             stream=request.POST.get("streamSelector"),
             bm=bm, bi=bi, math=math, sejarah=sejarah,
@@ -203,10 +204,12 @@ def merit_calculator(request):
             best_subject2=request.POST.get("best_subject2"), best_grade2=bg2,
             koko=koko, merit=total
         )
-        result = total
+        
+        # Return result as JSON
+        return JsonResponse({'result': total})
 
     categories = SubjectCategory.objects.prefetch_related('subjects').all()
-    return render(request, "Merit_Calculator.html", {"result": result, "categories": categories})
+    return render(request, "Merit_Calculator.html", {"categories": categories})
 
 
 # =========================
