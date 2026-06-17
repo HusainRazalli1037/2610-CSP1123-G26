@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#0f172a;
+            color:white;
+            padding:30px;
+        }
+
+        .card{
+            background:#1e293b;
+            padding:20px;
+            border-radius:12px;
+            margin-bottom:20px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+        }
+
+        canvas{
+            background:white;
+            border-radius:10px;
+            padding:15px;
+        }
+
+        h1{
+            color:#93c5fd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📊 Visitor Analytics Dashboard</h1>
+
+<div class="grid">
+
+<div class="card">
+<h2>Total Visitors</h2>
+<h1>{{ total_visits }}</h1>
+</div>
+
+<div class="card">
+<h2>Today Visitors</h2>
+<h1>{{ today_visits }}</h1>
+</div>
+
+</div>
+
+<div class="card">
+<h2>Most Visited Features</h2>
+<canvas id="barChart"></canvas>
+</div>
+
+<script>
+const labels = {{ labels|safe }};
+const totals = {{ totals|safe }};
+
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Visits',
+            data: totals
+        }]
+    },
+    options: {
+        responsive:true
+    }
+});
+</script>
+
+</body>
+</html>

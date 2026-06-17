@@ -1,0 +1,170 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - MyLuanier</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        // Initialized with your verified Public Key
+        emailjs.init("ZpZleZ-KeVL6do1wd");
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div class="container nav-container">
+        <div class="logo">
+          <a href="{% url 'home' %}">
+            <img
+              src="{% static 'images/Myluanier2.jpeg' %}"
+              alt="MyLuanier"
+              class="logo-img"
+            />
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            <li>
+              <div class="dropdown">
+                <p><a href="#">Services ▾</a></p>
+                <div class="dropdown-content">
+                  <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+                  <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+                  <a href="{% url 'pathway_hub' %}">Info Hub</a>
+                  <a href="{% url 'scholarship_information' %}">Scholarship</a>
+                </div>
+              </div>
+            </li>
+            <li><a href="{% url 'contact' %}" class="active">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-tagline">NAVIGATE<br />YOUR FUTURE</div>
+      </div>
+    </header>
+
+    <main class="contact-page">
+      <div class="container">
+        <h1 class="page-title">Contact MyLuanier</h1>
+
+        <div class="contact-card">
+          <div class="contact-form-side">
+            <h2>GET IN TOUCH</h2>
+
+            <form id="contact-form">
+              {% csrf_token %}
+
+              <div class="form-item">
+                <label>Full Name:</label>
+                <input
+                  type="text"
+                  name="from_name"
+                  placeholder="Sofea Albarakbah"
+                  required
+                />
+              </div>
+
+              <div class="form-item">
+                <label>Email Address:</label>
+                <input
+                  type="email"
+                  name="user_email"
+                  placeholder="sofea@example.com"
+                  required
+                />
+              </div>
+
+              <div class="form-item">
+                <label>Subject:</label>
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="General Inquiry"
+                  required
+                />
+              </div>
+
+              <div class="form-item">
+                <label>Message:</label>
+                <textarea
+                  name="message"
+                  rows="6"
+                  placeholder="Enter your message here:"
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn-send">SEND MESSAGE</button>
+            </form>
+          </div>
+
+          <div class="contact-info-side">
+            <div class="info-block">
+              <h3>DIRECT COMMUNICATION</h3>
+              <p class="email-link">
+                <i class="fa-solid fa-envelope"></i>
+                <strong>EMAIL :</strong><br />
+                khaiceempire@gmail.com
+              </p>
+            </div>
+
+            <div class="info-block">
+              <h3>SOCIAL MEDIA:</h3>
+              <ul class="social-list">
+                <li><i class="fa-brands fa-linkedin"></i> @MyLuanier</li>
+                <li><i class="fa-brands fa-facebook"></i> @MyLuanier</li>
+                <li><i class="fa-brands fa-instagram"></i> @MyLuanier</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="final-footer">
+      <div class="footer-overlay-container">
+        <div class="footer-center-content">
+          <h2 class="footer-headline-big">Navigate Your Future</h2>
+          <div class="footer-nav-links">
+            <div class="link-row primary-links">
+              <a href="{% url 'merit_calculator' %}">Merit Calculator</a>
+              <a href="{% url 'pathway_advisor' %}">Pathway Advisor</a>
+              <a href="{% url 'pathway_hub' %}">Info Hub</a>
+              <a href="{% url 'scholarship_information' %}">Scholarship</a>
+            </div>
+            <div class="link-row secondary-links">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about_us' %}">About Us</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+            </div>
+          </div>
+          <div class="footer-social-icons">
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom-copyright">
+        <p>&copy; {% now "Y" %} MyLuanier. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="{% static 'js/contact.js' %}"></script>
+  </body>
+</html>
