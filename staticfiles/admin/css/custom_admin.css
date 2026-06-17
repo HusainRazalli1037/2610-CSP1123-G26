@@ -1,0 +1,61 @@
+:root{
+    --primary:#0d1b52;
+    --secondary:#142a75;
+    --accent:#1e40af;
+}
+
+/* Header */
+#header{
+    background: var(--primary);
+    color:white;
+}
+
+/* Branding */
+#site-name a{
+    color:white !important;
+    font-weight:bold;
+}
+
+/* Module titles */
+.module h2, .module caption{
+    background: var(--primary);
+    color:white;
+}
+
+/* Buttons */
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input{
+    background: var(--accent);
+    border:none;
+    color:white;
+    border-radius:6px;
+    padding:8px 12px;
+}
+
+.button:hover,
+input[type=submit]:hover{
+    background: var(--secondary);
+}
+
+/* Links */
+a{
+    color: var(--accent);
+}
+
+/* Breadcrumb */
+div.breadcrumbs{
+    background:#e9eefc;
+}
+
+/* Table header */
+thead th{
+    background:#f0f4ff;
+}
+
+/* Sidebar-like modules */
+.dashboard .module{
+    border-radius:10px;
+    overflow:hidden;
+}
