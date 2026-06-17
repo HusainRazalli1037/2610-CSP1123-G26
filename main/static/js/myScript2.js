@@ -21,7 +21,7 @@ const scholarshipContainer = document.getElementById("scholarshipContainer");
 async function loadScholarships() {
     try {
         // Fetch from your Django API root
-        const response = await fetch('https://yourusername.pythonanywhere.com/api/scholarships/');
+        const response = await fetch('https://mukhz.pythonanywhere.com/api/scholarships/');
         if (!response.ok) throw new Error("Network response was not ok");
         
         scholarshipData = await response.json();
