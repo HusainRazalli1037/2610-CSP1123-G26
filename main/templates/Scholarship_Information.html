@@ -56,35 +56,47 @@
       </div>
     </section>
 
-    <main class="scholarship-container">
-      <div class="container">
-        <div class="scholarship-grid" id="scholarshipContainer">
-          {% for scholarship in scholarships %}
-          <button class="btn2" onclick="openModal({{ forloop.counter0 }})">
-            <div class="scholarship-card">
-              <div class="card-logo">
-                {% if scholarship.logo %}
-                <img
-                  src="{{ scholarship.logo.url }}"
-                  alt="{{ scholarship.title }}"
-                />
-                {% else %}
-                <img src="{% static 'images/default-logo.jpeg' %}" alt="Logo" />
-                {% endif %}
-              </div>
-              <h3>{{ scholarship.title }}</h3>
-              <div class="status-badge">Accepting</div>
-              <div class="date-text">{{ scholarship.deadline }}</div>
-            </div>
-          </button>
-          {% empty %}
-          <div class="no-data">
-            <p>No scholarships are currently available in the database.</p>
+<main class="scholarship-container">
+  <div class="container">
+    <div class="scholarship-grid" id="scholarshipContainer">
+      
+      {# 1. Capture the current date and time to compare against #}
+      {% now "Y-m-d H:i:s" as current_time %}
+
+      {% for scholarship in scholarships %}
+      <button class="btn2" onclick="openModal({{ forloop.counter0 }})">
+        <div class="scholarship-card">
+          <div class="card-logo">
+            {% if scholarship.logo %}
+            <img
+              src="{{ scholarship.logo.url }}"
+              alt="{{ scholarship.title }}"
+            />
+            {% else %}
+            <img src="{% static 'images/default-logo.jpeg' %}" alt="Logo" />
+            {% endif %}
           </div>
-          {% endfor %}
+          <h3>{{ scholarship.title }}</h3>
+          
+          {# 2. Dynamic Status Badge Class assignment #}
+          {% if scholarship.deadline|date:"Y-m-d H:i:s" > current_time %}
+            <div class="status-badge">Accepting</div>
+          {% else %}
+            <div class="status-badge closed">Not Accepted</div>
+          {% endif %}
+
+          {# 3. Formatted, clean date string instead of the raw machine code #}
+          <div class="date-text">Deadline: {{ scholarship.deadline|date:"F d, Y" }}</div>
         </div>
+      </button>
+      {% empty %}
+      <div class="no-data">
+        <p>No scholarships are currently available in the database.</p>
       </div>
-    </main>
+      {% endfor %}
+    </div>
+  </div>
+</main>
 
     <div id="scholarshipModal" class="modal">
       <div class="modal-content">
