@@ -12,7 +12,7 @@ SECRET_KEY = 'django-insecure-2(mh$5t^=g@l0(r#wvlks#vq1tr9z3)$*^^&x6ezfb-qd^)h#$
 DEBUG = True
 
 # Allows local development access
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', 'localhost', '127.0.0.1', '*']
 
 # --- AUTHENTICATION URLS ---
 LOGIN_URL = '/admin/login/'

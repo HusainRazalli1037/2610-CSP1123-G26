@@ -80,7 +80,7 @@ class ScholarshipAdmin(admin.ModelAdmin):
     list_display = (
         'logo_preview',
         'title',
-        'deadline',
+        # 'deadline',  <-- Comment this line out right here!
         'location',
         'scholarship_type'
     )
