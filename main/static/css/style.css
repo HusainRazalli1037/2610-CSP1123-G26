@@ -46,6 +46,13 @@ body {
   padding: 0 20px;
 }
 
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 /* --- STICKY UNIFIED PLATFORM HEADER NAV --- */
 header {
   width: 100%;
@@ -1515,9 +1522,9 @@ select {
 
 /* Add this block below your base .status-badge configuration */
 .status-badge.closed {
-  background: rgba(255, 75, 75, 0.1);          /* Soft transparent red glow */
-  color: #ff4b4b;                             /* Alert red text */
-  border: 1px solid rgba(255, 75, 75, 0.2);   /* Soft matching red border */
+  background: rgba(255, 75, 75, 0.1); /* Soft transparent red glow */
+  color: #ff4b4b; /* Alert red text */
+  border: 1px solid rgba(255, 75, 75, 0.2); /* Soft matching red border */
 }
 
 .date-text {
