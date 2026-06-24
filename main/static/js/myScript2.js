@@ -41,13 +41,19 @@ function renderScholarshipCards() {
   scholarshipContainer.innerHTML = ""; // Clear placeholder content
 
   scholarshipData.forEach((item, index) => {
-    // Injects buttons into the scholarship-grid defined in Scholarship_Information.html[cite: 1]
+    // Fallback if status isn't provided by API
+    const status = item.status ? item.status : "Accepting"; 
+    
+    // Add an extra class based on status for CSS styling (e.g., status-closed)
+    const statusClass = status.toLowerCase() === "accepting" ? "status-accepting" : "status-closed";
+
+    // Injects buttons into the scholarship-grid defined in Scholarship_Information.html
     scholarshipContainer.innerHTML += `
             <button class="btn2" onclick="openModal(${index})">
                 <div class="scholarship-card">
                     <img src="${item.logo}" alt="${item.title}" class="card-logo" style="width:50px; height:50px; object-fit:contain;">
                     <h3>${item.title}</h3>
-                    <div class="status-badge">Accepting</div>
+                    <div class="status-badge ${statusClass}">${status}</div>
                     <div class="date-text">Deadline: ${item.deadline}</div>
                 </div>
             </button>
@@ -62,7 +68,7 @@ function updateModalContent(index) {
   const data = scholarshipData[index];
   if (!data) return;
 
-  // Map API keys to the IDs in Scholarship_Information.html[cite: 1, 2]
+  // Map API keys to the IDs in Scholarship_Information.html
   document.getElementById("modalTitle").innerText = data.title;
   document.getElementById("modalDeadline").innerText = data.deadline;
   document.getElementById("modalLocation").innerText = data.location;
@@ -71,16 +77,43 @@ function updateModalContent(index) {
   document.getElementById("modalType").innerText = data.scholarship_type;
   document.getElementById("modalContract").innerText = data.contract;
 
+  // Update Dynamic Status Badge inside the Modal
+  const modalStatus = document.getElementById("modalStatus");
+  if (modalStatus) {
+    const status = data.status ? data.status : "Accepting";
+    modalStatus.innerText = status;
+    
+    // Dynamically adjust styling classes based on status
+    modalStatus.className = "status-badge"; // Reset classes
+    if (status.toLowerCase() === "accepting") {
+      modalStatus.classList.add("status-accepting");
+    } else {
+      modalStatus.classList.add("status-closed");
+    }
+  }
+
   // Update Logo
   const modalLogo = document.getElementById("modalLogo");
   if (data.logo) {
     modalLogo.src = data.logo;
   }
 
-  // Update Application Link
+  // Update Application Link / Button
   const linkElement = document.getElementById("modalLink");
   if (data.link) {
     linkElement.href = data.link;
+    
+    // Optional UI Polish: Disable or gray out application button if scholarship is closed
+    const currentStatus = data.status ? data.status.toLowerCase() : "accepting";
+    if (currentStatus !== "accepting") {
+      linkElement.style.pointerEvents = "none";
+      linkElement.style.opacity = "0.5";
+      linkElement.innerText = "Applications Closed";
+    } else {
+      linkElement.style.pointerEvents = "auto";
+      linkElement.style.opacity = "1";
+      linkElement.innerText = "Apply Now";
+    }
     linkElement.style.display = "inline-block";
   } else {
     linkElement.style.display = "none";
@@ -96,7 +129,7 @@ function updateModalContent(index) {
     courseContainer.innerHTML = "<div>Contact provider for details</div>";
   }
 
-  // Handle Criteria (Targeting 'text' property to avoid [object Object])[cite: 2]
+  // Handle Criteria (Targeting 'text' property to avoid [object Object])
   const criteriaContainer = document.getElementById("modalCriteria");
   if (
     data.criteria &&
@@ -111,11 +144,11 @@ function updateModalContent(index) {
       "<li>Refer to official website for full criteria.</li>";
   }
 
-  // Update Pagination Button States[cite: 2]
+  // Update Pagination Button States
   prevBtn.disabled = index === 0;
   nextBtn.disabled = index === scholarshipData.length - 1;
 
-  // Reset scroll to top of modal[cite: 1]
+  // Reset scroll to top of modal
   scrollArea.scrollTop = 0;
 }
 
@@ -146,7 +179,7 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-// Close Modal Logic[cite: 2]
+// Close Modal Logic
 closeBtn.onclick = () => {
   modal.style.display = "none";
 };

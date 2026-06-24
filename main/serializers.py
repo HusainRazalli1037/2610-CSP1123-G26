@@ -7,9 +7,9 @@ from .models import (
     PathwayHub
 )
 
-# =========================
-# SCHOLARSHIP RELATED SERIALIZERS
-# =========================
+# ==========================================
+# --- SCHOLARSHIP RELATED SERIALIZERS ---
+# ==========================================
 
 class ScholarshipCourseSerializer(serializers.ModelSerializer):
     """
@@ -37,6 +37,7 @@ class ScholarshipSerializer(serializers.ModelSerializer):
     Nests related courses and criteria to prevent [object Object] errors.
     'courses' and 'criteria' names must match the 'related_name' in models.py.
     """
+    # Nested relations matching the related_name values defined on ForeignKeys
     courses = ScholarshipCourseSerializer(many=True, read_only=True)
     criteria = ScholarshipCriteriaSerializer(many=True, read_only=True)
 
@@ -45,9 +46,9 @@ class ScholarshipSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# =========================
-# PATHWAY HUB SERIALIZER
-# =========================
+# ==========================================
+# --- PATHWAY HUB SERIALIZER ---
+# ==========================================
 
 class PathwayHubSerializer(serializers.ModelSerializer):
     """
@@ -59,7 +60,16 @@ class PathwayHubSerializer(serializers.ModelSerializer):
         model = PathwayHub
         fields = '__all__'
 
+
+# ==========================================
+# --- PATHWAY ADVISOR SERIALIZER ---
+# ==========================================
+
 class PathwayAdvisorSerializer(serializers.ModelSerializer):
+    """
+    Handles recommendation matching algorithms data for the Pathway Advisor.
+    Exposes all filtering criteria fields to the recommendation API viewset.
+    """
     class Meta:
         model = PathwayAdvisor
         fields = '__all__'

@@ -8,7 +8,7 @@ from .views import (
     PathwayHubViewSet, 
     PathwayAdvisorViewSet,
     export_summary_pdf,
-    save_inquiry  # Added import for your contact form logic
+    save_inquiry
 )
 
 # 1. Setup the REST Framework Router
@@ -46,7 +46,6 @@ urlpatterns = [
     # CONTACT & INQUIRIES
     path('about/', views.about_us, name='about_us'),
     path('contact/', views.contact, name='contact'),
-    # This path connects your contact.js 'fetch("/save-inquiry/")' to the backend
     path('save-inquiry/', save_inquiry, name='save_inquiry'),
 
     # MERIT & EXPORTS
@@ -54,6 +53,7 @@ urlpatterns = [
     path('export-pdf/', export_summary_pdf, name='export_pdf'),
 ]
 
-# Media support for Logos (Only during development)
+# Media and Static support for File Uploads & Logos
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

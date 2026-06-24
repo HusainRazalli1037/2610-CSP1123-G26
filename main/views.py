@@ -1,9 +1,11 @@
 import io
+import json
 from datetime import date
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.views.decorators.csrf import csrf_exempt
 
 # PDF Generation Imports
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -16,12 +18,9 @@ from rest_framework import viewsets
 from .models import (
     Course, Visitor, Scholarship, MeritResult, University,
     PathwayHub, PathwayAdvisor, SubjectCategory, Subject,
-    ScholarshipCourse, ScholarshipCriteria
+    ScholarshipCourse, ScholarshipCriteria, ContactInquiry
 )
 from .serializers import ScholarshipSerializer, PathwayHubSerializer, PathwayAdvisorSerializer
-from django.views.decorators.csrf import csrf_exempt
-import json
-from .models import ContactInquiry
 
 # =========================
 # TRACK VISITOR (UTILITY)
@@ -173,7 +172,6 @@ def dashboard(request):
 # =========================
 def merit_calculator(request):
     if request.method == "POST":
-        # ... (keep your marks dictionaries and calculation logic exactly as they are) ...
         univ_marks = {'A+': 11.25, 'A': 10, 'A-': 8.75, 'B+': 7.5, 'B': 6.25, 'C+': 5, 'C': 3.75}
         pack_marks = {'A+': 16.88, 'A': 15, 'A-': 13.13, 'B+': 11.25, 'B': 9.38, 'C+': 7.5, 'C': 5.63}
         best_marks = {'A+': 5.63, 'A': 5, 'A-': 4.38, 'B+': 3.75, 'B': 3.13, 'C+': 2.5, 'C': 1.88}
@@ -241,7 +239,7 @@ def export_summary_pdf(request):
     buffer.close()
     return response
 
-@csrf_exempt # Only for simplicity; in production use CSRF tokens
+@csrf_exempt  # Only for simplicity; in production use CSRF tokens
 def save_inquiry(request):
     if request.method == "POST":
         try:

@@ -80,7 +80,7 @@ class ScholarshipAdmin(admin.ModelAdmin):
     list_display = (
         'logo_preview',
         'title',
-        # 'deadline',  <-- Comment this line out right here!
+        'deadline',  # FIXED: Re-enabled to display the date column in the admin dashboard
         'location',
         'scholarship_type'
     )

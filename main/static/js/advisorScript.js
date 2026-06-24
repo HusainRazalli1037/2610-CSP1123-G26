@@ -73,7 +73,7 @@ btnGenerate.addEventListener("click", () => {
         container.innerHTML = `
             <div style="text-align:center; padding: 40px; color: white; width: 100%;">
                 <p>No courses found for this selection yet.</p>
-                <small>Debug: Searched for field "${fieldValue}" in "${locationValue}". Check Admin entries.</small>
+                <small>There is no data available for field "${fieldValue}" in "${locationValue}"</small>
             </div>`;
     } else {
         container.innerHTML = results.map(course => `

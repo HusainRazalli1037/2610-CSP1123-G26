@@ -1,6 +1,8 @@
 from django.db import models
 
+# ==========================================
 # --- UNIVERSITY & GENERAL INFO ---
+# ==========================================
 
 class University(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -26,16 +28,18 @@ class Course(models.Model):
         return f"{self.name} ({self.university.name})"
 
 
+# ==========================================
 # --- SCHOLARSHIP SYSTEM ---
+# ==========================================
 
 class Scholarship(models.Model):
     title = models.CharField(max_length=255)
     
-    # FIXED: Changed from CharField to DateTimeField for real-time tracking
-    deadline = models.DateTimeField(
+    # FIXED: Tracks only the date component cleanly without times
+    deadline = models.DateField(
         null=True, 
         blank=True, 
-        help_text="Select the date and time when applications close."
+        help_text="Select the date when applications close."
     )
     
     location = models.CharField(max_length=255)
@@ -81,7 +85,9 @@ class ScholarshipCriteria(models.Model):
         return self.text
 
 
+# ==========================================
 # --- ANALYTICS & RESULTS ---
+# ==========================================
 
 class Visitor(models.Model):
     page = models.CharField(max_length=100)
@@ -99,13 +105,13 @@ class MeritResult(models.Model):
     math = models.CharField(max_length=5)
     sejarah = models.CharField(max_length=5)
     
-    # FIXED: Package subjects and grades are now completely nullable
+    # Optional package elective selections
     package_subject1 = models.CharField(max_length=100, null=True, blank=True)
     package_grade1 = models.CharField(max_length=5, null=True, blank=True)
     package_subject2 = models.CharField(max_length=100, null=True, blank=True)
     package_grade2 = models.CharField(max_length=5, null=True, blank=True)
     
-    # FIXED: Best subjects and grades remain fully nullable
+    # Optional best auxiliary grade variations
     best_subject1 = models.CharField(max_length=100, null=True, blank=True)
     best_grade1 = models.CharField(max_length=5, null=True, blank=True)
     best_subject2 = models.CharField(max_length=100, null=True, blank=True)
@@ -119,7 +125,9 @@ class MeritResult(models.Model):
         return f"{self.stream} - {self.merit}"
 
 
+# ==========================================
 # --- INFO HUB & ADVISOR ---
+# ==========================================
 
 class PathwayHub(models.Model):
     university = models.CharField(max_length=200, blank=True, null=True)
@@ -156,7 +164,9 @@ class PathwayAdvisor(models.Model):
         return self.name
 
 
-# --- SUBJECT CONFIGURATION ---
+# ==========================================
+# --- SUBJECT CONFIGURATION & CONTACT ---
+# ==========================================
 
 class SubjectCategory(models.Model):
     name = models.CharField(max_length=50)
