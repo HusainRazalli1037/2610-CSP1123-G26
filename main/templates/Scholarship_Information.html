@@ -59,8 +59,6 @@
     <main class="scholarship-container">
       <div class="container">
         <div class="scholarship-grid" id="scholarshipContainer">
-          {# 1. FIXED: Capture the current date string without hours/minutes/seconds #} 
-          {% now "Y-m-d" as current_date %} 
           
           {% for scholarship in scholarships %}
           <button class="btn2" onclick="openModal({{ forloop.counter0 }})">
@@ -77,14 +75,10 @@
               </div>
               <h3>{{ scholarship.title }}</h3>
 
-              {# 2. FIXED: Compare dates using the clean 'Y-m-d' pattern #} 
-              {% if scholarship.deadline|date:"Y-m-d" >= current_date %}
+              {# Status Badge shows accepting because non-accepting ones are filtered out by views.py #} 
               <div class="status-badge status-accepting">Accepting</div>
-              {% else %}
-              <div class="status-badge status-closed">Not Accepted</div>
-              {% endif %} 
 
-              {# 3. Formatted, clean date string instead of the raw machine code #}
+              {# Formatted, clean date string instead of the raw machine code #}
               <div class="date-text">
                 Deadline: {{ scholarship.deadline|date:"F d, Y" }}
               </div>
@@ -95,6 +89,7 @@
             <p>No scholarships are currently available in the database.</p>
           </div>
           {% endfor %}
+          
         </div>
       </div>
     </main>

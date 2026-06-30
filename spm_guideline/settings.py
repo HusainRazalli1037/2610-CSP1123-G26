@@ -12,7 +12,7 @@ SECRET_KEY = 'django-insecure-2(mh$5t^=g@l0(r#wvlks#vq1tr9z3)$*^^&x6ezfb-qd^)h#$
 DEBUG = True
 
 # Allows local development access
-ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', 'localhost', '127.0.0.1', '*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
 # --- AUTHENTICATION URLS ---
 LOGIN_URL = '/admin/login/'
@@ -92,7 +92,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # --- STATIC & MEDIA FILES ---
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR/ 'main'/ 'static']
+STATICFILES_DIRS = [BASE_DIR / 'main' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Essential for showing university and scholarship logos
@@ -101,7 +101,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # --- INTERNATIONALIZATION ---
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kuala_Lumpur'  # Fixed: Configured for local system sync
 USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

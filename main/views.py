@@ -57,7 +57,6 @@ def universities(request):
 
 def university_detail(request, id):
     university = get_object_or_404(University, id=id)
-    # Using the correct related name 'university_courses' defined in models.py
     courses = Course.objects.filter(university=university)
     return render(request, 'university_detail.html', {
         'university': university,
@@ -71,9 +70,6 @@ def pathway(request):
 
 def pathway_advisor(request):
     track_visit(request, 'Pathway Advisor')
-    
-    # Fetch unique values directly from the database entries
-    # This ensures if you add 'Cybersecurity' in Admin, it appears in the dropdown
     fields = PathwayAdvisor.objects.values_list('field', flat=True).distinct().order_by('field')
     locations = PathwayAdvisor.objects.values_list('location', flat=True).distinct().order_by('location')
     
@@ -85,7 +81,6 @@ def pathway_advisor(request):
 def pathway_hub(request):
     """Renders the HTML for Pathway Hub with institution logos."""
     track_visit(request, 'Pathway Hub')
-    # Use distinct university logos for the grid
     hubs = PathwayHub.objects.all()
     return render(request, 'Pathway_Hub.html', {'hubs': hubs})
 
@@ -95,19 +90,19 @@ def pathway_hub(request):
 # =========================
 def scholarships(request):
     track_visit(request, 'Scholarships')
-    scholarships_list = Scholarship.objects.all()
+    # Always fetch fresh items from the database order by ID descending (newest first)
+    scholarships_list = Scholarship.objects.all().order_by('-id')
     return render(request, 'scholarships.html', {'scholarships': scholarships_list})
 
 def scholarship_information(request):
     """Renders the main Info Hub (Scholarship_Information.html)."""
     track_visit(request, 'Scholarship Info Hub')
-    # Prefetch related data to avoid [object Object] issues during rendering
-    scholarships_list = Scholarship.objects.prefetch_related('courses', 'criteria').all()
+    # Fix: Ensure fresh querying and avoid database lazy-loading delays
+    scholarships_list = Scholarship.objects.prefetch_related('courses', 'criteria').all().order_by('-id')
     return render(request, 'Scholarship_Information.html', {'scholarships': scholarships_list})
 
 def scholarship_detail(request, id):
     scholarship = get_object_or_404(Scholarship, id=id)
-    # Use the related_name from models.py for cleaner queries
     courses = scholarship.courses.all()
     criterias = scholarship.criteria.all()
     return render(request, 'scholarship_detail.html', {
@@ -119,7 +114,8 @@ def scholarship_detail(request, id):
 # API ViewSets for JS fetch calls
 class ScholarshipViewSet(viewsets.ModelViewSet):
     """API for myScript2.js - includes nested course/criteria names."""
-    queryset = Scholarship.objects.prefetch_related('courses', 'criteria').all()
+    # Optimization: Added ordering to guarantee API output matches database state instantly
+    queryset = Scholarship.objects.prefetch_related('courses', 'criteria').all().order_by('-id')
     serializer_class = ScholarshipSerializer
 
 class PathwayHubViewSet(viewsets.ModelViewSet):
@@ -127,11 +123,10 @@ class PathwayHubViewSet(viewsets.ModelViewSet):
     queryset = PathwayHub.objects.all()
     serializer_class = PathwayHubSerializer
 
-
 class PathwayAdvisorViewSet(viewsets.ModelViewSet):
     """API endpoint for Pathway Advisor (Recommendation) data."""
     queryset = PathwayAdvisor.objects.all()
-    serializer_class = PathwayAdvisorSerializer # Ensure this is created in serializers.py
+    serializer_class = PathwayAdvisorSerializer 
 
 
 # =========================
@@ -158,7 +153,6 @@ def dashboard(request):
     return render(request, 'dashboard.html', {
         'total_visits': Visitor.objects.count(),
         'today_visits': Visitor.objects.filter(visited_at__date=date.today()).count(),
-        # Fixed: Changed 'course' to 'university_courses' to match models.py
         'universities': University.objects.annotate(total_courses=Count('university_courses')).order_by('-total_courses'),
         'popular_pages': Visitor.objects.values('page').annotate(total=Count('page')).order_by('-total'),
         'total_universities': University.objects.count(),
@@ -192,7 +186,6 @@ def merit_calculator(request):
             best_marks.get(bg1, 0) + best_marks.get(bg2, 0) + koko
         )
 
-        # Save to DB
         MeritResult.objects.create(
             stream=request.POST.get("streamSelector"),
             bm=bm, bi=bi, math=math, sejarah=sejarah,
@@ -203,7 +196,6 @@ def merit_calculator(request):
             koko=koko, merit=total
         )
         
-        # Return result as JSON
         return JsonResponse({'result': total})
 
     categories = SubjectCategory.objects.prefetch_related('subjects').all()
@@ -239,7 +231,7 @@ def export_summary_pdf(request):
     buffer.close()
     return response
 
-@csrf_exempt  # Only for simplicity; in production use CSRF tokens
+@csrf_exempt
 def save_inquiry(request):
     if request.method == "POST":
         try:

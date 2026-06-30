@@ -35,7 +35,7 @@ class Course(models.Model):
 class Scholarship(models.Model):
     title = models.CharField(max_length=255)
     
-    # FIXED: Tracks only the date component cleanly without times
+    # Clean date representation tracking close windows safely
     deadline = models.DateField(
         null=True, 
         blank=True, 

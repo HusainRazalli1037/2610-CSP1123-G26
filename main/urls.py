@@ -13,15 +13,15 @@ from .views import (
 
 # 1. Setup the REST Framework Router
 router = DefaultRouter()
-router.register(r'scholarships', ScholarshipViewSet)
-router.register(r'pathway-hub', PathwayHubViewSet) 
-router.register(r'pathway-advisor', PathwayAdvisorViewSet)
+router.register(r'scholarships', ScholarshipViewSet, basename='scholarship')
+router.register(r'pathway-hub', PathwayHubViewSet, basename='pathwayhub') 
+router.register(r'pathway-advisor', PathwayAdvisorViewSet, basename='pathwayadvisor')
 
 urlpatterns = [
     # HOME
     path('', views.home, name='home'),
 
-    # API ROOT (Serves /api/scholarships/, /api/pathway-hub/, /api/pathway-advisor/)
+    # API ROOT (Exposes endpoints directly at /api/scholarships/, /api/pathway-hub/, etc.)
     path('api/', include(router.urls)),
 
     # UNIVERSITIES
@@ -53,7 +53,7 @@ urlpatterns = [
     path('export-pdf/', export_summary_pdf, name='export_pdf'),
 ]
 
-# Media and Static support for File Uploads & Logos
+# Media and Static support for File Uploads & Logos locally
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

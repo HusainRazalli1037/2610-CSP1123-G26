@@ -13,8 +13,8 @@ from .models import (
 
 class ScholarshipCourseSerializer(serializers.ModelSerializer):
     """
-    Serializes the individual courses linked to a scholarship.
-    Targeted by myScript2.js using 'c.name'.
+    Serializes individual courses linked to a scholarship.
+    Ensures 'myScript2.js' can map objects using 'c.name'.
     """
     class Meta:
         model = ScholarshipCourse
@@ -23,8 +23,8 @@ class ScholarshipCourseSerializer(serializers.ModelSerializer):
 
 class ScholarshipCriteriaSerializer(serializers.ModelSerializer):
     """
-    Serializes the eligibility criteria for a scholarship.
-    Targeted by myScript2.js using 'c.text'.
+    Serializes eligibility criteria for a scholarship.
+    Ensures 'myScript2.js' can map objects using 'c.text'.
     """
     class Meta:
         model = ScholarshipCriteria
@@ -34,16 +34,21 @@ class ScholarshipCriteriaSerializer(serializers.ModelSerializer):
 class ScholarshipSerializer(serializers.ModelSerializer):
     """
     Main Scholarship Serializer.
-    Nests related courses and criteria to prevent [object Object] errors.
-    'courses' and 'criteria' names must match the 'related_name' in models.py.
+    Explicitly overrides nested fields to return detailed text blocks 
+    instead of raw relational database IDs.
     """
-    # Nested relations matching the related_name values defined on ForeignKeys
+    # The variable names 'courses' and 'criteria' MUST match the related_name 
+    # definitions set in your models.py file
     courses = ScholarshipCourseSerializer(many=True, read_only=True)
     criteria = ScholarshipCriteriaSerializer(many=True, read_only=True)
 
     class Meta:
         model = Scholarship
-        fields = '__all__'
+        fields = [
+            'id', 'title', 'deadline', 'logo', 'location', 
+            'level', 'amount', 'scholarship_type', 'contract', 
+            'link', 'courses', 'criteria'
+        ]
 
 
 # ==========================================
@@ -52,9 +57,7 @@ class ScholarshipSerializer(serializers.ModelSerializer):
 
 class PathwayHubSerializer(serializers.ModelSerializer):
     """
-    Handles data for the Info Pathway Hub.
-    Using '__all__' ensures that merit, code, level, duration, 
-    and course_type are available for pathwayScript.js.
+    Handles data for the Info Pathway Hub interface.
     """
     class Meta:
         model = PathwayHub
@@ -67,8 +70,7 @@ class PathwayHubSerializer(serializers.ModelSerializer):
 
 class PathwayAdvisorSerializer(serializers.ModelSerializer):
     """
-    Handles recommendation matching algorithms data for the Pathway Advisor.
-    Exposes all filtering criteria fields to the recommendation API viewset.
+    Handles data structures for recommendation matching filters.
     """
     class Meta:
         model = PathwayAdvisor

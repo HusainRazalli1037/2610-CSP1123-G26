@@ -1527,7 +1527,7 @@ select {
 }
 
 /* ==========================================
-   DYNAMIC STATUS STATES (JavaScript & HTML)
+    DYNAMIC STATUS STATES (JavaScript & HTML)
    ========================================== */
 
 /* State 1: Active / Accepting Submissions */
@@ -1535,14 +1535,6 @@ select {
   background: rgba(0, 245, 212, 0.1);
   color: var(--accent-cyan);
   border: 1px solid rgba(0, 245, 212, 0.2);
-}
-
-/* State 2: Closed / Not Accepted Submissions */
-.status-badge.status-closed,
-.status-badge.closed {
-  background: rgba(255, 75, 75, 0.1) !important; /* Soft transparent red glow */
-  color: #ff4b4b !important; /* Alert red text */
-  border: 1px solid rgba(255, 75, 75, 0.2) !important; /* Soft matching red border */
 }
 
 /* ==========================================
