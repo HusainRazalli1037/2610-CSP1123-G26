@@ -22,11 +22,12 @@ from .models import (
 )
 from .serializers import ScholarshipSerializer, PathwayHubSerializer, PathwayAdvisorSerializer
 
+
 # =========================
 # TRACK VISITOR (UTILITY)
 # =========================
 def track_visit(request, page_name):
-    """Logs user visits to the analytics database."""
+    """Logs user visits to the analytics database for custom dashboard visibility."""
     ip = request.META.get('REMOTE_ADDR')
     Visitor.objects.create(page=page_name, ip_address=ip)
 
@@ -79,9 +80,10 @@ def pathway_advisor(request):
     })
 
 def pathway_hub(request):
-    """Renders the HTML for Pathway Hub with institution logos."""
+    """Renders the HTML for Pathway Hub directly from the database."""
     track_visit(request, 'Pathway Hub')
-    hubs = PathwayHub.objects.all()
+    # Order entries so they match what your admin panel displays
+    hubs = PathwayHub.objects.all().order_by('university', 'name')
     return render(request, 'Pathway_Hub.html', {'hubs': hubs})
 
 
@@ -90,14 +92,14 @@ def pathway_hub(request):
 # =========================
 def scholarships(request):
     track_visit(request, 'Scholarships')
-    # Always fetch fresh items from the database order by ID descending (newest first)
+    # Always fetch items from the database order by ID descending (newest first)
     scholarships_list = Scholarship.objects.all().order_by('-id')
     return render(request, 'scholarships.html', {'scholarships': scholarships_list})
 
 def scholarship_information(request):
-    """Renders the main Info Hub (Scholarship_Information.html)."""
+    """Renders the main Info Hub (Scholarship_Information.html) utilizing optimized prefetching."""
     track_visit(request, 'Scholarship Info Hub')
-    # Fix: Ensure fresh querying and avoid database lazy-loading delays
+    # Prefetches relational items straight out of the database context to match templates cleanly
     scholarships_list = Scholarship.objects.prefetch_related('courses', 'criteria').all().order_by('-id')
     return render(request, 'Scholarship_Information.html', {'scholarships': scholarships_list})
 
@@ -113,18 +115,17 @@ def scholarship_detail(request, id):
 
 # API ViewSets for JS fetch calls
 class ScholarshipViewSet(viewsets.ModelViewSet):
-    """API for myScript2.js - includes nested course/criteria names."""
-    # Optimization: Added ordering to guarantee API output matches database state instantly
+    """API endpoint for myScript2.js - includes nested course/criteria tracking strings."""
     queryset = Scholarship.objects.prefetch_related('courses', 'criteria').all().order_by('-id')
     serializer_class = ScholarshipSerializer
 
 class PathwayHubViewSet(viewsets.ModelViewSet):
-    """API for pathwayScript.js - provides university pathway data."""
+    """API endpoint for pathwayScript.js - provides university grouping records."""
     queryset = PathwayHub.objects.all()
     serializer_class = PathwayHubSerializer
 
 class PathwayAdvisorViewSet(viewsets.ModelViewSet):
-    """API endpoint for Pathway Advisor (Recommendation) data."""
+    """API endpoint for the Pathway Advisor recommendation processor."""
     queryset = PathwayAdvisor.objects.all()
     serializer_class = PathwayAdvisorSerializer 
 
@@ -149,7 +150,7 @@ def analytics(request):
 
 @login_required
 def dashboard(request):
-    """Dashboard view fixing the FieldError by using correct related_name."""
+    """Admin tracking panel metrics displaying course metrics based on inverse university lookups."""
     return render(request, 'dashboard.html', {
         'total_visits': Visitor.objects.count(),
         'today_visits': Visitor.objects.filter(visited_at__date=date.today()).count(),
@@ -209,7 +210,7 @@ def reports(request):
     return render(request, 'reports.html')
 
 def export_summary_pdf(request):
-    """Generates a summary PDF report."""
+    """Generates a summary template PDF download attachment link."""
     buffer = io.BytesIO()
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="summary_report.pdf"'
@@ -233,6 +234,7 @@ def export_summary_pdf(request):
 
 @csrf_exempt
 def save_inquiry(request):
+    """Captures async student communication inquiries safely via AJAX POST structures."""
     if request.method == "POST":
         try:
             data = json.loads(request.body)

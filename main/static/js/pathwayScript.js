@@ -1,72 +1,54 @@
 /**
  * pathwayScript.js
- * Dynamically fetches pathway/course data from the Django database
- * and displays it in a modal based on the selected University.
+ * Manages background data operations and interactive popup modals for the Pathway Hub.
  */
 
 const modal = document.getElementById("pathwayModal");
 const closeBtn = document.querySelector(".close-btn");
 const container = document.getElementById("modalPathways");
 const modalLogo = document.getElementById("modalLogo");
+const modalUniTitle = document.getElementById("modalUniTitle");
 
-// Global variable to store fetched data from the database
+// Holds the global array from the database for model tracking indexing
 let allPathwayData = [];
 
 /**
- * 1. FETCH ALL PATHWAY DATA ON PAGE LOAD
- * This targets the dedicated Pathway Hub API endpoint.
+ * 1. PRE-FETCH API DATA FOR MODALS SILENTLY
  */
 async function loadAllPathwayData() {
     try {
-        // Fetch from the API endpoint registered in your urls.py
-        const response = await fetch("/api/pathway-hub/"); 
+        const response = await fetch("http://127.0.0.1:8000/api/pathway-hub/"); 
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        // Save database payload globally ordered to match backend index keys
         allPathwayData = await response.json();
-        console.log("Pathway Hub data loaded successfully:", allPathwayData);
     } catch (error) {
-        console.error("Error loading pathway data:", error);
-        if (container) {
-            container.innerHTML = `<div class="error-msg" style="color: white; text-align: center; padding: 20px;">
-                Failed to connect to the database. Please ensure your Django server is running.
-            </div>`;
-        }
+        console.error("Error loading pathway background data:", error);
     }
 }
 
 /**
- * 2. OPEN MODAL & FILTER DATA BY UNIVERSITY
- * @param {string} uniName - The name of the university extracted from the image ALT text.
+ * 2. OPEN MODAL BY SELECTED INDEX
+ * Triggers directly from the HTML click layer safely.
  */
 function openPathwayModal(uniName) {
     if (!uniName) return;
 
-    console.log("Searching for university:", uniName);
+    // Update Modal Header layout targets
+    if (modalUniTitle) modalUniTitle.innerText = uniName;
 
-    // Filter the global data for courses belonging to the clicked university
-    // Uses toLowerCase() and trim() to handle any formatting differences in the database
-    const filteredCourses = allPathwayData.filter(course => 
+    // Filter your entire API dataset array for matches matching this university name
+    const associatedCourses = allPathwayData.filter(course => 
         course.university && course.university.toLowerCase().trim() === uniName.toLowerCase().trim()
     );
 
-    if (filteredCourses.length === 0) {
-        // Helpful error message if no match is found
-        container.innerHTML = `
-            <div class="no-data" style="color: white; text-align: center; width: 100%; padding: 40px;">
-                <h3>No courses found for "${uniName}".</h3>
-                <p>Check if the University name in Django Admin matches the image ALT text exactly.</p>
-            </div>`;
-        modalLogo.src = ""; 
-    } else {
-        // Set the logo from the first course entry found for this university
-        // If the logo field in Django is empty, it falls back to a placeholder
-        modalLogo.src = filteredCourses[0].logo || "";
+    if (modalLogo && associatedCourses.length > 0) {
+        modalLogo.src = associatedCourses[0].logo || "/static/images/default_uni.png";
+    }
 
-        // Map the filtered array into the horizontal scrollable course boxes
-        container.innerHTML = filteredCourses.map(course => `
+    // Map and inject ALL courses into the scroll area container simultaneously
+    if (container) {
+        container.innerHTML = associatedCourses.map(course => `
             <div class="course-box">
                 <div class="course-code">${course.code || 'N/A'}</div>
                 <div class="course-name">${course.name || 'Unknown Program'}</div>
@@ -81,37 +63,23 @@ function openPathwayModal(uniName) {
         `).join("");
     }
 
-    // Display the modal
     if (modal) {
         modal.style.display = "block";
-        document.body.style.overflow = "hidden"; // Prevent background scrolling
+        document.body.style.overflow = "hidden";
     }
 }
+window.openPathwayModal = openPathwayModal;
 
 /**
- * 3. EVENT LISTENERS
+ * 3. CONTROL EVENT LISTENERS
  */
-
-// Handle clicking on University Cards in the grid
-document.querySelectorAll(".uni-card").forEach((card) => {
-    card.addEventListener("click", () => {
-        const imgElement = card.querySelector("img");
-        if (imgElement) {
-            const uniName = imgElement.alt;
-            openPathwayModal(uniName);
-        }
-    });
-});
-
-// Close Modal Logic using the 'X' button
 if (closeBtn) {
     closeBtn.onclick = () => {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Restore scrolling
+        if (modal) modal.style.display = "none";
+        document.body.style.overflow = "auto";
     };
 }
 
-// Close modal if the user clicks anywhere outside of the modal content area
 window.onclick = (event) => {
     if (event.target == modal) {
         modal.style.display = "none";
@@ -119,7 +87,5 @@ window.onclick = (event) => {
     }
 };
 
-/**
- * 4. INITIALIZATION
- */
+// Fire background tracking sequence 
 document.addEventListener("DOMContentLoaded", loadAllPathwayData);

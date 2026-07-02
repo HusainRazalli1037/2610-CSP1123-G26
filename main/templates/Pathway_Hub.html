@@ -7,7 +7,6 @@
     <title>Info Pathway Hub - MyLuanier</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-    
   </head>
   <body>
 
@@ -48,29 +47,37 @@
 
     <main class="info-container">
       <div class="container">
-        <div class="university-grid">
+        <div class="university-grid" id="djangoPathwayGrid">
           
-          {# Aligned dynamic grouping rules #}
+          {# Regroup your duplicate rows by the university name field #}
           {% regroup hubs by university as university_list %}
           
           {% for university in university_list %}
-            <div class="uni-card">
-              {# Pull logo object references from first item iteration #}
-              {% with university.list|first as first_entry %}
-                {% if first_entry.logo %}
-                  <img src="{{ first_entry.logo.url }}" alt="{{ university.grouper }}" />
-                {% else %}
-                  <img src="{% static 'images/default_uni.png' %}" alt="{{ university.grouper }}" />
-                {% endif %}
-              {% endwith %} {# <-- Fixed this from {% with endwith %} #}
+          <button class="uni-card-btn" onclick="openPathwayModal('{{ university.grouper|escapejs }}')" style="background: none; border: none; cursor: pointer; padding: 0; width: 100%; text-align: center;">
+            <div class="uni-card" style="padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              
+              <div class="card-logo" style="margin-bottom: 15px;">
+                {% with university.list|first as first_entry %}
+                  {% if first_entry.logo %}
+                    <img src="{{ first_entry.logo.url }}" alt="{{ university.grouper }}" style="width: 80px; height: 80px; object-fit: contain;" />
+                  {% else %}
+                    <img src="{% static 'images/default_uni.png' %}" alt="Default Logo" style="width: 80px; height: 80px; object-fit: contain;" />
+                  {% endif %}
+                {% endwith %}
+              </div>
+              
+              {# FIXED: Updated style to match the exact white title typography layout of your scholarships #}
+              <h3 class="institution-name" style="margin: 0; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; color: #ffffff; letter-spacing: 0.5px;">
+                {{ university.grouper }}
+              </h3>
+              
             </div>
+          </button>
           {% empty %}
-            <div class="no-data">
-              <p>No institutions currently listed in the Info Hub.</p>
-            </div>
+          <div class="no-data">
+            <p>No institutions currently listed in the Info Hub.</p>
+          </div>
           {% endfor %}
-
-        </div>
 
         </div>
       </div>
@@ -89,7 +96,7 @@
           </div>
 
           <div class="course-horizontal-scroll" id="modalPathways">
-             </div>
+          </div>
 
         </div>
       </div>
